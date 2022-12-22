@@ -36,8 +36,10 @@ public class PBSelectableRowView: PBBaseSelectableView {
 
     public var secondaryIcon: UIImage? {
         didSet {
-            self.secondaryIconView.image = self.secondaryIcon
-            self.setupViews()
+            if self.secondaryIcon != oldValue {
+                self.secondaryIconView.image = self.secondaryIcon
+                self.setupViews()
+            }
         }
     }
 
@@ -82,8 +84,10 @@ public class PBSelectableRowView: PBBaseSelectableView {
 
     public var titleText: String? {
         didSet {
-            self.titleLabel.text = self.titleText
-            self.setupViews()
+            if self.titleText != oldValue {
+                self.titleLabel.text = self.titleText
+                self.setupViews()
+            }
         }
     }
 
@@ -101,8 +105,10 @@ public class PBSelectableRowView: PBBaseSelectableView {
 
     public var subtitleText: String? {
         didSet {
-            self.subtitleLabel.text = self.subtitleText
-            self.setupViews()
+            if self.subtitleText != oldValue {
+                self.subtitleLabel.text = self.subtitleText
+                self.setupViews()
+            }
         }
     }
 

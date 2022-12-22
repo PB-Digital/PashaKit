@@ -8,12 +8,6 @@
 import UIKit
 
 public class PBRoundedView: UIView {
-
-    public enum Style {
-        case roundedRect(cornerRadius: CGFloat)
-        case circle
-    }
-
     public var icon: UIImage? {
         didSet {
             self.updateUI()

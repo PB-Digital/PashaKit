@@ -8,11 +8,6 @@
 import UIKit
 import InputMask
 
-public enum PBTextFieldValidity {
-    case valid
-    case invalid(String)
-}
-
 public class PBUITextField: UIView {
 
     public enum TextFieldState {
@@ -104,43 +99,55 @@ public class PBUITextField: UIView {
 
     public var defaultBorderColor: UIColor = UIColor.Colors.PBGraySecondary {
         didSet {
-            self.updateUI()
-            self.setNeedsLayout()
+            if self.defaultBorderColor != oldValue {
+                self.updateUI()
+                self.setNeedsLayout()
+            }
         }
     }
 
     public  var editingBorderColor: UIColor = UIColor.Colors.PBGreen {
         didSet {
-            self.updateUI()
-            self.setNeedsLayout()
+            if self.editingBorderColor != oldValue {
+                self.updateUI()
+                self.setNeedsLayout()
+            }
         }
     }
 
     public var textFieldBottomBorderColor: UIColor = UIColor.Colors.PBGreen {
         didSet {
-            self.updateUI()
-            self.setNeedsLayout()
+            if self.textFieldBottomBorderColor != oldValue {
+                self.updateUI()
+                self.setNeedsLayout()
+            }
         }
     }
 
     public var errorStateColor: UIColor = UIColor.systemRed {
         didSet {
-            self.updateUI()
-            self.setNeedsLayout()
+            if self.errorStateColor != oldValue {
+                self.updateUI()
+                self.setNeedsLayout()
+            }
         }
     }
 
     public var placeholderTextColor: UIColor = UIColor.black.withAlphaComponent(0.6) {
         didSet {
-            self.customPlaceholder.textColor = self.placeholderTextColor
-            self.setNeedsLayout()
+            if self.placeholderTextColor != oldValue {
+                self.customPlaceholder.textColor = self.placeholderTextColor
+                self.setNeedsLayout()
+            }
         }
     }
 
     public var textFieldTextColor: UIColor = UIColor.darkText {
         didSet {
-            self.customTextField.textColor = self.textFieldTextColor
-            self.setNeedsLayout()
+            if self.textFieldTextColor != oldValue {
+                self.customTextField.textColor = self.textFieldTextColor
+                self.setNeedsLayout()
+            }
         }
     }
 

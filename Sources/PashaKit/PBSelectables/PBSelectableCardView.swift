@@ -74,7 +74,7 @@ public class PBSelectableCardView: PBBaseSelectableView {
         view.contentMode = .scaleAspectFit
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        view.image = UIImage(named: "ic_checked_circular", in: Bundle.module, compatibleWith: nil)
+        view.setImage(withName: "ic_checked_circular")
 
         view.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
         view.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
@@ -158,16 +158,16 @@ public class PBSelectableCardView: PBBaseSelectableView {
 
         switch self.theme {
         case .regular:
-            self.checkBoxSelected.image = UIImage(named: "ic_checked_circular", in: Bundle.module, compatibleWith: nil)
+            self.checkBoxSelected.setImage(withName: "ic_checked_circular")
         case .dark:
-            self.checkBoxSelected.image = UIImage(named: "ic_checked_circular_private", in: Bundle.module, compatibleWith: nil)
+            self.checkBoxSelected.setImage(withName: "ic_checked_circular_private")
         }
     }
 
     public func makeInvalid() {
         self.selectedBorderColor = .systemRed
         self.selectedStateColor = .systemRed.withAlphaComponent(0.1)
-        self.checkBoxSelected.image = UIImage(named: "ic_checked_circular_red", in: Bundle.module, compatibleWith: nil)
+        self.checkBoxSelected.setImage(withName: "ic_checked_circular_red")
     }
 }
 

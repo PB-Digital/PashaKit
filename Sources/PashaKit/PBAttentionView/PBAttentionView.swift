@@ -16,15 +16,8 @@ open class PBAttentionView: UIView {
 
     public var attentionLevel: AttentionLevel = .low {
         didSet {
-            switch self.attentionLevel {
-            case .low:
-                self.backgroundColor = UIColor.Colors.PBGrayTransparent
-                self.infoBody.textColor = UIColor.Colors.PBBlackMedium
-                self.infoIcon.image = UIImage(named: "ic_info", in: Bundle.module, compatibleWith: nil)
-            case .high:
-                self.backgroundColor = UIColor.Colors.PBRed8
-                self.infoBody.textColor = UIColor.Colors.PBRed
-                self.infoIcon.image = UIImage(named: "ic_info_red", in: Bundle.module, compatibleWith: nil)
+            if self.attentionLevel != oldValue {
+                self.setupAttention(level: self.attentionLevel)
             }
         }
     }
@@ -34,7 +27,7 @@ open class PBAttentionView: UIView {
 
         self.addSubview(view)
 
-        view.image = UIImage(named: "ic_info")
+        view.setImage(withName: "ic_info")
         view.contentMode = .scaleAspectFit
 
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -69,9 +62,7 @@ open class PBAttentionView: UIView {
     }
 
     private func setupViews() {
-        self.backgroundColor = UIColor.Colors.PBGrayTransparent
-        self.layer.cornerRadius = 12.0
-
+        self.setupAttention(level: self.attentionLevel)
         self.setupConstraints()
     }
 
@@ -92,5 +83,25 @@ open class PBAttentionView: UIView {
     public func set(text: String, attentionLevel: AttentionLevel = .low) {
         self.infoBody.text = text
         self.attentionLevel = attentionLevel
+    }
+
+    private func setupDefaults() {
+        self.backgroundColor = UIColor.Colors.PBGrayTransparent
+        self.layer.cornerRadius = 12.0
+    }
+}
+
+extension PBAttentionView {
+    func setupAttention(level: AttentionLevel) {
+        switch level {
+        case .low:
+            self.backgroundColor = UIColor.Colors.PBGrayTransparent
+            self.infoBody.textColor = UIColor.Colors.PBBlackMedium
+            self.infoIcon.setImage(withName: "ic_info")
+        case .high:
+            self.backgroundColor = UIColor.Colors.PBRed8
+            self.infoBody.textColor = UIColor.Colors.PBRed
+            self.infoIcon.setImage(withName: "ic_info_red")
+        }
     }
 }
