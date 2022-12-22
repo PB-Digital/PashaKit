@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "ic_master_logo_colored.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}
