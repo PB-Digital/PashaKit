@@ -22,9 +22,9 @@ open class PBContactRowView: UIView {
     public var cardID: String = "" {
         didSet {
             if self.cardID.prefix(1) == "4" {
-                self.issuerLogo.image = UIImage(named: "ic_master_logo_colored", in: Bundle.module, compatibleWith: nil)
+                self.issuerLogo.setImage(withName: "ic_master_logo_colored")
             } else {
-                self.issuerLogo.image = UIImage(named: "ic_visa_logo_colored", in: Bundle.module, compatibleWith: nil)
+                self.issuerLogo.setImage(withName: "ic_visa_logo_colored")
             }
 
             self.cardNumberLabel.text = cardID.lastFourDigits

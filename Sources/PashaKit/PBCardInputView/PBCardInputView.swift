@@ -40,7 +40,7 @@ open class PBCardInputView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.contentMode = .scaleAspectFit
-        view.image = UIImage(named: "ic_logo_white", in: Bundle.module, compatibleWith: nil)
+        view.setImage(withName: "ic_logo_white")
 
         view.heightAnchor.constraint(equalToConstant: 32.0).isActive = true
 
@@ -192,7 +192,6 @@ open class PBCardInputView: UIView {
 
         self.addSubview(view)
         view.contentMode = .scaleAspectFit
-        view.image = UIImage(named: "ic_visa", in: Bundle.module, compatibleWith: nil)
         view.translatesAutoresizingMaskIntoConstraints = false
 
         return view

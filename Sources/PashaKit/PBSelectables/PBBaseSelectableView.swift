@@ -11,13 +11,17 @@ open class PBBaseSelectableView: UIView {
 
     public var theme: PBSelectableViewTheme = .regular {
         didSet {
-            self.setTheme()
+            if self.theme != oldValue {
+                self.setTheme()
+            }
         }
     }
 
     public var isSelected: Bool = false {
         didSet {
-            animateToSelectionState(isSelected: self.isSelected)
+            if self.isSelected != oldValue {
+                animateToSelectionState(isSelected: self.isSelected)
+            }
         }
     }
 
@@ -25,13 +29,17 @@ open class PBBaseSelectableView: UIView {
 
     var selectedBorderColor: UIColor = UIColor.Colors.PBGreen {
         didSet {
-            self.updateUI()
+            if self.selectedBorderColor != oldValue {
+                self.updateUI()
+            }
         }
     }
 
     var selectedStateColor: UIColor = UIColor(red: 0.875, green: 0.933, blue: 0.922, alpha: 1) {
         didSet {
-            self.updateUI()
+            if self.selectedStateColor != oldValue {
+                self.updateUI()
+            }
         }
     }
 

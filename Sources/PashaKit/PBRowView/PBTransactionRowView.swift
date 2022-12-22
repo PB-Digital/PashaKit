@@ -8,17 +8,6 @@
 import UIKit
 
 public class PBTransactionRowView: UIView, PBSkeletonable {
-
-    public enum DividerStyle {
-        case partial
-        case full
-    }
-
-    public enum LeftIconStyle {
-        case roundedRect(cornerRadius: CGFloat)
-        case circle
-    }
-
     public var showsDivider: Bool = false {
         didSet {
             self.divider.isHidden = !showsDivider
@@ -33,12 +22,14 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
 
     public var categoryIcon: UIImage?  {
         didSet {
-            self.categoryImage.image = self.categoryIcon
-            self.setupViews()
+            if self.categoryIcon != oldValue {
+                self.categoryImage.image = self.categoryIcon
+                self.setupViews()
+            }
         }
     }
 
-    public var leftIconStyle: LeftIconStyle = .roundedRect(cornerRadius: 8.0) {
+    public var leftIconStyle: Style = .roundedRect(cornerRadius: 8.0) {
         didSet {
             switch self.leftIconStyle {
             case .roundedRect(cornerRadius: let cornerRadius):
@@ -51,7 +42,9 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
 
     public var isChevronIconVisible: Bool = false {
         didSet {
-            self.setupViews()
+            if self.isChevronIconVisible != oldValue {
+                self.setupViews()
+            }
         }
     }
 
@@ -161,7 +154,7 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.isSkeletonable = true
-        view.image = UIImage(named: "ic_chevron_right", in: Bundle.module, compatibleWith: nil)
+        view.setImage(withName: "ic_chevron_right")
         view.contentMode = .scaleAspectFit
 
         view.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
