@@ -364,13 +364,7 @@ open class PBRowView: UIView, PBSkeletonable {
         }
 
         self.primaryStackView.addArrangedSubview(self.secondaryStackView)
-        self.secondaryStackView.addArrangedSubview(self.titleLabel)
-
-        if self.subtitleLabel.text == nil {
-            self.subtitleLabel.removeFromSuperview()
-        } else {
-            self.secondaryStackView.addArrangedSubview(self.subtitleLabel)
-        }
+        self.setupTitleAndSubtitlePlacement()
 
         self.primaryStackView.addArrangedSubview(self.rightIconWrapperView)
 
@@ -382,6 +376,27 @@ open class PBRowView: UIView, PBSkeletonable {
         }
 
         self.setupConstraints()
+    }
+
+    private func setupTitleAndSubtitlePlacement() {
+        switch self.textLayoutPreference {
+        case .titleFirst:
+            self.secondaryStackView.addArrangedSubview(self.titleLabel)
+
+            if self.subtitleLabel.text == nil {
+                self.subtitleLabel.removeFromSuperview()
+            } else {
+                self.secondaryStackView.addArrangedSubview(self.subtitleLabel)
+            }
+        case .subtitleFirst:
+            if self.subtitleLabel.text == nil {
+                self.subtitleLabel.removeFromSuperview()
+            } else {
+                self.secondaryStackView.addArrangedSubview(self.subtitleLabel)
+            }
+
+            self.secondaryStackView.addArrangedSubview(self.titleLabel)
+        }
     }
 
     private func setupConstraints() {
