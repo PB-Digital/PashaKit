@@ -328,6 +328,7 @@ open class PBRowView: UIView, PBSkeletonable {
         self.titleText = titleText
         self.subtitleText = subtitleText
         self.isChevronIconVisible = isChevronIconVisible
+        self.setupViews()
     }
 
     public func showSkeletonAnimation() {
