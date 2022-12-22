@@ -303,6 +303,7 @@ open class PBRowView: UIView, PBSkeletonable {
 
     required public init?(coder aCoder: NSCoder) {
         super.init(coder: aCoder)
+        self.setupViews()
     }
 
     public convenience init(titleText: String, subtitleText: String? = nil, isChevronIconVisible: Bool = false) {
@@ -320,6 +321,7 @@ open class PBRowView: UIView, PBSkeletonable {
         self.subtitleText = rowView.data.subtitleText
         self.rightIconWrapperView.isHidden = !rowView.data.isRightIconVisible
         self.setupNewView(state: isNew)
+        self.setupViews()
     }
 
     public func setData(titleText: String? = nil, subtitleText: String? = nil, isChevronIconVisible: Bool = false) {
