@@ -440,7 +440,7 @@ open class PBRowView: UIView, PBSkeletonable {
             NSLayoutConstraint.activate([
                 self.isNewView.centerYAnchor.constraint(equalTo: self.titleLabel.centerYAnchor),
                 self.isNewView.leftAnchor.constraint(equalTo: self.titleLabel.rightAnchor, constant: 16.0),
-//                self.isNewView.rightAnchor.constraint(lessThanOrEqualTo: self.rightIconWrapperView.leftAnchor, constant: -16.0)
+                self.isNewView.rightAnchor.constraint(lessThanOrEqualTo: self.rightIconWrapperView.leftAnchor, constant: -16.0)
             ])
         }
     }
