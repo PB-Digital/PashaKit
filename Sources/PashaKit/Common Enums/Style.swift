@@ -29,12 +29,33 @@
 
 import UIKit
 
+/// Style for view
+///
+/// This enum right now is used by `PBRoundedView` for configuring its shape.
+/// However since it's public, you can use it anywhere you want to customize your view.
+///
 public enum Style {
+    ///
+    /// Used for making rounded corners. Implementation depends on you
+    ///
     case roundedRect(cornerRadius: CGFloat)
+
+    /// Used for making view circle. Implementation depends on you
     case circle
 }
 
+/// Style for divider.
+///
+/// Divider is a thin line under tableview cells , row views. This enum is used by
+/// `PBRowView`, `PBTransactionRowView`
+///
 public enum DividerStyle {
+
+    /// Used for drawing divider partiallly
+    ///
     case partial
+
+    /// Used for drawing divider fully
+    /// 
     case full
 }

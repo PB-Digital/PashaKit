@@ -29,19 +29,45 @@
 
 import UIKit
 
+///
+/// `PBRoundedView` is type of `UIView` made for circular buttons .
+///
+/// **View Components**
+///
+/// Rounded view consists one subview:
+/// - `iconView`- holds an icon of view
+///
 public class PBRoundedView: UIView {
+
+    ///
+    /// Sets icon for rounded view.
+    ///
+    /// By default there is no an icon for rounded view. It will be created as raw view with specified background
+    /// color and proper style
+    ///
     public var icon: UIImage? {
         didSet {
             self.updateUI()
         }
     }
 
+    ///
+    /// Sets the style for rounded view
+    ///
+    /// By default rounded view will be created as circle. However if you need more customized style
+    /// set `roundedRect(cornerRadius: CGFloat)` case with proper `cornerRadius`
+    ///
     public var style: Style = .circle {
         didSet {
             self.updateUI()
         }
     }
 
+    /// Sets insets from all sides for `icon`
+    ///
+    /// If not specified insets from 4 sides will equal to 10.0. However
+    /// you can change it to any insets you want.
+    ///
     public var contentInsets: UIEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) {
         didSet {
             self.updateUI()
@@ -71,6 +97,12 @@ public class PBRoundedView: UIView {
         super.init(coder: aDecoder)
     }
 
+    /// Creates rounded view with icon and style
+    ///
+    /// - Parameters:
+    ///  - icon: UIImage which will be used for  as view's `icon`
+    ///  - style: Style of rounded view. If not specified, `circle` will be set.
+    ///
     public convenience init(icon: UIImage?, style: Style = .circle) {
         self.init(frame: .zero)
 
@@ -96,6 +128,8 @@ public class PBRoundedView: UIView {
         }
     }
 
+    /// A function for updating icon and constraints of rounded view.
+    /// 
     private func updateUI() {
         self.iconView.image = self.icon
         self.updateConstraints(basedOn: self.contentInsets)

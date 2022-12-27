@@ -30,6 +30,11 @@
 import Foundation
 import UIKit
 
+/// `PBElevatedView` is used for making views elevated with shadow effect.
+///
+/// This class was used at `UIView` extensions to make any `UIView` elevated
+/// Behind the scenes this is another view with shadow  which is filling its superview.
+///
 open class PBElevatedView: UIView {
 
     private var shadowLayer: CAShapeLayer? = nil
@@ -64,6 +69,11 @@ open class PBElevatedView: UIView {
         self.shadowLayer?.shadowPath = self.shadowLayer?.path
     }
 
+    /// Sets shadow configuration for elevated view.
+    ///
+    /// - Parameters:
+    ///  - config: Shadow configuration. This entity contains corner, corner radius, color and shadow configurations.
+    ///  
     func setShadowConfig(config: ShadowConfig?) {
         if self.shadowLayer != nil {
             layer.sublayers?.remove(at: 0)

@@ -29,6 +29,17 @@
 
 import UIKit
 
+///
+/// The requirements for dispalying transaction data.
+///
+/// This protocol was used by `PBTransactionRowView` for setting its data to proper sublabels.
+///
+/// When you are working with `PBTransactionRowView`  you will need creating an extension to your existing
+/// entity for holding transaction information.
+///
+/// If your project doesn't include such kind of entity, create one and
+/// conform it to `TransactionRepresentable`.
+///
 public protocol TransactionRepresentable {
     var merchantName: String { get }
     var descriptionText: String { get }

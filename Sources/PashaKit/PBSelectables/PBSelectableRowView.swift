@@ -43,6 +43,29 @@ public struct SelectableRowViewData {
     }
 }
 
+/// `PBSelectableRowView` is a subclass of `PBBaseSelectableVie` made for
+/// representing selectable row views. Visually it's similar to `PBRowView` but it also contains
+/// checkbox for selection states
+///
+/// **View Structure**
+///
+/// `PBSelectableRowView` packs up its contents in its `contentStackView`. View hierarchy of it is as following:
+/// - `primaryStackView`-  is superview of `leftIconView` which holds left icon of
+/// row view
+///     - `secondaryStackView`- holds `titleLabel` and `subtitleLabel`
+///     - `secondaryIconWrapperView`- holds custom icon
+/// - `checkboxWrapperView`- have two subviews:
+///     - `checkboxDefault`- holds default checkbox icon
+///     - `checkboxSelected`- holds selected checkbox icon
+///
+/// While laying out subviews, checkbox default and checkbox selected been put in the same places. But depending
+/// on `isSelected` state, these image's alpha changes respectively and creates "selection" effect.
+///
+/// It comes with hightly customizable settings such as
+/// - options to add subtite
+/// - options to add secondary icon. This can be any icon you want. It will just sit near `secondaryStackView`
+/// - changing built-in checkbox icons for both states.
+///
 public class PBSelectableRowView: PBBaseSelectableView {
 
     public enum CheckboxVerticalPosition {
@@ -56,6 +79,11 @@ public class PBSelectableRowView: PBBaseSelectableView {
         case right
     }
 
+    /// Sets the icon for row view.
+    ///
+    /// By default the image of secondary view is set to `nil`. While creating row view if this property wasnt specified,  it won't be added
+    /// to content stack view. Add image to this property if you want to show image beside checkbox.
+    ///
     public var secondaryIcon: UIImage? {
         didSet {
             if self.secondaryIcon != oldValue {
@@ -65,6 +93,14 @@ public class PBSelectableRowView: PBBaseSelectableView {
         }
     }
 
+    ///  The arranger for title and subtile labels.
+    ///
+    ///  When row view is created, `subtitleLabel` sits under `titleLabel`.
+    ///  However there are some cases we needed to change their places.
+    ///
+    ///  Obviously, changing this property's value to `subtitleFirst`  will make `titleLabel`
+    ///  to sit under `subtitleLabel`.
+    ///
     public var textLayoutPreference: PreferredTextPlacement = .titleFirst {
         didSet {
             self.secondaryStackView.removeArrangedSubview(self.titleLabel)
@@ -81,6 +117,14 @@ public class PBSelectableRowView: PBBaseSelectableView {
         }
     }
 
+    ///
+    /// Changes textbox position from side to side
+    ///
+    /// In case you want to change position of checkbox from left tor right  or vice-versa, updating
+    /// this property will do the things for you.
+    ///
+    /// By default checkbox is located on the left side when row view is created.
+    ///
     public var checkboxHorizontalPosition: CheckboxHorizontalPosition = .left {
         didSet {
             switch self.checkboxHorizontalPosition {
@@ -92,18 +136,32 @@ public class PBSelectableRowView: PBBaseSelectableView {
         }
     }
 
+    /// Sets the image for selected checkbox state
+    ///
+    /// By default it will add our asset to it. If you are not comfortable with this icon,
+    /// replace it.
+    ///
     public var selectedCheckboxIcon: UIImage? = UIImage(named: "ic_checkbox_selected", in: Bundle.module, compatibleWith: nil){
         didSet {
             self.checkBoxSelected.image = self.selectedCheckboxIcon
         }
     }
 
+    /// Sets the image for default checkbox state
+    ///
+    /// By default it will add our asset to it. If you are not comfortable with this icon,
+    /// replace it.
+    ///
     public var defaultCheckboxIcon: UIImage? = UIImage(named: "ic_checkbox_default", in: Bundle.module, compatibleWith: nil) {
         didSet {
             self.checkBoxDefault.image = self.defaultCheckboxIcon
         }
     }
 
+    /// Title text of checkbox
+    ///
+    /// If not specified checkbox will be created with empty title.
+    ///
     public var titleText: String? {
         didSet {
             if self.titleText != oldValue {
@@ -113,18 +171,30 @@ public class PBSelectableRowView: PBBaseSelectableView {
         }
     }
 
+    /// Font for the title of row view.
+    ///
+    /// By default `systemFont` of size `17.0` with `semibold` weight will be used.
+    ///
     public var titleFont: UIFont?  = UIFont.systemFont(ofSize: 17.0, weight: .semibold) {
         didSet {
             self.titleLabel.font = self.titleFont
         }
     }
 
+    /// Sets the color for `titleLabel`
+    ///
+    /// If not specified `darkText` will be used.
+    ///
     public var titleTextColor: UIColor = .darkText {
         didSet {
             self.titleLabel.textColor = self.titleTextColor
         }
     }
 
+    /// Title text of checkbox
+    ///
+    /// If not specified checkbox will be created with empty title.
+    ///
     public var subtitleText: String? {
         didSet {
             if self.subtitleText != oldValue {
@@ -134,6 +204,10 @@ public class PBSelectableRowView: PBBaseSelectableView {
         }
     }
 
+    /// Font for the title of row view.
+    ///
+    /// By default `systemFont` of size `13.0` with `semibold` weight will be used.
+    ///
     public var subtitleFont: UIFont? = UIFont.systemFont(ofSize: 13.0, weight: .regular) {
         didSet {
             self.subtitleLabel.font = self.subtitleFont
@@ -285,6 +359,13 @@ public class PBSelectableRowView: PBBaseSelectableView {
         self.setupViews()
     }
 
+    /// Sets data for a row view.
+    ///
+    /// - Parameters:
+    ///    - titleText: Sets the title text for row view.
+    ///    - subtitleText: Sets subtitle text for row view.
+    ///    - secondaryIcon: An option for setting secondary icon
+    ///
     public func setData(titleText: String, subtitleText: String? = nil, secondaryIcon: UIImage? = nil) {
         self.titleText = titleText
         self.subtitleText = subtitleText

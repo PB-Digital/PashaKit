@@ -29,10 +29,22 @@
 
 import UIKit
 
+/// `PBBaseUITextField` is the lowest level of text field component of PashaKit library.
+///
+/// It differs from its parent- `UITextField` with having an option to choose text field type and bottom border.
+/// By default it will be created with plain style which is very similar to `UITextField` instance.
+///
 class PBBaseUITextField: UITextField {
 
+    /// Type of text field
+    ///
     enum TextFieldType {
+        /// By choosing this case helps you make an area for right icon which will be setted by the class subclassing it.
+        /// At the moment the size of area is defined beforehand with 24 pt of width and 24 pt of height.
+        ///
         case withRightImage
+        /// By choosing this case text field will be in its default style defined by `UITextField`.
+        ///
         case plain
     }
 
@@ -42,6 +54,8 @@ class PBBaseUITextField: UITextField {
     fileprivate var notEditingConstraints: [NSLayoutConstraint] = []
     fileprivate var activeConstraints: [NSLayoutConstraint] = []
 
+    /// Sets the type of text field.
+    ///
     var textFieldType: TextFieldType = .plain {
         didSet {
             switch self.textFieldType {
@@ -55,16 +69,37 @@ class PBBaseUITextField: UITextField {
         }
     }
 
+    /// The keyboard type for text field.
+    ///
+    /// Text objects can be targeted for specific types of input, such as plain text, email, numeric entry, and so on.
+    ///
+    /// The keyboard style identifies what keys are available on the keyboard and which ones appear by default.
+    /// The default value for this property is UIKeyboardType.default.
+    ///
     public func setKeyboardType(_ type: UIKeyboardType) {
         self.keyboardType = type
     }
 
+    /// A Boolean value that determines whether the text is valid.
+    ///
+    /// Setting the value of this property to `false` it will change its text, placeholder and bottom border(if `hasBottomBorder` is true) color to `systemRed`
+    ///
+    /// The default value is `true`.
+    ///
     var isValid: Bool = true {
         didSet {
             self.updateUI()
         }
     }
 
+    /// A Boolean value that determines whether the text is secured.
+    ///
+    /// Setting this property to true in any view that conforms to `UITextInputTraits` disables the user’s ability
+    /// to copy the text in the view and, in some cases, also disables the user’s ability to record and
+    /// broadcast the text in the view.
+    ///
+    /// The default value is `false`.
+    ///
     var isSecured: Bool = false {
         didSet {
             self.isSecureTextEntry = isSecured
@@ -73,12 +108,21 @@ class PBBaseUITextField: UITextField {
 
     private var maxLength: Int = -1
 
+    /// A boolean value that defines wheter the field should have bottom border or not.
+    ///
+    /// If you want to textfield have bottom border set this property to `true`
+    ///
     var hasBottomBorder: Bool = false {
         didSet {
             self.bottomBorder.isHidden = !self.hasBottomBorder
         }
     }
 
+    /// Sets the color for bottom border.
+    ///
+    /// By default if you enable `hasBottomBorder` the added border will have `PBGreen` color.
+    /// Use this property to change it.
+    ///
     var bottomBorderColor: UIColor = UIColor.Colors.PBGreen {
         didSet {
             self.performAnimation { [weak self] in
@@ -88,6 +132,11 @@ class PBBaseUITextField: UITextField {
         }
     }
 
+    /// Defines the thickness for the bottom border.
+    ///
+    /// By default bottom border will be created with the thickness of 1.0 pt. Change this property
+    /// for customizing thickness.
+    ///
     var bottomBorderThickness: CGFloat = 1.0 {
         didSet {
             self.layoutIfNeeded()
@@ -132,6 +181,11 @@ class PBBaseUITextField: UITextField {
         self.setupViews()
     }
 
+    /// Sets up field based on default settings.
+    ///
+    /// Since this function initializes text field based on default parameters, don't forget to customize it
+    /// if you desire different text field style.
+    /// 
     func setupViews() {
         self.borderStyle = .none
         self.font = UIFont.systemFont(ofSize: 18, weight: .regular)

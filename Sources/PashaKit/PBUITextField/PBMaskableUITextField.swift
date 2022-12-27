@@ -30,10 +30,30 @@
 import UIKit
 import InputMask
 
+/// PBMaskableUITextField inherits from `PBBaseUITextField` and adds input masking
+/// feature to it.
+///
+/// By default its maskFormat is accepting any type of symbols user write. However if you need
+/// more formatted and specific text output, don't forget to customize it.
+///
 class PBMaskableUITextField: PBBaseUITextField {
 
     private let inputMaskDelegate = MaskedTextFieldDelegate()
 
+
+    /// Sets masking format for input text.
+    ///
+    /// If not specified custom maskFormat will be applied to accept all types of symbols to enter.
+    ///
+    /// Change this property based on your desires. Following input mask formats are widely used in our application:
+    /// - [0000] [0000] [0000] [0000] - for card pan number input. It will limit your input to maximum 16 numbers which are
+    /// grouped by 4 number resembling real card number appearance in text field.
+    /// ---
+    /// - +994 [00] [000] [000] - for number input. It will limit your input to maximum 8 characters. When you start typing predefined
+    /// +994 will automatically be inserted into field. This country code is optional. For different country code, just change it with theirs.
+    ///
+    /// If you want to learn more about maskFormats, please check their GitHub [repository](https://github.com/RedMadRobot/input-mask-ios).
+    ///
     var maskFormat: String = "" {
         didSet {
             if self.maskFormat.isEmpty {
@@ -44,6 +64,9 @@ class PBMaskableUITextField: PBBaseUITextField {
         }
     }
 
+    /// Called when editing starts
+    ///
+    /// Use this callback to access user input and for tracking it real-time
     var onTextUpdate: ((String) -> Void)?
 
     override func setupViews() {

@@ -29,6 +29,16 @@
 
 import UIKit
 
+/// `PBCardRepresentable` is type of protocol for providing card  information by its conformers.
+///
+/// Includes
+/// - `balance`
+/// - `displayName`
+/// - `displayNameV2`
+/// - `issuerLogoColored`
+/// - `issuerLogoClear`
+/// - `backgroundConfig`
+///
 public protocol PBCardRepresentable {
     var balance: String { get }
     var displayName: String { get }

@@ -29,6 +29,17 @@
 
 import Foundation
 
+///
+/// The requirements for dispalying row representable data.
+///
+/// This protocol was used by `PBRowView` for setting its data to proper sublabels.
+///
+/// When you are working with `PBRowView`  you will need creating an extension to your existing
+/// entity for holding row view information.
+///
+/// If your project doesn't include such kind of entity, create one and
+/// conform it to `PBRowViewRepresentable`.
+///
 public protocol PBRowViewRepresentable {
     var data: RowViewData { get }
 }

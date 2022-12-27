@@ -29,11 +29,36 @@
 
 import UIKit
 
+///
+/// `GradientView` is `UIView` class used for making gradient colored views for cards in our mobile app.
+///
+/// The structure of `GradientView` is rather simple. It needs
+/// - `colorPoints` - list of `GradientColorPoints`
+/// - `angle`- the angle for gradient
+/// - `gradient`- native `CAGradientLayer` class for view
+/// - `isReversed`- boolean value for reversing gradient
+///
 public class GradientView: UIView {
 
+    /// The list of `GradientColorPoints`
+    ///
+    /// `GradientColorPoint`s are holding basic information about gradient. After initializing it
+    /// this gradient list will be mapped to `gradient`s own info.
+    ///
     var colorPoints = [GradientColorPoint]()
+
+    /// Angle of gradient
+    ///
+    /// By default angle of gradient is set to be `horizontal`.  It means the configured
+    /// gradient will show up horizontally.
+    ///
     var angle: GradientAngle = .horizontal
+
+    /// Gradient layer for `GradientView`
+    ///
     let gradient = CAGradientLayer()
+
+    /// A boolean value indicating whether gradient is reversed
     var isReversed: Bool = false
 
     override init(frame: CGRect) {
@@ -41,6 +66,14 @@ public class GradientView: UIView {
         commonInit(frame)
     }
 
+    /// Creates GradientView with given configuration
+    ///
+    /// - Parameters:
+    ///    - frame: frame for created gradient view
+    ///    - colorPoints; the list of gradient color points which holds base information about gradient
+    ///    - angle: the angle of gradient
+    ///    - isReversed: a  boolean value indicating whether gradient is reversed
+    ///
     public init(frame: CGRect, colorPoints: [GradientColorPoint], angle: GradientAngle, isReversed: Bool) {
         super.init(frame: frame)
         self.colorPoints = colorPoints

@@ -29,19 +29,52 @@
 
 import UIKit
 
+///
+/// `PBTransactionRowView` is UIView subclass made for displaying transaction representable data.
+///
+/// **View Structure**
+///
+/// `PBRowView` packs up its contents in its `primaryStackView`. Primary stack view consists of
+/// - `categoryImage`. This view is used for holding payment category icon.
+/// - `transactionInfoContainerView`. This view holds 4 `UILabel` views which are:
+///    - `merchantLabel`- used for displaying merchant name
+///    - `descriptionLabel`- used for displaying description text, which can be payment category name
+///    - `amountLabel`- used for displaying transaction amount
+///    - `dateLabel`- used for displaying transaction date
+/// - `rightIconWrapperView`. This view is superview of `rightIconView` which holds right icon of
+/// row view. Using this view as indicator for navigation is recommended.
+///
 public class PBTransactionRowView: UIView, PBSkeletonable {
+
+    /// The visual state of divider.
+    ///
+    /// By default row view will be created with divider is hidden.
+    ///
+    /// If you need a divider change it to `true`. It will show a divider with the thickness of `0.5 pt`.
+    ///
     public var showsDivider: Bool = false {
         didSet {
             self.divider.isHidden = !showsDivider
         }
     }
 
+    /// The visual style of divider.
+    ///
+    /// By default divider is set to be `partial` which draws divider starting from
+    /// title label's leftAnchor to the end of view.
+    ///
     public var dividerStyle: DividerStyle = .partial {
         didSet {
             self.setupDividerConstraints(by: self.dividerStyle)
         }
     }
 
+    /// Sets category icon for transaction.
+    ///
+    /// If not specified transaction row view won't have any image for category.
+    ///
+    /// By setting an image to this property,  view will add an image to the left side of it with the size of 40 pt both by width and height.
+    ///
     public var categoryIcon: UIImage?  {
         didSet {
             if self.categoryIcon != oldValue {
@@ -51,6 +84,10 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// The style for `leftIconWrapperView`.
+    ///
+    /// By default its value is `circle`.
+    ///
     public var leftIconStyle: Style = .roundedRect(cornerRadius: 8.0) {
         didSet {
             switch self.leftIconStyle {
@@ -62,6 +99,14 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// A boolean value for deciding wheter chevron icon should be visible.
+    ///
+    /// By default the value of this property is `true`. Since in our mobile app we have
+    /// a lot row views with visible chevron icon, we kept this property value at `true`
+    /// for ease of setup.
+    ///
+    /// Changing its value to `false` removes it from row view.
+    ///
     public var isChevronIconVisible: Bool = false {
         didSet {
             if self.isChevronIconVisible != oldValue {
@@ -311,6 +356,12 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         self.layoutIfNeeded()
     }
 
+    /// Sets data for a row view.
+    ///
+    /// - Parameters:
+    ///    - transaction: Protocol for representing `transactionRowView`.
+    ///    - categoryName: Name of transaction category.
+    ///
     public func setData(transaction: TransactionRepresentable, categoryName: String?) {
         self.merchantLabel.text = transaction.merchantName
         self.descriptionLabel.text = categoryName ?? transaction.descriptionText
@@ -319,6 +370,12 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         self.dateLabel.text = transaction.dateText
     }
 
+    /// Starts showing animated skeleton view
+    ///
+    /// If you call this method it will replace your row view components with their skeletoned versions
+    /// with defined adjustments. It won't be removed until you call `hideSkeletonAnimation()`
+    /// method.
+    ///
     public func showSkeletonAnimation() {
 
         self.merchantLabel.text = " "
@@ -336,6 +393,11 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// Stops showing animated skeleton view
+    ///
+    /// If you call this method it will remove currently applied skeleton view from row view and
+    /// start showing setted row view data.
+    ///
     public func hideSkeletonAnimation() {
         DispatchQueue.main.async {
             self.categoryImage.hideSkeleton()

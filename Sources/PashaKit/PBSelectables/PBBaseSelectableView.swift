@@ -29,8 +29,22 @@
 
 import UIKit
 
+/// `PBBaseSelectableView` is a subclass of `UIView` made for imitating view selection. It's base view of
+/// `PBSelectableCardView` and `PBSelectableRowView` components in PashaKit.
+///
+/// Depending on its `isSelected` value, view will changed its border and background color to predefined theme
+/// color which is specified by outside.
+///
+/// - Important: When working with selectableview and its subviews don't forget to add `tapGestureRecognizer`
+/// and change its `isSelected` state inside selector function.
+///
 open class PBBaseSelectableView: UIView {
 
+    /// Sets the theme for `PBBaseSelectableView`
+    ///
+    /// By default view will be created with rugular theme which will cause selected state colors
+    /// to be PBGreen and its subcolors.
+    ///
     public var theme: PBSelectableViewTheme = .regular {
         didSet {
             if self.theme != oldValue {
@@ -39,6 +53,8 @@ open class PBBaseSelectableView: UIView {
         }
     }
 
+    /// A boolean value for defining whether view `isSelected`
+    ///
     public var isSelected: Bool = false {
         didSet {
             if self.isSelected != oldValue {
@@ -47,8 +63,17 @@ open class PBBaseSelectableView: UIView {
         }
     }
 
+    /// A boolean value for enabling and disabling selection
+    ///
+    /// If not specified the view selection animation will be turned off and state changes will
+    /// occur immediately.
+    ///
     public var isAnimationEnabled: Bool = false
 
+    /// Color of border when view `isSelected`.
+    ///
+    /// If theme option is not specified, this property will be in PBGreen color.
+    ///
     var selectedBorderColor: UIColor = UIColor.Colors.PBGreen {
         didSet {
             if self.selectedBorderColor != oldValue {
@@ -57,6 +82,11 @@ open class PBBaseSelectableView: UIView {
         }
     }
 
+    /// Color of background when view `isSelected`.
+    ///
+    /// If theme option is not specified, this property will be in pale green color.
+    /// However you can set any color you want to it.
+    ///
     var selectedStateColor: UIColor = UIColor(red: 0.875, green: 0.933, blue: 0.922, alpha: 1) {
         didSet {
             if self.selectedStateColor != oldValue {
@@ -80,6 +110,10 @@ open class PBBaseSelectableView: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
     }
 
+    /// Default initializer for `PBBaseSelectableView`
+    ///
+    /// This will create view with its default parameters.
+    ///
     public convenience init() {
         self.init(frame: .zero)
         self.setupViews()
@@ -93,6 +127,10 @@ open class PBBaseSelectableView: UIView {
         self.backgroundColor = UIColor.white
     }
 
+    /// Updates UI of selectable view
+    ///
+    /// Call this method when you have made UI changes such as states, colors.
+    ///
     func updateUI() {
         if self.isAnimationEnabled {
             self.performAnimation { [weak self] in
@@ -121,11 +159,25 @@ open class PBBaseSelectableView: UIView {
         }
     }
 
+    /// The theme for the view's selected state.
+    ///
+    /// `PBBaseSelectableView` is using theme parameter for defining its color palette for components. These include view's
+    /// * Border color for `isSelected` state
+    /// * Background color when the view state changes to `isSelected`
+    ///
     func setTheme() {
         self.selectedBorderColor = self.theme.getPrimaryColor()
         self.selectedStateColor = self.theme.getSecondaryColor()
     }
 
+    /// Changes view state to alert.
+    ///
+    /// When selecting this type of view is mandatory in your application, you can check if it's selected or not
+    /// via `isSelected` property.
+    ///
+    /// If the answer should be `true` but is returned `false`, call this
+    /// method to enable alert state.
+    ///
     public func setAlertState() {
         self.layer.borderColor = UIColor.Colors.PBInvalidRed.cgColor
         self.layer.backgroundColor = UIColor.clear.cgColor

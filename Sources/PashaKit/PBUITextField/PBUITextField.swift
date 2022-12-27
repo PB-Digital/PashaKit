@@ -30,18 +30,57 @@
 import UIKit
 import InputMask
 
+/// Wrapper view of UITexField with custom animation and overall style.
+///
+/// PBUITextField differs from native `UITextField` by its custom placeholder animation and border style.
+/// Under the hood PBUITextField has 3 distinct components. These are
+/// * UIView named `customBorder` which is used for border style.
+/// * UILabel named `footerLabel` for displaying text under bordered view
+/// * UILabel named `customPlaceholder` which replaces the traditional placeholder of UITextField
+///
+/// When adding a button to your interface, perform the following actions:
+///
+/// * Set the border style of the text field at creation time.
+/// * Supply a placeholder string or image.
+/// * Optional: Set right icon and its size.
+/// * Optional: Set input mask format for formatting and limiting the entered text in text field.
+/// * Optional: Supply a footer label text.
+/// * Optional: Define its validity.
+///
+/// - Note: PBUIButton is optimized for looking as expected with default adjustments at the `height` of `80.0pt`.
+///         However feel free to customize it.
+///
 public class PBUITextField: UIView {
 
+    /// Specifies the state of textfield.
+    ///
     public enum TextFieldState {
+        /// The state when text field has focus.
+        ///
         case editing
+
+        /// The state when text field has no focus.
+        ///
         case notEditing
     }
 
+    /// Specifies the border style for the text field.
+    ///
     public enum TextFieldStyle {
+        /// Sets text field style to bordered.
+        ///
+        /// In the bordered style textfield appears with rectangle around it with defined corner radius. If not editing this custom
+        /// border will be in gray color with thin borders. However if it's changing its state to editing the color and radius of
+        /// text field will change with animating placeholder parallelly.
+        ///
         case bordered
+
+        /// Sets text field style to underlined.
         case underlined
     }
 
+    /// Defines the view size for the icon on the right side.
+    ///
     public enum RightIconSize {
         case small, regular
         case custom(CGSize)
@@ -49,6 +88,10 @@ public class PBUITextField: UIView {
 
     public var id: String = ""
 
+    /// Placeholder of text field.
+    ///
+    /// If not specified, placeholder will be just empty string. It's recommended to set
+    /// placeholdertext for visual clarity of text field.
     public var placeholderText: String = "" {
         didSet {
             self.customPlaceholder.text = self.placeholderText
@@ -56,6 +99,10 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// The text which is displayed under the text field.
+    ///
+    /// By default text field doesn't create footer label text. If you specify it, text field will be
+    /// created with the `UILabel` under it.
     public var footerLabelText: String? = nil {
         didSet {
             self.footerLabel.text = self.footerLabelText
@@ -63,6 +110,9 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// Sets the icon for displaying at the right end of text field.
+    ///
+    /// If not specified, text field will be created without icon on the right. 
     public var icon: UIImage? = nil {
         didSet {
             self.iconImage.image = self.icon
@@ -80,6 +130,12 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// Decides whether entered text if confidential or not.
+    ///
+    /// Since the value of this property is false by default, you won't see any difference. However
+    /// setting this property to true, adds button to `hide` and `show` password with secured text.
+    ///
+    /// Secured text basically is traditional text field entry which replaces input info circular symbols for each letter.
     public var isSecured: Bool = false {
         didSet {
             self.updateSecureEntry()
@@ -92,12 +148,23 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// The theme for the text field's appearance.
+    ///
+    /// `PBUITextField` is using theme parameter for defining its color palette for components. These include field's
+    /// * Border color for `bordered` style, underline color for `underlined` style
+    /// * Cursor color
+    /// * Tint color for right icon
+    ///
     public var theme: PBUITextFieldTheme = .regular {
         didSet {
             self.setTheme()
         }
     }
 
+    /// Specifies the size for right side icon.
+    ///
+    /// By defualt icon size set to `regular` which means its size is 24.0 pt both for width and height.
+    ///
     public var iconSize: RightIconSize = .regular {
         didSet {
             self.setupRightIconConstraints(for: self.iconSize)
@@ -105,6 +172,17 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// Sets text field input validity.
+    ///
+    /// Changing these property causes textfield change its border, placeholder and footer label text color
+    /// to predefined `errorStateColor`.
+    ///
+    /// Invalid case also requires you to enter invalid case text which will be displayed under field
+    ///
+    /// Change this property when having valid input enter is critical. Such cases include checking
+    /// - card number with Luhn algorithm
+    /// - email
+    /// - password
     public var isValid: PBTextFieldValidity = .valid {
         didSet {
             self.updateUI()
@@ -112,6 +190,7 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// Defines cursor color of textfield.
     public  var placeholderCursorColor: UIColor = UIColor.Colors.PBGreen {
         didSet {
             self.customTextField.tintColor = self.placeholderCursorColor
@@ -119,6 +198,9 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// Sets the border color for text field when it's in `notEditing` state.
+    ///
+    /// By default this property will apply PBGraySecondary color to border.
     public var defaultBorderColor: UIColor = UIColor.Colors.PBGraySecondary {
         didSet {
             if self.defaultBorderColor != oldValue {
@@ -128,6 +210,9 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// Sets the border color for text field when it's in `editing` state for `bordered` style.
+    ///
+    /// By default this property will apply proper theme color to both types of border.
     public  var editingBorderColor: UIColor = UIColor.Colors.PBGreen {
         didSet {
             if self.editingBorderColor != oldValue {
@@ -137,6 +222,9 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// Sets the border color for text field when it's in `editing` state for `underlined` style.
+    ///
+    /// By default this property will apply proper theme color to both types of border.
     public var textFieldBottomBorderColor: UIColor = UIColor.Colors.PBGreen {
         didSet {
             if self.textFieldBottomBorderColor != oldValue {
@@ -146,6 +234,9 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// Sets the color for text field's `invalid` state.
+    ///
+    ///  By default this property will apply system red color to border, placeholder and footer label text color.
     public var errorStateColor: UIColor = UIColor.systemRed {
         didSet {
             if self.errorStateColor != oldValue {
@@ -155,6 +246,9 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// Sets color for placeholder text.
+    ///
+    /// By default this property will apply black color with alpha value of `0.6`.
     public var placeholderTextColor: UIColor = UIColor.black.withAlphaComponent(0.6) {
         didSet {
             if self.placeholderTextColor != oldValue {
@@ -164,6 +258,9 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// Sets color for input text.
+    ///
+    /// By defualt this property will apply native darkText color.
     public var textFieldTextColor: UIColor = UIColor.darkText {
         didSet {
             if self.textFieldTextColor != oldValue {
@@ -173,6 +270,19 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// Sets masking format for input text.
+    ///
+    /// If not specified custom maskFormat will be applied to accept all types of symbols to enter.
+    ///
+    /// Change this property based on your desires. Following input mask formats are widely used in our application:
+    /// - [0000] [0000] [0000] [0000] - for card pan number input. It will limit your input to maximum 16 numbers which are
+    /// grouped by 4 number resembling real card number appearance in text field.
+    /// ---
+    /// - +994 [00] [000] [000] - for number input. It will limit your input to maximum 8 characters. When you start typing predefined
+    /// +994 will automatically be inserted into field. This country code is optional. For different country code, just change it with theirs.
+    ///
+    /// If you want to learn more about maskFormats, please check their GitHub [repository](https://github.com/RedMadRobot/input-mask-ios).
+    ///
     public var maskFormat: String = "[N…]" {
         didSet {
             if self.maskFormat.isEmpty {
@@ -183,16 +293,30 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// Disables entering text into field.
+    ///
+    /// This property just changes `isUserInteractionEnabled` property of base text field to `false`
+    ///
+    /// When you need your PBUITextField to be open to gestures, but closed to manual input, just change the
+    /// value of this property to `true`.
     public var disableManualInput: Bool = false {
         didSet {
             self.customTextField.isUserInteractionEnabled = false
         }
     }
 
+    /// Returns the current text from textField
+    ///
     public func getText() -> String {
         return self.customTextField.text?.replacingOccurrences(of: " ", with: "") ?? ""
     }
 
+    /// Sets the given text into textfield.
+    ///
+    /// - Parameters:
+    ///     - text: The string literal you want to put into field
+    ///     - animated: Boolean value defining whether text will be set with animation or not.
+    ///     By default this value will be `false`.
     public func set(text: String, animated: Bool = false) {
         guard !text.isEmpty else { return }
 
@@ -201,6 +325,13 @@ public class PBUITextField: UIView {
         self.onTextSetted?(text)
     }
 
+    /// The keyboard type for text field.
+    ///
+    /// Text objects can be targeted for specific types of input, such as plain text, email, numeric entry, and so on.
+    /// 
+    /// The keyboard style identifies what keys are available on the keyboard and which ones appear by default.
+    /// The default value for this property is UIKeyboardType.default.
+    ///
     public func setKeyboardType(_ type: UIKeyboardType) {
         self.customTextField.setKeyboardType(type)
     }
@@ -307,6 +438,11 @@ public class PBUITextField: UIView {
         super.init(coder: aDecoder)
     }
 
+    /// Creates a new text field of specified style.
+    ///
+    /// - Parameters:
+    ///    - style: The style for field.
+    ///
     public convenience init(style: TextFieldStyle) {
         self.init(frame: .zero)
 
@@ -663,22 +799,49 @@ public class PBUITextField: UIView {
         }
     }
 
+    /// Changes input accessory view with given view
+    ///
+    /// - Parameters:
+    ///     - view: New `inputAccessoryView` which will be displayed on top of `inputView`.
+    ///
     public func setInputAccessoryView(view: UIView) {
         self.customTextField.inputAccessoryView = view
     }
 
+    /// Changes input view with given view
+    ///
+    /// - Parameters:
+    ///     - view: New `inputView` which will be displayed on top of `inputView`.
+    ///  This option allows you customize the input view which will be displayed when the text field becomes the first responder.
+    ///
     public func setInputView(view: UIView) {
         self.customTextField.inputView = view
     }
 
+
+    /// Sets the contentType for text field
+    ///
+    /// - Parameters:
+    ///     - type: The semantic meaning for a text input area.
+    ///
+    /// This method allows you choose `textContentType` for text field.
+    ///
+    /// Use this property to give the keyboard and the system information about
+    /// the expected semantic meaning for the content that users enter
     public func setTextContentType(_ type: UITextContentType) {
         self.customTextField.textContentType = type
     }
 
+    /// Sets the autocapitalization style for the text object.
+    ///
     public func setCapitalizationRule(_ rule: UITextAutocapitalizationType)  {
         self.customTextField.autocapitalizationType = rule
     }
 
+    /// Returns whether user completed mandatory characters with input mask
+    ///
+    /// If you have defined masking format for text field, `inputMaskDelegate` of it will notify whether
+    /// all mandatory characters are filled or not.
     public func isMaskComplete() -> Bool {
         return self.isComplete
     }
@@ -688,10 +851,14 @@ public class PBUITextField: UIView {
         self.isRevealed = !self.isRevealed
     }
 
+    /// Makes text field become first responder.
+    ///
     public func makeFirstResponder() {
         self.customTextField.becomeFirstResponder()
     }
 
+    /// Resigns text field from being first responder.
+    ///
     public func undoFirstResponder() {
         self.customTextField.resignFirstResponder()
     }
@@ -700,11 +867,25 @@ public class PBUITextField: UIView {
         self.customTextField.resignFirstResponder()
     }
 
+    /// Get called when entered text updates.
+    ///
     public var onTextUpdate: ((String) -> Void)?
+
+    /// Gets called when text is setted to field.
+    ///
     public var onTextSetted: ((String) -> Void)?
+
+    /// Gets called when user taps on right icon.
     public var onActionIcon: (() -> Void)?
+
+    /// Gets called when textfield becomes first responder.
+    ///
     public var onType: ((String) -> Void)?
+
+    /// Gets called when textfield gets resigned from being first responder.
     public var onDidEnd: (() -> Void)?
+
+    /// Gets called when editing did begin.
     public var onDidBegin: (() -> Void)?
 }
 
