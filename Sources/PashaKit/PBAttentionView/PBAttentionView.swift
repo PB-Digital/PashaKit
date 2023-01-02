@@ -29,13 +29,39 @@
 
 import UIKit
 
+/// `PBAttentionView` is a type of `UIView` for showing information, alerts to customers.
+///
+/// There is 2 levels of `AttentionLevel` for `PBAttentionView`:
+///  - `low`
+///  - `high`
+/// Low level attention views are in grayish theme, while high level alerts are in red one.
+///
 open class PBAttentionView: UIView {
 
+    /// Attention level of information
+    ///
+    /// Used for setting up attention view. Depending on its case,
+    /// attention view' s theme can change into gray and red ones.
+    ///
     public enum AttentionLevel {
+        /// Least level of attention
+        ///
+        /// Use this case for attentions which are recommended to consider when doing action,
+        /// but isn't must.
+        ///
         case low
+
+        /// Highest level of attention
+        ///
+        /// Use this case for attentions which is very important to consider when doing action.
+        ///
         case high
     }
 
+    /// Sets attention level for view.
+    ///
+    /// By default `PBAttentionView` will be created with `low` level.
+    ///
     public var attentionLevel: AttentionLevel = .low {
         didSet {
             if self.attentionLevel != oldValue {
@@ -102,6 +128,12 @@ open class PBAttentionView: UIView {
         ])
     }
 
+    /// Sets informational text and its level for atttenion view.
+    ///
+    /// - Parameters:
+    ///  - text: informational text
+    ///  - attentionLevel: attention level, default value is low
+    ///
     public func set(text: String, attentionLevel: AttentionLevel = .low) {
         self.infoBody.text = text
         self.attentionLevel = attentionLevel

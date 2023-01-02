@@ -29,10 +29,25 @@
 
 import UIKit
 
+///
+/// `PBPaddingLabel` is a type of UILabel witth customizable insets from its frame
+///
 open class PBPaddingLabel: UILabel {
+
+    /// Insets from top for text
+    ///
     var topInset: CGFloat
+
+    /// Insets from left for text
+    ///
     var leftInset: CGFloat
+
+    /// Insets from bottom for text
+    ///
     var bottomInset: CGFloat
+
+    /// Insets from right for text
+    ///
     var rightInset: CGFloat
 
     required public init(topInset top: CGFloat, leftInset left: CGFloat, bottomInset bottom: CGFloat, rightInset right: CGFloat) {

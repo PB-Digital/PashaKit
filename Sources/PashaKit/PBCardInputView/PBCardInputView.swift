@@ -41,6 +41,11 @@ public protocol PBCardInfoRepresentable {
     var cvvNumber: String { get }
 }
 
+/// `PBCardInputView` is subclass of `UIView` used for entering card information.
+///
+/// As a component it's designed to resemble real bank card with textfields for entering card details.
+/// Depending on the user type card's color changes to black, green.
+///
 open class PBCardInputView: UIView {
 
     // MARK: -CONSTANTS
@@ -48,6 +53,10 @@ open class PBCardInputView: UIView {
 
     public var onCardScanClicked: (() -> Void)?
 
+    /// Theme for `PBCardInputView`
+    ///
+    /// If not specified card will created with `regular` theme.
+    ///
     public var theme: PBCardInputViewTheme = .regular {
         didSet {
             self.setTheme()
@@ -229,6 +238,8 @@ open class PBCardInputView: UIView {
         self.setupViews()
     }
 
+    /// Creates `PBCardInputView` with proper title texts for entering input
+    ///
     public convenience init(localizableCardNumberTitle: String, localizableCardExpirationDateTitle: String, localizableCardCVVTitle: String) {
         self.init(frame: .zero)
         self.cardNumberTitle.text = localizableCardNumberTitle
@@ -305,6 +316,14 @@ open class PBCardInputView: UIView {
         ])
     }
 
+    /// Defines validation state of input fields based on `validation` parameter
+    ///
+    /// - Parameters:
+    ///  - `validation`: Contains valid states of all input fields. All of them are separately evaluated.
+    ///  For example, pan field may be invalid, while others still being valid
+    ///
+    ///  Depending on such kind of states, input fields' text colors will change to `systemRed` or `PBGraySecondary`
+    ///
     public func set(validation: PBCardInputValidatable) {
         if validation.isPanValid {
             self.cardNumberTitle.textColor = UIColor.Colors.PBGraySecondary
@@ -331,14 +350,22 @@ open class PBCardInputView: UIView {
         }
     }
 
+    /// Puts `number` into card number input field
+    ///
     public func setCard(number: String) {
         self.cardNumberField.text = number
     }
 
+    /// Sets issuer logo for view
+    ///
+    /// By default issuer image is set to`nil`
+    ///
     public func setCard(issuerLogo: UIImage?) {
         self.issuerLogo.image = issuerLogo
     }
 
+    /// Gets card info from input fields.
+    ///
     public func getCard() -> PBCardInfoRepresentable {
         let cardNumber = self.cardNumberField.text?.replacingOccurrences(of: " ", with: "") ?? ""
         let expirationDate = self.cardExpirationDateField.text?.replacingOccurrences(of: " ", with: "") ?? ""
@@ -358,6 +385,11 @@ open class PBCardInputView: UIView {
         }
     }
 
+    /// Hides CVV field
+    ///
+    /// Under the hood it changes `isHidden` properties of cvv title and field to `true` while also hiding
+    /// `issuerLogo` and `bankLogo`.
+    ///
     public func hideCVV() {
         self.cardCVVTitle.isHidden = true
         self.cardCVVField.isHidden = true
@@ -365,6 +397,11 @@ open class PBCardInputView: UIView {
         self.bankLogo.isHidden = false
     }
 
+    /// Shows CVV field
+    ///
+    /// Under the hood it changes `isHidden` properties of cvv title and field to `false` while also showing
+    /// `issuerLogo` and `bankLogo`.
+    ///
     public func showCVV() {
         self.cardCVVTitle.isHidden = false
         self.cardCVVField.isHidden = false

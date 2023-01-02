@@ -29,8 +29,34 @@
 
 import UIKit
 
+/// `PBAccountSelectField` is a subclass of `UIView` made for displaying card and general account of user.
+///
+/// Its appearance and view structure is very similar to `PBUITextField`, but differs from it when data sets into.
+///
+/// `PBTemplateView` consists of two main parts and their subviews:
+/// - `customBorder`- wrapper view for template icon
+/// - `leftIconView`- icon on the left side of view
+/// - `placeholderLabel`- placeholder view for representing placeholder of uitextfield
+/// - `textLabel`- label for holding the string that will be setted
+/// - `dropdownIcon`- indicator icon for reminding user this view will open list if you tap it.
+/// - `footerLabel`- label for displaying under `customBorder`. It can be either be visible
+/// and hidden at its initial state and invalid state
+///
+/// When adding a template view to your interface, perform the following actions: 140
+///
+/// * Set the height anchor
+/// * Supply left icon to display on the left side of view
+/// * Set text to `text` property for displaying given string
+///
+/// - Note: PBUIButton is optimized for looking as expected with default adjustments at the `height` and `width` of `80.0pt`.
+///         However feel free to customize it the way you want.
+///
 open class PBAccountSelectField: UIView {
 
+    /// Image on the left side of the view.
+    ///
+    /// If not specified `PBAccountSelectField` will setup it its left view without image.
+    ///
     public var leftIcon: UIImage? {
         didSet {
             self.leftIconView.image = self.leftIcon
@@ -38,6 +64,14 @@ open class PBAccountSelectField: UIView {
         }
     }
 
+    /// Set texts to the field.
+    ///
+    /// By default `PBAccountSelectField` will be created without specifying its title text.
+    /// Instead, it will display placeholder text.
+    ///
+    /// If you change this text to arbitrary string view will call its `updateVisibility()` function
+    /// to set subviews based on their defined states.
+    ///
     public var text: String? {
         didSet {
             self.textLabel.text = self.text
@@ -45,6 +79,13 @@ open class PBAccountSelectField: UIView {
         }
     }
 
+    /// Sets texts to footerLabel of text field.
+    ///
+    /// Since `footerLabelText` is`nil` by default, `footerLabel` won't be visible under `customBorder`.
+    ///
+    /// If you change this text to arbitrary string `footerLabel` will be visible under `customBorder` with the text
+    /// color based on its `isValid` state
+    ///
     public var footerLabelText: String? = nil {
         didSet {
             self.footerLabel.text = self.footerLabelText
@@ -52,12 +93,22 @@ open class PBAccountSelectField: UIView {
         }
     }
 
+    /// A boolean value for indicating input validity.
+    ///
+    /// By default view will be created with `valid` input state. However changes to `isValid` property will call
+    /// `updateUI()` method for styling view based on `isValid` value.
+    ///
     public var isValid: PBTextFieldValidity = .valid {
         didSet {
             self.updateUI()
         }
     }
 
+    /// Placeholder of select field.
+    ///
+    /// If not specified, placeholder will be just empty string. It's recommended to set
+    /// placeholdertext for visual clarity of select field.
+    ///
     public var placeholderText: String = "" {
         didSet {
             self.placeholderLabel.text = self.placeholderText

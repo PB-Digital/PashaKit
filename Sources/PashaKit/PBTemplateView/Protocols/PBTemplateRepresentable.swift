@@ -29,6 +29,17 @@
 
 import UIKit
 
+///
+/// The requirements for dispalying template representable data.
+///
+/// This protocol was used by `PBTemplateView` for setting its data to proper sublabels.
+///
+/// When you are working with `PBTemplateView`  you will need creating an extension to your existing
+/// entity for holding row view information.
+///
+/// If your project doesn't include such kind of entity, create one and
+/// conform it to `PBTemplateRepresentable`.
+///
 public protocol PBTemplateRepresentable {
     var templateName: String { get }
     var descriptionText: String { get }

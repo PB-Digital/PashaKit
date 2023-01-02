@@ -29,6 +29,10 @@
 
 import UIKit
 
+///
+/// `PBPaymentHistoryRowView` is subview of `PBTransactionRowView` with
+/// changes to merchant and amount label's font.
+///
 public class PBPaymentHistoryRowView: PBTransactionRowView {
 
     override init(frame: CGRect) {
@@ -46,6 +50,12 @@ public class PBPaymentHistoryRowView: PBTransactionRowView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Sets data for a row view.
+    ///
+    /// - Parameters:
+    ///    - transaction: Protocol for representing `transactionRowView`.
+    ///    - categoryName: Name of transaction category.
+    ///
     public override func setData(transaction: TransactionRepresentable, categoryName: String?) {
         super.setData(transaction: transaction, categoryName: categoryName)
         self.merchantLabel.text = transaction.descriptionText

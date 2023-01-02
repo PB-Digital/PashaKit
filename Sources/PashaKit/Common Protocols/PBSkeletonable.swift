@@ -29,6 +29,14 @@
 
 import Foundation
 
+/// Protocol for adding skeleton view calls for views
+///
+/// By default all types of views of PashaKit supports skeleton view with enabling `isSkeletonable` property.
+/// The purpose of this function making animation calls easier. For example, the view containing 5 skeletonable subview needs
+/// 5 separate calls to start animation.
+///
+/// However this method does it for you by implementing such calls inside of it.
+/// 
 public protocol PBSkeletonable {
     func showSkeletonAnimation()
     func hideSkeletonAnimation()

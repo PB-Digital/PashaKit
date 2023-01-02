@@ -29,8 +29,21 @@
 
 import UIKit
 
+/// `PBContactRowView` is type of `UIView` used for representing contact information
+/// while having an option to show card information.
+///
+/// Contact view has three main parts:
+/// - `letterLabel` - `UILabel` instance which represents contact's first letters of name and last name with circular background
+/// - `contactInfoStackView` - `UIStackView` instance which holds textual informations with contact's name and their numbers.
+/// - `cardInfoStackView` - `UIStackView` instance which holds issuer logo and masked card number information of contact's available card
+///
 open class PBContactRowView: UIView {
 
+    /// A boolean value for showing card info
+    ///
+    /// If `showsCardInfo` is set to `true`, contact view will have info view. If card details are not
+    /// entered, this view will empty view while keeping space at the right side of view.
+    ///
     public var showsCardInfo: Bool = false {
         didSet {
             if self.showsCardInfo {
@@ -41,6 +54,11 @@ open class PBContactRowView: UIView {
         }
     }
 
+    /// Changes issuer logo based on its value's prefix.
+    ///
+    /// If first character of card is equal to 4, `issuerLogo` image will be MasterCard logo,
+    /// elsewhere it will be setted with `Visa` logo
+    ///
     public var cardID: String = "" {
         didSet {
             if self.cardID.prefix(1) == "4" {
@@ -53,6 +71,10 @@ open class PBContactRowView: UIView {
         }
     }
 
+    /// Background color for `letterLabel`
+    ///
+    /// By default `letterLabel` doesn't have any background color.
+    ///
     public var shortLabelBackgroundColor: UIColor? {
         didSet {
             self.letterLabel.backgroundColor =  self.shortLabelBackgroundColor
@@ -183,6 +205,12 @@ open class PBContactRowView: UIView {
         self.setupViews()
     }
 
+    /// Sets the contact and card information into row view components.
+    ///
+    /// - Parameters:
+    ///  - contact: accepts any entity conforming to `PBContactRepresentable` protocol. It holds contact's name, lastName, phoneNumber
+    ///  - cardID: wrapped pan number of card
+    ///
     public func setData(contact: PBContactRepresentable, cardID: String = "") {
         self.contactName.text = contact.name + " " + contact.lastName
         self.contactNumber.text = contact.phoneNumber

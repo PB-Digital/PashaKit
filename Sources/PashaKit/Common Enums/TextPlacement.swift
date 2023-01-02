@@ -29,7 +29,14 @@
 
 import Foundation
 
+/// Placement for text labels with two lines
+///
 public enum PreferredTextPlacement {
+    /// Makes title on top of subtitle label
+    ///
     case titleFirst
+
+    /// Makes subtitle on top of title text
+    ///
     case subtitleFirst
 }

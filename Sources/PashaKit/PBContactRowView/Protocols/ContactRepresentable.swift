@@ -29,6 +29,10 @@
 
 import Foundation
 
+/// `PBContactRepresentable` is type of protocol for providing contact  information by its conformers.
+///
+/// Includes `name`, `lastName` and `phoneNumber` of customer.
+///
 public protocol PBContactRepresentable {
     var name: String { get set }
     var lastName: String { get set }

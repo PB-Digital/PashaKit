@@ -29,6 +29,14 @@
 
 import UIKit
 
+///
+/// An entity used to store row view data
+///
+/// `RowViewData` has 3 properties for holding data
+/// - `titleText`- holds title text literal
+/// - `sutitleText`- holds subtitle text literal
+/// - `isRightIconVisible` - sets whether right icon should be visible or not
+///
 public struct RowViewData {
     var titleText: String
     var subtitleText: String?

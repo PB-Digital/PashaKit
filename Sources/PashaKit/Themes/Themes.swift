@@ -29,6 +29,22 @@
 
 import UIKit
 
+//
+// This file is dedicated to themes and more Pasha-Bank oriented.
+//
+// In our mobile application types of users are divided into two categories:
+// - private
+// - retail
+//
+// Each type of users have different accessibilities to PashaBank's services. On the UI side they
+// have differnt types of themes. Premimum customers' main color is PBFauxChestnut, which
+// is similar to brown, bronze color tones.
+//
+// However retail customers' main color is  PBGreen which is unique tone of green color.
+//
+// Following enums are dedicated to adapt components to application's theme
+// 
+
 public enum PBCardInputViewTheme {
     case regular, dark
 

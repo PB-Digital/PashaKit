@@ -29,6 +29,20 @@
 
 import UIKit
 
+/// `PBSelectableCardView` is a subclass of `PBBaseSelectableVie` made for
+/// representing cards.
+///
+/// **View Structure**
+/// `PBSelectableCardView` consists of different idnependent subviews. These are:
+///  - `issuerLogo`- holds icon of card issuer. In most cases, this will be "Visa" or "MasterCard".
+///  - `cardDetails` - includes masked card number, issuer logo and card type.
+///  - `balanceLabel`- holds balance of card.
+///  - `checkboxDefault`- holds default checkbox icon.
+///  - `checkboxSelected`- holds selected checkbox icon.
+///
+/// While laying out subviews, checkbox default and checkbox selected been put in the same places. But depending
+/// on `isSelected` state, these image's alpha changes respectively and creates "selection" effect.
+/// 
 public class PBSelectableCardView: PBBaseSelectableView {
 
     private lazy var issuerLogo: UIImageView = {
@@ -156,6 +170,12 @@ public class PBSelectableCardView: PBBaseSelectableView {
         ])
     }
 
+    /// Sets card data for a selectable card view.
+    ///
+    /// - Parameters:
+    ///    - data: gets card info as a struct which conforms to `PBCardRepresentable` protocol.
+    ///    - isSelected: sets view selection state
+    ///    - isValid: sets view validity
     public func setData(data: PBCardRepresentable, isSelected: Bool, isValid: Bool) {
         self.issuerLogo.image = data.issuerLogoColored
         self.balanceLabel.text = data.balance

@@ -29,6 +29,8 @@
 
 import Foundation
 
+/// Sets the validity for for text fields.
+///
 public enum PBTextFieldValidity {
     case valid
     case invalid(String)

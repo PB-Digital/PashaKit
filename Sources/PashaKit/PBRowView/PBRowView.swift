@@ -29,13 +29,49 @@
 
 import UIKit
 
+///
+/// `PBRowView` is `UIView` subclass made for displaying row representable data.
+///
+/// **View Structure**
+///
+/// `PBRowView` packs up its contents in its `primaryStackView`. Primary stack view consists of
+/// - `leftIconWrapperView`. This view is superview of `leftIconView` which holds left icon of
+/// row view
+/// - `secondaryStackView`. This stack view holds title and subtitle labels.
+/// - `rightIconWrapperView`. This view is superview of `rightIconView` which holds right icon of
+/// row view. Using this view as indicator for navigation is recommended.
+/// - `divider`. This view is outside of `primaryStackView` and snapped to the bottom of view.
+///
+/// It comes with hightly customizable settings such as
+/// - options to have right and left icon
+/// - adding subtitle
+/// - changing title and subtitle color
+/// - setting text layout preference
+/// - defining left icon style
+/// - changing left icon size and content insets
+/// - showing and hiding divider
+/// 
 open class PBRowView: UIView, PBSkeletonable {
 
+    /// Checker for whether the row view is new.
+    ///
+    /// This enum was made our mobile design system in mind. Since in our mobile app
+    /// there are some feature which are introduced newly and displayed as row view
+    /// we have added an option for setting it.
+    ///
     public enum IsNew {
+        /// 
         case `true`(localizableTitle: String)
         case `false`
     }
 
+    /// Sets the icon to the right side of view.
+    ///
+    /// By default the `image` of left view is set to be chevron icon. While creating row view if this property wasnt changed,
+    /// rowview may display chevron icon dependending on value of `isChevronIconVisible`.
+    ///
+    /// Add image to this property if you need different kind of icon for indicating navigation to other pages.
+    ///
     public var rightIcon: UIImage? {
         didSet {
             if self.rightIcon != oldValue {
@@ -45,6 +81,11 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// Sets the icon to the left side of view.
+    ///
+    /// By default the image of left view is set to `nil`. While creating row view if this property wasnt specified, it won't be added
+    /// to content stack view. Add image to this property if needed.
+    ///
     public var leftIcon: UIImage? {
         didSet {
             if self.leftIcon != oldValue {
@@ -54,54 +95,96 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// Sets the given string to `titleLabel` of row view.
+    ///
+    /// By default this property is set to `nil`. Depending on how you want to fill your row view it can be set directly
+    /// via this property. Alternatively you can do it by adding when initializing it or using `setData` `setDataFor`
+    /// methods.
+    ///
     public var titleText: String? {
         didSet {
             self.titleLabel.text = self.titleText
         }
     }
 
+    /// Sets the font for `titleLabel`.
+    ///
+    /// By default its font size is `17.0`.
+    ///
     public var titleFont: UIFont? {
         didSet {
             self.titleLabel.font = self.titleFont
         }
     }
 
+    /// Sets the color for text of `titleLabel`.
+    ///
+    /// By default text color of `titleLabel` is `darkText`
+    ///
     public var titleTextColor: UIColor = .darkText{
         didSet {
             self.titleLabel.textColor = self.titleTextColor
         }
     }
 
+    /// Sets the given string to `subtitleLabel` of row view.
+    ///
+    /// By default this property is set to `nil`. Depending on how you want to fill your row view it can be set directly
+    /// via this property. Alternatively you can do it by adding when initializing it or using `setData` `setDataFor`
+    /// methods.
+    ///
     public var subtitleText: String? {
         didSet {
             self.subtitleLabel.text = self.subtitleText
         }
     }
 
+    /// Sets the font for `subtitleLabel`.
+    ///
+    /// By default its font size is `15.0`.
+    ///
     public var subtitleFont: UIFont? {
         didSet {
             self.subtitleLabel.font = self.subtitleFont
         }
     }
 
+    /// The background color for `leftIconWrapperView`.
+    ///
+    /// By default the background color of `leftIconWrapperView` is `PBGrayTransparent`.
+    ///
     public var leftIconBackgroundColor: UIColor? {
         didSet {
             self.leftIconWrapperView.backgroundColor = self.leftIconBackgroundColor
         }
     }
 
+    /// The style for `leftIconWrapperView`.
+    ///
+    /// By default its value is `circle`.
+    ///
     public var leftIconStyle: Style = .circle {
         didSet {
             self.setupViews()
         }
     }
 
+    /// The indicator for rowView whether it's new.
+    ///
+    /// If not specified the value of this property is set to `false`. If its value changed to `true`
+    /// `isNewView` will be added to the right side of `titleLabel`.
+    ///
     public var isNewFeature: IsNew = .false {
         didSet {
             self.setupNewView(state: self.isNewFeature)
         }
     }
 
+    /// The parameter for setting edge insets for `leftIconView`.
+    ///
+    /// By default edgeInsets will be `0` from all sides. Changing this property
+    /// will affect `leftIconView` by proper insets for each side.
+    ///
     public var leftIconContentInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) {
         didSet {
             if self.leftIconContentInsets != oldValue {
@@ -110,6 +193,10 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
+    ///  The size for `leftIconWrapperView`.
+    ///
+    ///  By default the size for `leftIconWrapperView` is `40.0` both for width and height.
+    ///
     public var leftViewSize: CGSize = CGSizeMake(40, 40) {
         didSet {
             if self.leftViewSize != oldValue {
@@ -118,6 +205,14 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
+    ///  The arranger for title and subtile labels.
+    ///
+    ///  When row view is created, `subtitleLabel` sits under `titleLabel`.
+    ///  However there are some cases we needed to change their places.
+    ///
+    ///  Obviously, changing this property's value to `subtitleFirst`  will make `titleLabel`
+    ///  to sit under `subtitleLabel`.
+    ///
     public var textLayoutPreference: PreferredTextPlacement = .titleFirst {
         didSet {
             self.secondaryStackView.removeArrangedSubview(self.titleLabel)
@@ -134,6 +229,10 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
+    ///  The indicator for title text weight.
+    ///
+    ///  By default text weight of `titleLabel` is `semibold`.
+    ///
     public var titleTextWeight: UIFont.Weight = .semibold {
         didSet {
             switch self.titleTextWeight {
@@ -149,6 +248,14 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// A boolean value for deciding wheter chevron icon should be visible.
+    ///
+    /// By default the value of this property is `true`. Since in our mobile app we have
+    /// a lot row views with visible chevron icon, we kept this property value at `true`
+    /// for ease of access.
+    ///
+    /// Changing its value to `false` removes it from row view.
+    ///
     public var isChevronIconVisible: Bool = true {
         didSet {
             if self.isChevronIconVisible {
@@ -163,6 +270,12 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// The visual state of divider.
+    ///
+    /// By default row view will be created with divider is hidden.
+    ///
+    /// If you need a divider change it to `true`. It will show a divider with the thickness of `0.5 pt`.
+    ///
     public var showsDivider: Bool = false {
         didSet {
             self.divider.isHidden = !showsDivider
@@ -320,6 +433,13 @@ open class PBRowView: UIView, PBSkeletonable {
         self.setupViews()
     }
 
+    /// Creates a row view.
+    ///
+    /// - Parameters:
+    ///    - titleText: Sets the title text for row view.
+    ///    - subtitleText: Sets subtitle text for row view.
+    ///    - isChevronIconVisible: Decides whether chevron icon should be visible or not.
+    ///
     public convenience init(titleText: String, subtitleText: String? = nil, isChevronIconVisible: Bool = false) {
         self.init(frame: .zero)
 
@@ -330,6 +450,12 @@ open class PBRowView: UIView, PBSkeletonable {
         self.setupViews()
     }
 
+    /// Sets data for a row view.
+    ///
+    /// - Parameters:
+    ///    - rowView: Protocol for representing `rowView`.
+    ///    - isNew: Decides whether isNewView should be added.
+    ///
     public func setDataFor(rowView: PBRowViewRepresentable, isNew: IsNew = .false) {
         self.titleText = rowView.data.titleText
         self.subtitleText = rowView.data.subtitleText
@@ -339,6 +465,13 @@ open class PBRowView: UIView, PBSkeletonable {
         self.setupViews()
     }
 
+    /// Sets data for a row view.
+    ///
+    /// - Parameters:
+    ///    - titleText: Sets the title text for row view.
+    ///    - subtitleText: Sets subtitle text for row view.
+    ///    - isChevronIconVisible: Decides whether chevron icon should be visible or not.
+    ///
     public func setData(titleText: String? = nil, subtitleText: String? = nil, isChevronIconVisible: Bool = false) {
         self.titleText = titleText
         self.subtitleText = subtitleText
@@ -347,6 +480,12 @@ open class PBRowView: UIView, PBSkeletonable {
         self.setupViews()
     }
 
+    /// Starts showing animated skeleton view
+    ///
+    /// If you call this method it will replace your row view components with their skeletoned versions
+    /// with defined adjustments. It won't be removed until you call `hideSkeletonAnimation()`
+    /// method.
+    ///
     public func showSkeletonAnimation() {
         DispatchQueue.main.async {
             self.leftIconWrapperView.showAnimatedGradientSkeleton()
@@ -356,6 +495,11 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// Stops showing animated skeleton view
+    ///
+    /// If you call this method it will remove currently applied skeleton view from row view and
+    /// start showing setted row view data.
+    /// 
     public func hideSkeletonAnimation() {
         self.leftIconWrapperView.hideSkeleton()
         self.titleLabel.hideSkeleton()

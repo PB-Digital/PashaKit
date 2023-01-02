@@ -29,6 +29,20 @@
 
 import UIKit
 
+/// Subclass of UIButton with predefined and customizable style
+///
+///
+/// When adding a button to your interface, perform the following actions:
+///
+/// * Set the style of the button at creation time.
+/// * Supply a title string or image; size the button appropriately for your content.
+/// * Connect one or more action methods to the button.
+/// * Provide accessibility information and localized strings.
+///
+/// - Note: PBUIButton is optimized for looking as expected with minimum effort at the `height` of 56.0 pt.
+///
+/// However feel free to customize it.
+///
 public class PBUIButton: UIButton {
 
     public enum PBUIButtonType {
@@ -37,39 +51,90 @@ public class PBUIButton: UIButton {
         case close
     }
 
+    /// Specifies the style of button
     public enum PBUIButtonStyle {
+
+        /// A  button with clear background color and PBGreen title color
+        ///
+        /// By default title color of button will be in PBGreen color. However if theme option is used,
+        /// its title color may be PBFauxChestnut depending on returned user type.
+        ///
         case plain
+
+        /// A button with 0.1 opacity PBGreen background color and PBGreen title color
+        ///
+        /// By default background color of button will be in PBGreen color with 0.1 opacity. However if theme option is used,
+        /// its background color may be PBFauxChestnut depending on returned user type.
+        ///
         case tinted
+
+        /// A  button with PBGreen background color and white title color
+        ///
+        /// By default background color of button will be in PBGreen color. However if theme option is used,
+        /// its background color may be PBFauxChestnut depending on returned user type.
+        ///
         case filled
+
+        /// A  button with PBGreen border and title color with clear background color
+        ///
+        /// By default border color of button will be in PBGreen color. However if theme option is used,
+        /// its border color may be PBFauxChestnut depending on returned user type.
+        ///
         case outlined
     }
 
     private var seconds: Int = 0
 
+    /// Sets the title to use for normal state.
+    ///
+    /// Since we're using only normal state for UIButton, at the moment PBUIButton also uses only normal state when setting
+    /// button title.
+    /// For different states use native
+    /// ```
+    /// func setTitle(_ title: String?, for state: UIControl.State)
+    /// ```
+    ///
     public var buttonTitle: String = "" {
         didSet {
             self.setTitle(self.buttonTitle, for: .normal)
         }
     }
 
+    /// Sets the image for displaying on the left side of button.
+    ///
+    /// By default button will be created with only its title. If you are willing to add
+    /// leftImage in future, just set the desired image to this property.
+    ///
     public var leftImage: UIImage? {
         didSet {
             self.setImage(self.leftImage, for: .normal)
         }
     }
 
+    /// The radius to use when drawing rounded corners for the layer’s background.
+    ///
+    /// By default it will set 16.0 to corner radius property of button.
+    ///
     public var cornerRadius: CGFloat = 16.0 {
         didSet {
             self.layer.cornerRadius = self.cornerRadius
         }
     }
 
+    /// Button's background color.
+    ///
+    /// By default button will be created with the background color for selected button style.
+    ///
     public var baseBackgroundColor: UIColor = UIColor.Colors.PBGreen {
         didSet {
             self.backgroundColor = self.baseBackgroundColor
         }
     }
 
+    /// The tint color to apply to the button title and image.
+    ///
+    /// By default button will be created with the tint color for selected button style.
+    ///
     public var buttonTintColor: UIColor = UIColor.white {
         didSet {
             self.tintColor = self.buttonTintColor
@@ -77,6 +142,10 @@ public class PBUIButton: UIButton {
         }
     }
 
+    /// The color of button's border.
+    ///
+    /// By default button will be created with the border color for selected button style.
+    ///
     public var borderColor: UIColor = UIColor.Colors.PBGreen {
         didSet {
             switch self.styleOfButton {
@@ -92,6 +161,14 @@ public class PBUIButton: UIButton {
         }
     }
 
+    /// The theme for the button's appearance.
+    ///
+    /// PBUIButton is using theme parameter for defining its color palette for components. These include button's
+    /// * Background color
+    /// * Border color
+    /// * Title color
+    /// * Tint color
+    ///
     public var theme: PBUIButtonTheme = .regular {
         didSet {
             self.prepareButtonByStyle()
@@ -104,6 +181,10 @@ public class PBUIButton: UIButton {
         }
     }
 
+    /// Specifies style of the button.
+    ///
+    /// If not specified by outside, PBUIButton will be created with filled style.
+    ///
     public var styleOfButton: PBUIButtonStyle = .filled {
         didSet {
             self.prepareButtonByStyle()
@@ -119,6 +200,12 @@ public class PBUIButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Creates a new button of specified style.
+    ///
+    /// - Parameters:
+    ///    - localizableTitle: Sets the title text for button.
+    ///    - styleOfButton: Sets the style of button.
+    ///
     public convenience init(localizableTitle: String, styleOfButton: PBUIButtonStyle = .filled) {
         self.init(type: .system)
         self.setupDefaults()

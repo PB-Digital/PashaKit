@@ -29,8 +29,21 @@
 
 import UIKit
 
+///
+/// `PBCardRowView` is a type of `UIView` used for representing customers'
+/// cards.
+///
+/// `PBCardRowView` has 3 main components:
+///   - gradient alternative of customer's bank card
+///   - balance of card
+///   - name of debit card
+///
 open class PBCardRowView: UIView, PBSkeletonable {
 
+    /// Image of `rightIconView`.
+    ///
+    /// If not specified, `rightIconView`'s image will be library's default chevron icon.
+    ///
     public var rightIcon: UIImage? {
         didSet {
             self.rightIconView.image = self.rightIcon
@@ -151,12 +164,24 @@ open class PBCardRowView: UIView, PBSkeletonable {
         super.init(coder: aCoder)
     }
 
+    /// Creates card row view with optional `rightIcon`
+    ///
     public convenience init(rightIcon: UIImage?) {
         self.init(frame: .zero)
         self.setupViews()
         self.rightIconView.image = rightIcon
     }
 
+    /// Sets up card for `PBCardRowView`
+    ///
+    /// - Parameters:
+    ///   - card: accepts any entity conforming to `PBContactRepresentable` protocol. It holds all information for settin up
+    ///  row view. These include:
+    ///     - `balance` - balance of card
+    ///     - `displayName`- display name of card
+    ///     - `issuerLogoClear`- logo of issuer
+    ///     - `backgroundConfig`- gradient configuration for setting up gradient background for card
+    ///
     public func setData(card: PBCardRepresentable) {
 
         self.balanceLabel.text = card.balance
@@ -202,12 +227,23 @@ open class PBCardRowView: UIView, PBSkeletonable {
         ])
     }
 
+    /// Starts showing animated skeleton view
+    ///
+    /// If you call this method it will replace your row view components with their skeletoned versions
+    /// with defined adjustments. It won't be removed until you call `hideSkeletonAnimation()`
+    /// method.
+    ///
     public func showSkeletonAnimation() {
         self.issuerLogo.showAnimatedGradientSkeleton()
         self.balanceLabel.showAnimatedGradientSkeleton()
         self.descriptionLabel.showAnimatedGradientSkeleton()
     }
 
+    /// Stops showing animated skeleton view
+    ///
+    /// If you call this method it will remove currently applied skeleton view from row view and
+    /// start showing setted row view data.
+    /// 
     public func hideSkeletonAnimation() {
         self.issuerLogo.hideSkeleton()
         self.balanceLabel.hideSkeleton()
