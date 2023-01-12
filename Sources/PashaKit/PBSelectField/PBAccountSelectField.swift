@@ -256,9 +256,15 @@ open class PBAccountSelectField: UIView {
     }
 
     private func updateVisibility() {
-        self.leftIconView.isHidden = false
-        self.textLabel.isHidden = false
-        self.placeholderLabel.isHidden = true
+        if let text, !text.isEmpty {
+            self.leftIconView.isHidden = false
+            self.textLabel.isHidden = false
+            self.placeholderLabel.isHidden = true
+        } else {
+            self.leftIconView.isHidden = true
+            self.textLabel.isHidden = true
+            self.placeholderLabel.isHidden = false
+        }
     }
 
     private func updateUI() {
