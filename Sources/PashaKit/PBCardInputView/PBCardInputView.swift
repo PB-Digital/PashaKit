@@ -409,6 +409,12 @@ open class PBCardInputView: UIView {
         self.bankLogo.isHidden = true
     }
 
+    public func addDoneButtonOnKeyboard(title: String) {
+        self.cardNumberField.addDoneButtonOnKeyboard(title: title)
+        self.cardExpirationDateField.addDoneButtonOnKeyboard(title: title)
+        self.cardCVVField.addDoneButtonOnKeyboard(title: title)
+    }
+
     @objc func onScanButton(_ sender: UIButton) {
         self.onCardScanClicked?()
     }
