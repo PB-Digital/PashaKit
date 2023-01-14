@@ -857,6 +857,10 @@ public class PBUITextField: UIView {
         self.customTextField.becomeFirstResponder()
     }
 
+    public func addDoneButtonOnKeyboard(title: String) {
+        self.customTextField.addDoneButtonOnKeyboard(title: title)
+    }
+
     /// Resigns text field from being first responder.
     ///
     public func undoFirstResponder() {
