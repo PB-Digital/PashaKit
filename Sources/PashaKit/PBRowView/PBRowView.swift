@@ -330,7 +330,7 @@ open class PBRowView: UIView, PBSkeletonable {
         self.leftIconWrapperView.addSubview(view)
 
         view.translatesAutoresizingMaskIntoConstraints = false
-
+        view.image = nil
         view.contentMode = .scaleAspectFit
 
         return view
