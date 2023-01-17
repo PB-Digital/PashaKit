@@ -66,7 +66,7 @@ open class PBAttentionView: UIView {
 
     /// Sets attention level for view.
     ///
-    /// By default `PBAttentionView` will be created with `low` level.
+    /// By default `PBAttentionView` will be created with `medium` level.
     ///
     public var attentionLevel: AttentionLevel = .medium {
         didSet {
@@ -165,7 +165,7 @@ open class PBAttentionView: UIView {
     ///  - text: informational text
     ///  - attentionLevel: attention level, default value is low
     ///
-    public func set(text: String, attentionLevel: AttentionLevel = .low) {
+    public func set(text: String, attentionLevel: AttentionLevel = .medium) {
         self.infoBody.text = text
         self.attentionLevel = attentionLevel
         self.layoutSubviews()
