@@ -65,6 +65,19 @@ open class PBRowView: UIView, PBSkeletonable {
         case `false`
     }
 
+    /// Sets the icon to the left side of view.
+    ///
+    /// By default the image of left view is set to `nil`. While creating row view if this property wasnt specified, it won't be added
+    /// to content stack view. Add image to this property if needed.
+    ///
+    public var leftIcon: UIImage? {
+        didSet {
+            self.leftIconView.image = nil
+            self.leftIconView.image = self.leftIcon
+            self.setupViews()
+        }
+    }
+
     /// Sets the icon to the right side of view.
     ///
     /// By default the `image` of left view is set to be chevron icon. While creating row view if this property wasnt changed,
@@ -74,24 +87,9 @@ open class PBRowView: UIView, PBSkeletonable {
     ///
     public var rightIcon: UIImage? {
         didSet {
-            if self.rightIcon != oldValue {
-                self.rightIconView.image = self.rightIcon
-                self.setupViews()
-            }
-        }
-    }
-
-    /// Sets the icon to the left side of view.
-    ///
-    /// By default the image of left view is set to `nil`. While creating row view if this property wasnt specified, it won't be added
-    /// to content stack view. Add image to this property if needed.
-    ///
-    public var leftIcon: UIImage? {
-        didSet {
-            if self.leftIcon != oldValue {
-                self.leftIconView.image = self.leftIcon
-                self.setupViews()
-            }
+            self.rightIconView.image = nil
+            self.rightIconView.image = self.leftIcon
+            self.setupViews()
         }
     }
 
@@ -508,11 +506,7 @@ open class PBRowView: UIView, PBSkeletonable {
     }
 
     private func setupViews() {
-        if self.leftIconView.image == nil {
-            self.leftIconWrapperView.removeFromSuperview()
-        } else {
-            self.primaryStackView.addArrangedSubview(self.leftIconWrapperView)
-        }
+        self.primaryStackView.addArrangedSubview(self.leftIconWrapperView)
 
         switch self.leftIconStyle {
         case .roundedRect(cornerRadius: let cornerRadius):
