@@ -42,5 +42,9 @@ extension UIColor {
         static let PBRed = UIColor(red: 0.804, green: 0.094, blue: 0.09, alpha: 1)
         static let PBRed8 = UIColor(red: 0.925, green: 0.18, blue: 0.141, alpha: 0.08)
         static let PBInvalidRed = UIColor(red: 0.906, green: 0.322, blue: 0.251, alpha: 1)
+        static let PBStatusYellowFG = UIColor(red: 0.749, green: 0.522, blue: 0.008, alpha: 1)
+        static let PBStatusYellowBG = UIColor(red: 0.988, green: 0.725, blue: 0.133, alpha: 0.16)
+        static let PBStatusRedFG = UIColor(red: 0.804, green: 0.094, blue: 0.09, alpha: 1)
+        static let PBStatusRedBG = UIColor(red: 0.925, green: 0.18, blue: 0.141, alpha: 0.08)
     }
 }
