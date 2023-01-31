@@ -46,4 +46,11 @@ public protocol TransactionRepresentable {
     var amountText: String? { get }
     var amountTextColor: UIColor { get }
     var dateText: String { get }
+    var transactionStatus: TransactionRepresentableStatus { get }
+}
+
+public enum TransactionRepresentableStatus {
+    case complete
+    case inProgress(info: String)
+    case unsuccessful(info: String)
 }
