@@ -234,7 +234,7 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
 
         label.translatesAutoresizingMaskIntoConstraints = false
 
-        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 11, weight: .semibold)
         label.textAlignment = .center
         label.numberOfLines = 1
         
