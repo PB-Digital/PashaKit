@@ -165,9 +165,8 @@ open class PBAttentionView: UIView {
     ///  - text: informational text
     ///  - attentionLevel: attention level, default value is low
     ///
-    public func set(text: String, attentionLevel: AttentionLevel = .medium) {
+    public func set(text: String) {
         self.infoBody.text = text
-        self.attentionLevel = attentionLevel
         self.layoutSubviews()
     }
 

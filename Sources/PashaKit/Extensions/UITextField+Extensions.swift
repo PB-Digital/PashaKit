@@ -36,7 +36,7 @@ extension UITextField {
         doneToolbar.barStyle = .default
 
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: title, style: .done, target: self, action: #selector(self.doneButtonAction))
+        let done: UIBarButtonItem = UIBarButtonItem(title: title, style: .done, target: self, action: #selector(self.onDoneButton))
 
         let items = [flexSpace, done]
         doneToolbar.items = items
@@ -45,7 +45,7 @@ extension UITextField {
         self.inputAccessoryView = doneToolbar
     }
 
-    @objc func doneButtonAction() {
+    @objc func onDoneButton() {
         self.resignFirstResponder()
     }
 }
