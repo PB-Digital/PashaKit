@@ -281,13 +281,6 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
-    public var customLayoutMargins: NSDirectionalEdgeInsets = NSDirectionalEdgeInsets(top: 8.0, leading: 16.0, bottom: 8.0, trailing: 16.0) {
-        didSet {
-            self.directionalLayoutMargins = customLayoutMargins
-            self.setNeedsLayout()
-        }
-    }
-
     private var activeLeftIconConstraints: [NSLayoutConstraint] = []
     private var activeLeftIconWrapperConstraints: [NSLayoutConstraint] = []
 
@@ -454,17 +447,6 @@ open class PBRowView: UIView, PBSkeletonable {
         self.setupViews()
     }
 
-    open override func layoutSubviews() {
-            super.layoutSubviews()
-
-            NSLayoutConstraint.activate([
-                self.primaryStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: customLayoutMargins.top),
-                self.primaryStackView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: customLayoutMargins.leading),
-                self.primaryStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -customLayoutMargins.bottom),
-                self.primaryStackView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -customLayoutMargins.trailing)
-            ])
-        }
-
     /// Sets data for a row view.
     ///
     /// - Parameters:
@@ -569,6 +551,13 @@ open class PBRowView: UIView, PBSkeletonable {
     }
 
     private func setupConstraints() {
+
+        NSLayoutConstraint.activate([
+            self.primaryStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8.0),
+            self.primaryStackView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16.0),
+            self.primaryStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8.0),
+            self.primaryStackView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16.0)
+        ])
 
         self.setupLeftIconWrapperConstraints(for: self.leftViewSize)
         self.setupLeftIconConstraints()
