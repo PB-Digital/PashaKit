@@ -319,7 +319,7 @@ public class PBUITextField: UIView {
     /// Returns the current text from text field. If there's no text, this method
     /// will return empty string literal.
     ///
-    public func getText(format: TextFieldTextFormat = .raw) -> String {
+    public func getText(format: TextFieldTextFormat = .whiteSpacesRemoved) -> String {
         switch format {
         case .whiteSpacesRemoved:
             return self.customTextField.text?.replacingOccurrences(of: " ", with: "") ?? ""
