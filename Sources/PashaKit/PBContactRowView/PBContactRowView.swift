@@ -237,7 +237,7 @@ open class PBContactRowView: UIView {
         if self.contactInfoStackView.arrangedSubviews.count == 1 {
             self.contactInfoStackView.spacing = 0
         } else {
-            print(self.contactInfoStackView.arrangedSubviews.count)
+            self.contactInfoStackView.spacing = 2.0
         }
     }
 
