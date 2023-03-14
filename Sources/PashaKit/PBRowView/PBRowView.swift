@@ -78,6 +78,16 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// Returns the `UIImageView` of icon on the lefthandside.
+    ///
+    /// With the access to the holder view, you can customize its layer, image setting
+    /// behaviors such as setting an image with the url using `Kingfisher`'s
+    /// methods.
+    ///
+    public var leftView: UIImageView {
+        return self.leftIconView
+    }
+
     /// Sets the icon to the right side of view.
     ///
     /// By default the `image` of left view is set to be chevron icon. While creating row view if this property wasnt changed,

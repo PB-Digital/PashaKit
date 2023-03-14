@@ -84,6 +84,16 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// Returns the `UIImageView` of category icon.
+    ///
+    /// With the access to the holder view, you can customize its layer, image setting
+    /// behaviors such as setting an image with the url using `Kingfisher`'s
+    /// methods.
+    ///
+    public var categoryIconView: UIImageView {
+        return self.categoryImage
+    }
+
     /// The style for `leftIconWrapperView`.
     ///
     /// By default its value is `circle`.

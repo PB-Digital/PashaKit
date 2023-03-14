@@ -98,8 +98,18 @@ public class PBTemplateView: UIView {
     ///
     public var icon: UIImage? {
         didSet {
-            self.iconView.image = self.icon
+            self._iconView.image = self.icon
         }
+    }
+
+    /// Returns the `UIImageView` of template icon.
+    ///
+    /// With the access to the holder view, you can customize its layer, image setting
+    /// behaviors such as setting an image with the url using `Kingfisher`'s
+    /// methods.
+    ///
+    public var iconView: UIImageView {
+        return self._iconView
     }
 
     public var iconViewSize: IconViewSize = .small {
@@ -158,7 +168,7 @@ public class PBTemplateView: UIView {
         return view
     }()
 
-    private lazy var iconView: UIImageView  = {
+    private lazy var _iconView: UIImageView  = {
         let view = UIImageView()
 
         self.addSubview(view)
@@ -258,17 +268,17 @@ public class PBTemplateView: UIView {
         ])
 
         self.smallSizeConstraints = [
-            self.iconView.topAnchor.constraint(equalTo: self.iconWrapperView.topAnchor, constant: 8.0),
-            self.iconView.leftAnchor.constraint(equalTo: self.iconWrapperView.leftAnchor, constant: 8.0),
-            self.iconView.bottomAnchor.constraint(equalTo: self.iconWrapperView.bottomAnchor, constant: -8.0),
-            self.iconView.rightAnchor.constraint(equalTo: self.iconWrapperView.rightAnchor, constant: -8.0)
+            self._iconView.topAnchor.constraint(equalTo: self.iconWrapperView.topAnchor, constant: 8.0),
+            self._iconView.leftAnchor.constraint(equalTo: self.iconWrapperView.leftAnchor, constant: 8.0),
+            self._iconView.bottomAnchor.constraint(equalTo: self.iconWrapperView.bottomAnchor, constant: -8.0),
+            self._iconView.rightAnchor.constraint(equalTo: self.iconWrapperView.rightAnchor, constant: -8.0)
         ]
 
         self.mediumSizeConstraints = [
-            self.iconView.topAnchor.constraint(equalTo: self.iconWrapperView.topAnchor),
-            self.iconView.leftAnchor.constraint(equalTo: self.iconWrapperView.leftAnchor),
-            self.iconView.bottomAnchor.constraint(equalTo: self.iconWrapperView.bottomAnchor),
-            self.iconView.rightAnchor.constraint(equalTo: self.iconWrapperView.rightAnchor)
+            self._iconView.topAnchor.constraint(equalTo: self.iconWrapperView.topAnchor),
+            self._iconView.leftAnchor.constraint(equalTo: self.iconWrapperView.leftAnchor),
+            self._iconView.bottomAnchor.constraint(equalTo: self.iconWrapperView.bottomAnchor),
+            self._iconView.rightAnchor.constraint(equalTo: self.iconWrapperView.rightAnchor)
         ]
 
         switch type {
