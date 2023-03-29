@@ -231,7 +231,7 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         self.transactionInfoContainerView.addSubview(view)
         
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 6
+        view.layer.cornerRadius = 10
         view.isHidden = true
 
         return view
@@ -244,7 +244,7 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
 
         label.translatesAutoresizingMaskIntoConstraints = false
 
-        label.font = UIFont.systemFont(ofSize: 11, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 11, weight: .bold)
         label.textAlignment = .center
         label.numberOfLines = 1
         
@@ -346,10 +346,11 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         ])
 
         NSLayoutConstraint.activate([
-            self.descriptionLabel.topAnchor.constraint(equalTo: self.merchantLabel.bottomAnchor, constant: 4.0),
+            self.descriptionLabel.topAnchor.constraint(equalTo: self.merchantLabel.bottomAnchor, constant: 2.0),
             self.descriptionLabel.leftAnchor.constraint(equalTo: self.transactionInfoContainerView.leftAnchor),
             self.descriptionLabel.bottomAnchor.constraint(equalTo: self.transactionInfoContainerView.bottomAnchor),
-            self.descriptionLabel.rightAnchor.constraint(equalTo: self.dateLabel.leftAnchor, constant: -8.0)
+            self.descriptionLabel.rightAnchor.constraint(equalTo: self.dateLabel.leftAnchor, constant: -8.0),
+            self.descriptionLabel.heightAnchor.constraint(equalToConstant: 20.0),
         ])
 
         NSLayoutConstraint.activate([
@@ -361,17 +362,19 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
 
         NSLayoutConstraint.activate([
             self.dateLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 100.0),
-            self.dateLabel.topAnchor.constraint(equalTo: self.amountLabel.bottomAnchor, constant: 4.0),
+            self.dateLabel.topAnchor.constraint(equalTo: self.amountLabel.bottomAnchor, constant: 2.0),
             self.dateLabel.leftAnchor.constraint(equalTo: self.descriptionLabel.rightAnchor, constant: 8.0),
             self.dateLabel.rightAnchor.constraint(equalTo: self.transactionInfoContainerView.rightAnchor),
             self.dateLabel.bottomAnchor.constraint(equalTo: self.transactionInfoContainerView.bottomAnchor),
+            self.dateLabel.heightAnchor.constraint(equalToConstant: 20.0),
         ])
 
         NSLayoutConstraint.activate([
-            self.statusView.topAnchor.constraint(equalTo: self.amountLabel.bottomAnchor, constant: 4.0),
+            self.statusView.topAnchor.constraint(equalTo: self.amountLabel.bottomAnchor, constant: 2.0),
             self.statusView.leftAnchor.constraint(greaterThanOrEqualTo: self.descriptionLabel.rightAnchor, constant: 8.0),
             self.statusView.rightAnchor.constraint(equalTo: self.transactionInfoContainerView.rightAnchor),
             self.statusView.bottomAnchor.constraint(equalTo: self.transactionInfoContainerView.bottomAnchor),
+            self.statusView.heightAnchor.constraint(equalToConstant: 20.0),
         ])
         
         NSLayoutConstraint.activate([
