@@ -17,11 +17,11 @@ To integrate PashaKit, specify it as a dependency in your XCode project or <code
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/muradtries/PashaKit.git", exact: "1.0.0"),
+    .package(url: "https://github.com/PB-Digital/PashaKit.git", exact: "1.0.0"),
 ],
 ```
 
-### Import and Use PashaKit
+### Import and Use PashaKit iOS
 After the library has been added you can import the module to use it:
 
 ```Swift
