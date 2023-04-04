@@ -1,4 +1,4 @@
-# PashaKit
+# PashaKit iOS
 
 PashaKit contains native UIKit components aligned with Pasha Bank's design system.
 
