@@ -40,6 +40,37 @@ import UIKit
 ///
 open class PBBaseSelectableView: UIView {
 
+    /// Selection style for selectable views
+    ///
+    /// Enum comes with two case:
+    /// - `highlighted`
+    /// - `clear`
+    ///
+    /// If you choose `highlighted`, it will be created
+    /// with border and when it gets selected the background
+    /// will be replaced with pale color according to its theme
+    public enum SelectionStyle {
+        /// Default selection style for selectable row view. Use this case
+        /// if you want to add border and color change to row view when
+        /// it gets selected
+        case highlighted
+
+        /// Borderless style for selectable row view. Use this case
+        /// if you want clear selection, which will only affect the indicator,
+        /// in our case, checkbox icon
+        case clear
+    }
+
+    /// Selection style for selectable views
+    ///
+    /// By default selection style of selectable row view will be `highlighted`
+    ///
+    public var selectionStyle: SelectionStyle = .highlighted {
+        didSet {
+            self.updateUI()
+        }
+    }
+
     /// Sets the theme for `PBBaseSelectableView`
     ///
     /// By default view will be created with rugular theme which will cause selected state colors
@@ -101,6 +132,7 @@ open class PBBaseSelectableView: UIView {
 
         self.translatesAutoresizingMaskIntoConstraints = false
         self.isUserInteractionEnabled = true
+        self.layer.masksToBounds = true
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -135,18 +167,16 @@ open class PBBaseSelectableView: UIView {
         if self.isAnimationEnabled {
             self.performAnimation { [weak self] in
                 guard let self = self else { return }
-
-                if self.isSelected {
-                    self.layer.borderWidth = 2.0
-                    self.layer.borderColor = self.selectedBorderColor.cgColor
-                    self.backgroundColor = self.selectedStateColor
-                } else {
-                    self.layer.borderWidth = 1.0
-                    self.layer.borderColor = UIColor.Colors.PBGraySecondary.cgColor
-                    self.backgroundColor = UIColor.white
-                }
+                self.updateStyle(for: self.selectionStyle)
             }
         } else {
+            updateStyle(for: self.selectionStyle)
+        }
+    }
+
+    private func updateStyle(for selectionStyle: SelectionStyle) {
+        switch self.selectionStyle {
+        case .highlighted:
             if self.isSelected {
                 self.layer.borderWidth = 2.0
                 self.layer.borderColor = self.selectedBorderColor.cgColor
@@ -156,6 +186,10 @@ open class PBBaseSelectableView: UIView {
                 self.layer.borderColor = UIColor.Colors.PBGraySecondary.cgColor
                 self.backgroundColor = UIColor.white
             }
+        case .clear:
+            self.layer.borderWidth = 0.0
+            self.layer.borderColor = UIColor.clear.cgColor
+            self.backgroundColor = UIColor.clear
         }
     }
 
