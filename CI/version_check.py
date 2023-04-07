@@ -24,7 +24,7 @@ def compare_versions(release: list[int], current: list[int]) -> bool:
         elif c < r:
             return False
         
-    return True
+    return False
 
 def main():
     release_version_string: str = argv.pop()
