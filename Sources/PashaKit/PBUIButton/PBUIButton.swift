@@ -266,7 +266,7 @@ public class PBUIButton: UIButton {
 
     private func makeShareButton() {
         self.styleOfButton = .filled
-        self.setImage(UIImage(named: "ic-share"), for: .normal)
+        self.setImage(UIImage.Images.icShare, for: .normal)
         self.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
     }
 

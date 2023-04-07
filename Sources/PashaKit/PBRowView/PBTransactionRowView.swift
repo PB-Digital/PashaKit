@@ -257,7 +257,7 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.isSkeletonable = true
-        view.setImage(withName: "ic_chevron_right")
+        view.image = UIImage.Images.icChevronRight
         view.contentMode = .scaleAspectFit
 
         view.heightAnchor.constraint(equalToConstant: 10.0).isActive = true

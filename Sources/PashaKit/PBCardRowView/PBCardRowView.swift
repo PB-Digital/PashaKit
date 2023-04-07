@@ -149,7 +149,7 @@ open class PBCardRowView: UIView, PBSkeletonable {
 
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        view.setImage(withName: "ic_chevron_right")
+        view.image = UIImage.Images.icChevronRight
         view.contentMode = .scaleAspectFit
 
         return view

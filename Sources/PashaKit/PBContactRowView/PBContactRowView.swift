@@ -64,9 +64,9 @@ open class PBContactRowView: UIView {
     public var cardID: String = "" {
         didSet {
             if self.cardID.prefix(1) == "4" {
-                self.issuerLogoView.setImage(withName: "ic_visa_logo_colored")
+                self.issuerLogoView.image = UIImage.Images.icVisaLogoColored
             } else {
-                self.issuerLogoView.setImage(withName: "ic_master_logo_colored")
+                self.issuerLogoView.image = UIImage.Images.icMasterLogoColored
             }
 
             self.cardNumberLabel.text = cardID.lastFourDigits

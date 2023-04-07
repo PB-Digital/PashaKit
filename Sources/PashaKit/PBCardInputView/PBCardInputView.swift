@@ -71,7 +71,7 @@ open class PBCardInputView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.contentMode = .scaleAspectFit
-        view.setImage(withName: "ic_logo_white")
+        view.image = UIImage.Images.icLogoWhite
 
         view.heightAnchor.constraint(equalToConstant: 32.0).isActive = true
 
@@ -85,7 +85,7 @@ open class PBCardInputView: UIView {
 
         button.translatesAutoresizingMaskIntoConstraints = false
 
-        button.setImage(UIImage(named: "ic_card_scan_private_black", in: Bundle.module, compatibleWith: nil), for: .normal)
+        button.setImage(UIImage.Images.icCardScan, for: .normal)
         button.addTarget(self, action: #selector(onScanButton), for: .touchUpInside)
 
         button.widthAnchor.constraint(equalToConstant: 40.0).isActive = true
@@ -379,9 +379,9 @@ open class PBCardInputView: UIView {
 
         switch self.theme {
         case .regular:
-            self.cardScan.setImage(UIImage(named: "ic_card_scan", in: Bundle.module, compatibleWith: nil), for: .normal)
+            self.cardScan.setImage(UIImage.Images.icCardScan, for: .normal)
         case .dark:
-            self.cardScan.setImage(UIImage(named: "ic_card_scan_private_black", in: Bundle.module, compatibleWith: nil), for: .normal)
+            self.cardScan.setImage(UIImage.Images.icCardScanPrivateBlack, for: .normal)
         }
     }
 

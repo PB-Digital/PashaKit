@@ -808,10 +808,10 @@ public class PBUITextField: UIView {
 
         if self.isSecured {
             if self.isRevealed {
-                self.icon = UIImage(named: "ic_reveal_open", in: Bundle.module, compatibleWith: nil)
+                self.icon = UIImage.Images.icRevealOpen
             }
             else {
-                self.icon = UIImage(named: "ic_reveal_closed", in: Bundle.module, compatibleWith: nil)
+                self.icon = UIImage.Images.icRevealClosed
             }
         }
     }

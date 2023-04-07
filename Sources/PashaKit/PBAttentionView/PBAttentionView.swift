@@ -103,7 +103,7 @@ open class PBAttentionView: UIView {
 
         self.addSubview(view)
 
-        view.setImage(withName: "ic_info")
+        view.image = UIImage.Images.icInfoDark
         view.contentMode = .scaleAspectFit
 
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -182,15 +182,15 @@ extension PBAttentionView {
         case .low:
             self.backgroundColor = UIColor.Colors.PBGrayTransparent
             self.infoBody.textColor = UIColor.Colors.PBBlackMedium
-            self.infoIcon.setImage(withName: "ic_info_gray")
+            self.infoIcon.image = UIImage.Images.icInfoGray
         case .medium:
             self.backgroundColor = UIColor.Colors.PBGrayTransparent
             self.infoBody.textColor = .darkText
-            self.infoIcon.setImage(withName: "ic_info_dark")
+            self.infoIcon.image = UIImage.Images.icInfoDark
         case .high:
             self.backgroundColor = UIColor.Colors.PBRed8
             self.infoBody.textColor = UIColor.Colors.PBRed
-            self.infoIcon.setImage(withName: "ic_info_red")
+            self.infoIcon.image = UIImage.Images.icInfoRed
         }
     }
 }
