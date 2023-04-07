@@ -174,7 +174,7 @@ open class PBAccountSelectField: UIView {
         let view = UIImageView()
 
         self.customBorder.addSubview(view)
-        view.setImage(withName: "ic_chevron_bottom")
+        view.image = UIImage.Images.icChevronBottom
         view.contentMode = .scaleAspectFit
         view.translatesAutoresizingMaskIntoConstraints = false
 

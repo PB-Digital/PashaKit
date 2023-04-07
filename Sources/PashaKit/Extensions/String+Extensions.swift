@@ -28,6 +28,7 @@
 //  THE SOFTWARE.
 
 import Foundation
+import UIKit
 
 extension String {
     var lastFourDigits: String {
@@ -45,5 +46,33 @@ extension String {
        let startIndex = self.index(self.startIndex, offsetBy: from)
        let endIndex = self.index(self.startIndex, offsetBy: to)
        return String(self[startIndex...endIndex])
+    }
+}
+
+public extension String {
+    func parseHTML(fontSize: CGFloat) -> NSMutableAttributedString? {
+        let modifiedString =
+"""
+<style>
+   body {
+     font-size: \(fontSize);
+     font-family: -apple-system;
+   }
+   b {
+     font-weight: 600;
+   }
+</style>
+\(self)
+"""
+        guard let data = modifiedString.data(using: .utf8) else { return nil }
+
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html,
+                                                                           .characterEncoding: String.Encoding.utf8.rawValue,]
+        do {
+            let attributedString = try NSMutableAttributedString(data: data, options: options, documentAttributes: nil)
+            return attributedString
+        } catch {
+            return nil
+        }
     }
 }

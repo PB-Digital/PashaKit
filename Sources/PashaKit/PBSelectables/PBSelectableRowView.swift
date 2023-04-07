@@ -68,12 +68,15 @@ public struct SelectableRowViewData {
 ///
 public class PBSelectableRowView: PBBaseSelectableView {
 
-    public enum CheckboxVerticalPosition {
-        case top
-        case middle
-        case bottom
-    }
-
+    ///  Horizontal position of checkbox
+    ///
+    ///  It comes with 2 cases:
+    ///  - `left`
+    ///  - `right`
+    ///
+    ///  To place checkbox on the either of the sides you can use this enum
+    ///  and property with named `checkboxHorizontalPosition`
+    ///
     public enum CheckboxHorizontalPosition {
         case left
         case right
@@ -103,16 +106,18 @@ public class PBSelectableRowView: PBBaseSelectableView {
     ///
     public var textLayoutPreference: PreferredTextPlacement = .titleFirst {
         didSet {
-            self.secondaryStackView.removeArrangedSubview(self.titleLabel)
-            self.secondaryStackView.removeArrangedSubview(self.subtitleLabel)
+            if self.textLayoutPreference != oldValue {
+                self.secondaryStackView.removeArrangedSubview(self.titleLabel)
+                self.secondaryStackView.removeArrangedSubview(self.subtitleLabel)
 
-            switch self.textLayoutPreference {
-            case .titleFirst:
-                self.secondaryStackView.addArrangedSubview(self.titleLabel)
-                self.secondaryStackView.addArrangedSubview(self.subtitleLabel)
-            case .subtitleFirst:
-                self.secondaryStackView.addArrangedSubview(self.subtitleLabel)
-                self.secondaryStackView.addArrangedSubview(self.titleLabel)
+                switch self.textLayoutPreference {
+                case .titleFirst:
+                    self.secondaryStackView.addArrangedSubview(self.titleLabel)
+                    self.secondaryStackView.addArrangedSubview(self.subtitleLabel)
+                case .subtitleFirst:
+                    self.secondaryStackView.addArrangedSubview(self.subtitleLabel)
+                    self.secondaryStackView.addArrangedSubview(self.titleLabel)
+                }
             }
         }
     }
@@ -127,11 +132,26 @@ public class PBSelectableRowView: PBBaseSelectableView {
     ///
     public var checkboxHorizontalPosition: CheckboxHorizontalPosition = .left {
         didSet {
-            switch self.checkboxHorizontalPosition {
-            case .left:
-                self.locateCheckboxToLeft()
-            case .right:
-                self.locateCheckboxToRight()
+            if self.checkboxHorizontalPosition != oldValue {
+                switch self.checkboxHorizontalPosition {
+                case .left:
+                    self.locateCheckboxToLeft()
+                case .right:
+                    self.locateCheckboxToRight()
+                }
+            }
+        }
+    }
+
+    /// Sets the image for default checkbox state
+    ///
+    /// By default it will add our asset to it. If you are not comfortable with this icon,
+    /// replace it.
+    ///
+    public var defaultCheckboxIcon: UIImage? = UIImage.Images.icCheckboxDefault {
+        didSet {
+            if self.defaultCheckboxIcon != oldValue {
+                self.checkBoxDefault.image = self.defaultCheckboxIcon?.withRenderingMode(.alwaysTemplate)
             }
         }
     }
@@ -141,20 +161,11 @@ public class PBSelectableRowView: PBBaseSelectableView {
     /// By default it will add our asset to it. If you are not comfortable with this icon,
     /// replace it.
     ///
-    public var selectedCheckboxIcon: UIImage? = UIImage(named: "ic_checkbox_selected", in: Bundle.module, compatibleWith: nil){
+    public var selectedCheckboxIcon: UIImage? = UIImage.Images.icCheckboxSelected {
         didSet {
-            self.checkBoxSelected.image = self.selectedCheckboxIcon
-        }
-    }
-
-    /// Sets the image for default checkbox state
-    ///
-    /// By default it will add our asset to it. If you are not comfortable with this icon,
-    /// replace it.
-    ///
-    public var defaultCheckboxIcon: UIImage? = UIImage(named: "ic_checkbox_default", in: Bundle.module, compatibleWith: nil) {
-        didSet {
-            self.checkBoxDefault.image = self.defaultCheckboxIcon
+            if self.selectedCheckboxIcon != oldValue {
+                self.checkBoxSelected.image = self.selectedCheckboxIcon
+            }
         }
     }
 
@@ -171,13 +182,28 @@ public class PBSelectableRowView: PBBaseSelectableView {
         }
     }
 
+    /// Attributed text of title
+    ///
+    /// You can use this property for assigning custom attributed strings to title.
+    ///
+    public var titleAttributedText: NSAttributedString? {
+        didSet {
+            if self.titleAttributedText != oldValue {
+                self.titleLabel.attributedText = self.titleAttributedText
+                self.setupViews()
+            }
+        }
+    }
+
     /// Font for the title of row view.
     ///
     /// By default `systemFont` of size `17.0` with `semibold` weight will be used.
     ///
-    public var titleFont: UIFont?  = UIFont.systemFont(ofSize: 17.0, weight: .semibold) {
+    public var titleFont: UIFont  = UIFont.systemFont(ofSize: 17.0, weight: .semibold) {
         didSet {
-            self.titleLabel.font = self.titleFont
+            if self.titleFont != oldValue {
+                self.titleLabel.font = self.titleFont
+            }
         }
     }
 
@@ -187,7 +213,9 @@ public class PBSelectableRowView: PBBaseSelectableView {
     ///
     public var titleTextColor: UIColor = .darkText {
         didSet {
-            self.titleLabel.textColor = self.titleTextColor
+            if self.titleTextColor != oldValue {
+                self.titleLabel.textColor = self.titleTextColor
+            }
         }
     }
 
@@ -204,18 +232,70 @@ public class PBSelectableRowView: PBBaseSelectableView {
         }
     }
 
+    /// Atributed text of subtitle
+    ///
+    /// You can use this property for assigning custom attributed strings to subtitle,
+    /// such as partial font change.
+    ///
+    public var subtitleAttributedText: NSAttributedString? {
+        didSet {
+            if self.subtitleAttributedText != oldValue {
+                self.subtitleLabel.attributedText = self.subtitleAttributedText
+                self.setupViews()
+            }
+        }
+    }
+
     /// Font for the title of row view.
     ///
     /// By default `systemFont` of size `13.0` with `semibold` weight will be used.
     ///
-    public var subtitleFont: UIFont? = UIFont.systemFont(ofSize: 13.0, weight: .regular) {
+    public var subtitleFont: UIFont = UIFont.systemFont(ofSize: 13.0, weight: .regular) {
         didSet {
-            self.subtitleLabel.font = self.subtitleFont
+            if self.subtitleFont != oldValue {
+                self.subtitleLabel.font = self.subtitleFont
+            }
+        }
+    }
+
+    /// Sets the color for `subtitleLabel`
+    ///
+    /// If not specified it will be set `black` color with the alpha of `0.6`
+    ///
+    public var subtitleTextColor: UIColor = UIColor.black.withAlphaComponent(0.6) {
+        didSet {
+            if self.subtitleTextColor != oldValue {
+                self.subtitleLabel.textColor = self.subtitleTextColor
+            }
+        }
+    }
+
+    public var checkboxTintColor: UIColor = UIColor.Colors.PBGray40 {
+        didSet {
+            if self.checkboxTintColor != oldValue {
+                self.checkBoxDefault.tintColor = self.checkboxTintColor
+            }
+        }
+    }
+
+    public var contentEdgeInsets: UIEdgeInsets = UIEdgeInsets(top: 8.0, left: 16.0, bottom: 8.0, right: 16.0) {
+        didSet {
+            if self.contentEdgeInsets != oldValue {
+                self.setNeedsUpdateConstraints()
+            }
+        }
+    }
+
+    public var textualContentPadding: CGFloat = 2.0 {
+        didSet {
+            if self.textualContentPadding != oldValue {
+                self.setNeedsUpdateConstraints()
+            }
         }
     }
 
     private let iconsSize: CGSize = CGSize(width: 24.0, height: 24.0)
-    private let checkboxSize: CGSize = CGSize(width: 20.0, height: 20.0)
+    private let checkboxSize: CGSize = CGSize(width: 24.0, height: 24.0)
 
     private lazy var contentStackView: UIStackView = {
         let view = UIStackView()
@@ -226,7 +306,7 @@ public class PBSelectableRowView: PBBaseSelectableView {
 
         view.alignment = .center
         view.axis = .horizontal
-        view.spacing = 12.0
+        view.spacing = 16.0
 
         return view
     }()
@@ -252,7 +332,6 @@ public class PBSelectableRowView: PBBaseSelectableView {
 
         view.axis = .vertical
         view.alignment = .leading
-        view.spacing = 2.0
 
         return view
     }()
@@ -260,10 +339,9 @@ public class PBSelectableRowView: PBBaseSelectableView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
 
-        self.addSubview(label)
-
         label.font = self.titleFont
         label.textColor = self.titleTextColor
+        label.numberOfLines = 0
 
         return label
     }()
@@ -274,7 +352,7 @@ public class PBSelectableRowView: PBBaseSelectableView {
         label.translatesAutoresizingMaskIntoConstraints = false
 
         label.font = self.subtitleFont
-        label.textColor = UIColor.black.withAlphaComponent(0.6)
+        label.textColor = self.subtitleTextColor
         label.numberOfLines = 0
 
         return label
@@ -321,10 +399,12 @@ public class PBSelectableRowView: PBBaseSelectableView {
 
         self.checkboxWrapperView.addSubview(view)
 
-        view.image = self.defaultCheckboxIcon
-        view.contentMode = .scaleAspectFit
         view.translatesAutoresizingMaskIntoConstraints = false
 
+        view.image = self.defaultCheckboxIcon?.withRenderingMode(.alwaysTemplate)
+        view.contentMode = .scaleAspectFit
+
+        view.fillSuperview()
         view.heightAnchor.constraint(equalToConstant: checkboxSize.height).isActive = true
         view.widthAnchor.constraint(equalToConstant: checkboxSize.width).isActive = true
 
@@ -336,10 +416,12 @@ public class PBSelectableRowView: PBBaseSelectableView {
 
         self.checkboxWrapperView.addSubview(view)
 
-        view.image = self.selectedCheckboxIcon
-        view.contentMode = .scaleAspectFit
         view.translatesAutoresizingMaskIntoConstraints = false
 
+        view.image = self.selectedCheckboxIcon
+        view.contentMode = .scaleAspectFit
+
+        view.fillSuperview()
         view.heightAnchor.constraint(equalToConstant: checkboxSize.height).isActive = true
         view.widthAnchor.constraint(equalToConstant: checkboxSize.width).isActive = true
 
@@ -357,6 +439,11 @@ public class PBSelectableRowView: PBBaseSelectableView {
     public convenience init() {
         self.init(frame: .zero)
         self.setupViews()
+    }
+
+    public convenience init(selectionStyle: SelectionStyle) {
+        self.init()
+        self.selectionStyle = selectionStyle
     }
 
     /// Sets data for a row view.
@@ -378,7 +465,6 @@ public class PBSelectableRowView: PBBaseSelectableView {
         self.translatesAutoresizingMaskIntoConstraints = false
 
         self.setupDefaults()
-
         self.updateUI()
 
         switch self.checkboxHorizontalPosition {
@@ -388,27 +474,15 @@ public class PBSelectableRowView: PBBaseSelectableView {
             self.locateCheckboxToRight()
         }
 
-        self.setupConstraints()
+        self.setNeedsUpdateConstraints()
     }
 
-    private func setupConstraints() {
-
+    public override func updateConstraints() {
         NSLayoutConstraint.activate([
-            self.contentStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8.0),
-            self.contentStackView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16.0),
-            self.contentStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8.0),
-            self.contentStackView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16.0)
-        ])
-
-        NSLayoutConstraint.activate([
-            self.checkBoxDefault.topAnchor.constraint(equalTo: self.checkboxWrapperView.topAnchor),
-            self.checkBoxDefault.leftAnchor.constraint(equalTo: self.checkboxWrapperView.leftAnchor),
-            self.checkBoxDefault.bottomAnchor.constraint(equalTo: self.checkboxWrapperView.bottomAnchor),
-            self.checkBoxDefault.rightAnchor.constraint(equalTo: self.checkboxWrapperView.rightAnchor),
-            self.checkBoxSelected.topAnchor.constraint(equalTo: self.checkboxWrapperView.topAnchor),
-            self.checkBoxSelected.leftAnchor.constraint(equalTo: self.checkboxWrapperView.leftAnchor),
-            self.checkBoxSelected.bottomAnchor.constraint(equalTo: self.checkboxWrapperView.bottomAnchor),
-            self.checkBoxSelected.rightAnchor.constraint(equalTo: self.checkboxWrapperView.rightAnchor)
+            self.contentStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: self.contentEdgeInsets.top),
+            self.contentStackView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: self.contentEdgeInsets.left),
+            self.contentStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -self.contentEdgeInsets.bottom),
+            self.contentStackView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -self.contentEdgeInsets.right)
         ])
 
         NSLayoutConstraint.activate([
@@ -417,6 +491,18 @@ public class PBSelectableRowView: PBBaseSelectableView {
             self.secondaryIconView.bottomAnchor.constraint(equalTo: self.secondaryIconWrapperView.bottomAnchor),
             self.secondaryIconView.rightAnchor.constraint(equalTo: self.secondaryIconWrapperView.rightAnchor)
         ])
+
+        super.updateConstraints()
+    }
+
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if self.secondaryStackView.subviews.count == 1 {
+            self.secondaryStackView.spacing = 0.0
+        } else {
+            self.secondaryStackView.spacing = self.textualContentPadding
+        }
     }
 
     public override func draw(_ rect: CGRect) {
@@ -435,11 +521,11 @@ public class PBSelectableRowView: PBBaseSelectableView {
         case .titleFirst:
             self.secondaryStackView.addArrangedSubview(self.titleLabel)
 
-            if self.titleText != nil {
+            if self.subtitleText != nil || self.subtitleAttributedText != nil {
                 self.secondaryStackView.addArrangedSubview(self.subtitleLabel)
             }
         case .subtitleFirst:
-            if self.titleText != nil {
+            if self.subtitleText != nil || self.subtitleAttributedText != nil {
                 self.secondaryStackView.addArrangedSubview(self.subtitleLabel)
             }
 
@@ -483,6 +569,7 @@ public class PBSelectableRowView: PBBaseSelectableView {
     }
 
     override func updateUI() {
+        self.setupDefaults()
         super.updateUI()
 
         if self.isSelected {
@@ -499,15 +586,23 @@ public class PBSelectableRowView: PBBaseSelectableView {
 
         switch self.theme {
         case .regular:
-            self.checkBoxSelected.image = UIImage(named: "ic_checkbox_selected", in: Bundle.module, compatibleWith: nil)
+            self.checkBoxSelected.image = UIImage.Images.icCheckboxSelected
         case .dark:
-            self.checkBoxSelected.image = UIImage(named: "ic_checkbox_selected_private", in: Bundle.module, compatibleWith: nil)
+            self.checkBoxSelected.image = UIImage.Images.icCheckboxSelectedPrivate
         }
     }
 
+    public override func setAlertState() {
+        super.setAlertState()
+
+        self.titleLabel.textColor = UIColor.Colors.PBInvalidRed
+        self.subtitleLabel.textColor = UIColor.Colors.PBInvalidRed
+        self.checkBoxDefault.tintColor = UIColor.Colors.PBInvalidRed
+    }
+
     private func setupDefaults() {
-        NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(greaterThanOrEqualToConstant: 64.0)
-        ])
+        self.titleLabel.textColor = self.titleTextColor
+        self.subtitleLabel.textColor = self.subtitleTextColor
+        self.checkBoxDefault.tintColor = self.checkboxTintColor
     }
 }

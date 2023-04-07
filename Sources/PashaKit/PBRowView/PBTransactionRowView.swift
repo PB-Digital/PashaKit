@@ -84,6 +84,16 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// Returns the `UIImageView` of category icon.
+    ///
+    /// With the access to the holder view, you can customize its layer, image setting
+    /// behaviors such as setting an image with the url using `Kingfisher`'s
+    /// methods.
+    ///
+    public var categoryIconView: UIImageView {
+        return self.categoryImage
+    }
+
     /// The style for `leftIconWrapperView`.
     ///
     /// By default its value is `circle`.
@@ -161,7 +171,7 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
 
         label.translatesAutoresizingMaskIntoConstraints = false
 
-        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         label.textColor = .black
         label.numberOfLines = 1
         label.isSkeletonable = true
@@ -191,7 +201,7 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
 
         label.translatesAutoresizingMaskIntoConstraints = false
 
-        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         label.textColor = .black
         label.textAlignment = .right
         label.isSkeletonable = true
@@ -215,13 +225,39 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         return label
     }()
 
+    lazy var statusView: UIView = {
+        let view = UIView()
+        
+        self.transactionInfoContainerView.addSubview(view)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 10
+        view.isHidden = true
+
+        return view
+    }()
+    
+    lazy var statusLabel: UILabel = {
+        let label = UILabel()
+        
+        self.statusView.addSubview(label)
+
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        label.font = UIFont.systemFont(ofSize: 11, weight: .bold)
+        label.textAlignment = .center
+        label.numberOfLines = 1
+        
+        return label
+    }()
+
     private lazy var chevronView: UIImageView = {
         let view = UIImageView()
 
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.isSkeletonable = true
-        view.setImage(withName: "ic_chevron_right")
+        view.image = UIImage.Images.icChevronRight
         view.contentMode = .scaleAspectFit
 
         view.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
@@ -310,10 +346,11 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         ])
 
         NSLayoutConstraint.activate([
-            self.descriptionLabel.topAnchor.constraint(equalTo: self.merchantLabel.bottomAnchor, constant: 4.0),
+            self.descriptionLabel.topAnchor.constraint(equalTo: self.merchantLabel.bottomAnchor, constant: 2.0),
             self.descriptionLabel.leftAnchor.constraint(equalTo: self.transactionInfoContainerView.leftAnchor),
             self.descriptionLabel.bottomAnchor.constraint(equalTo: self.transactionInfoContainerView.bottomAnchor),
-            self.descriptionLabel.rightAnchor.constraint(equalTo: self.dateLabel.leftAnchor, constant: -8.0)
+            self.descriptionLabel.rightAnchor.constraint(equalTo: self.dateLabel.leftAnchor, constant: -8.0),
+            self.descriptionLabel.heightAnchor.constraint(equalToConstant: 20.0),
         ])
 
         NSLayoutConstraint.activate([
@@ -325,12 +362,27 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
 
         NSLayoutConstraint.activate([
             self.dateLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 100.0),
-            self.dateLabel.topAnchor.constraint(equalTo: self.amountLabel.bottomAnchor, constant: 4.0),
+            self.dateLabel.topAnchor.constraint(equalTo: self.amountLabel.bottomAnchor, constant: 2.0),
             self.dateLabel.leftAnchor.constraint(equalTo: self.descriptionLabel.rightAnchor, constant: 8.0),
             self.dateLabel.rightAnchor.constraint(equalTo: self.transactionInfoContainerView.rightAnchor),
             self.dateLabel.bottomAnchor.constraint(equalTo: self.transactionInfoContainerView.bottomAnchor),
+            self.dateLabel.heightAnchor.constraint(equalToConstant: 20.0),
         ])
 
+        NSLayoutConstraint.activate([
+            self.statusView.topAnchor.constraint(equalTo: self.amountLabel.bottomAnchor, constant: 2.0),
+            self.statusView.leftAnchor.constraint(greaterThanOrEqualTo: self.descriptionLabel.rightAnchor, constant: 8.0),
+            self.statusView.rightAnchor.constraint(equalTo: self.transactionInfoContainerView.rightAnchor),
+            self.statusView.bottomAnchor.constraint(equalTo: self.transactionInfoContainerView.bottomAnchor),
+            self.statusView.heightAnchor.constraint(equalToConstant: 20.0),
+        ])
+        
+        NSLayoutConstraint.activate([
+            self.statusLabel.leftAnchor.constraint(equalTo: self.statusView.leftAnchor, constant: 8.0),
+            self.statusLabel.rightAnchor.constraint(equalTo: self.statusView.rightAnchor, constant: -8.0),
+            self.statusLabel.centerYAnchor.constraint(equalTo: self.statusView.centerYAnchor),
+        ])
+        
         self.setupDividerConstraints(by: self.dividerStyle)
     }
 
@@ -368,6 +420,27 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         self.amountLabel.text = transaction.amountText
         self.amountLabel.textColor = transaction.amountTextColor
         self.dateLabel.text = transaction.dateText
+        self.configStatusTheme(status: transaction.transactionStatus)
+    }
+    
+    private func configStatusTheme(status: TransactionRepresentableStatus) {
+        switch status {
+        case .complete:
+            self.dateLabel.isHidden = false
+            self.statusView.isHidden = true
+        case .inProgress(let info):
+            self.statusLabel.text = info
+            self.statusLabel.textColor = UIColor.Colors.PBStatusYellowFG
+            self.statusView.backgroundColor = UIColor.Colors.PBStatusYellowBG
+            self.statusView.isHidden = false
+            self.dateLabel.isHidden = true
+        case .unsuccessful(let info):
+            self.statusLabel.text = info
+            self.statusLabel.textColor = UIColor.Colors.PBStatusRedFG
+            self.statusView.backgroundColor = UIColor.Colors.PBStatusRedBG
+            self.statusView.isHidden = false
+            self.dateLabel.isHidden = true
+        }
     }
 
     /// Starts showing animated skeleton view

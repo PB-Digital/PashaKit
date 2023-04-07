@@ -34,7 +34,7 @@ import Foundation
 /// Includes `name`, `lastName` and `phoneNumber` of customer.
 ///
 public protocol PBContactRepresentable {
-    var name: String { get set }
-    var lastName: String { get set }
-    var phoneNumber: String { get set }
+    var name: String { get }
+    var lastName: String { get }
+    var phoneNumber: String { get }
 }

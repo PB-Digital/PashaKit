@@ -86,6 +86,17 @@ public class PBUITextField: UIView {
         case custom(CGSize)
     }
 
+    /// Option for getting the text from field.
+    ///
+    /// In general, we use `whiteSpacesRemoved`
+    /// for sending the data to our back-end. However, there is time we need to send
+    /// input as it is shown on the screen. For that reason we are using `raw` case.
+    ///
+    public enum TextFieldTextFormat {
+        case whiteSpacesRemoved
+        case raw
+    }
+
     public var id: String = ""
 
     /// Placeholder of text field.
@@ -305,10 +316,16 @@ public class PBUITextField: UIView {
         }
     }
 
-    /// Returns the current text from textField
+    /// Returns the current text from text field. If there's no text, this method
+    /// will return empty string literal.
     ///
-    public func getText() -> String {
-        return self.customTextField.text?.replacingOccurrences(of: " ", with: "") ?? ""
+    public func getText(format: TextFieldTextFormat = .whiteSpacesRemoved) -> String {
+        switch format {
+        case .whiteSpacesRemoved:
+            return self.customTextField.text?.replacingOccurrences(of: " ", with: "") ?? ""
+        case .raw:
+            return self.customTextField.text ?? ""
+        }
     }
 
     /// Sets the given text into textfield.
@@ -318,10 +335,14 @@ public class PBUITextField: UIView {
     ///     - animated: Boolean value defining whether text will be set with animation or not.
     ///     By default this value will be `false`.
     public func set(text: String, animated: Bool = false) {
-        guard !text.isEmpty else { return }
+        guard text != self.customTextField.text else { return }
 
         self.inputMaskDelegate.put(text: text, into: self.customTextField)
-        self.animatePlaceholderToActivePosition(animated: animated)
+        if text.isEmpty {
+            self.animatePlaceholderToInactivePosition(animated: animated)
+        } else {
+            self.animatePlaceholderToActivePosition(animated: animated)
+        }
         self.onTextSetted?(text)
     }
 
@@ -791,10 +812,10 @@ public class PBUITextField: UIView {
 
         if self.isSecured {
             if self.isRevealed {
-                self.icon = UIImage(named: "ic_reveal_open", in: Bundle.module, compatibleWith: nil)
+                self.icon = UIImage.Images.icRevealOpen
             }
             else {
-                self.icon = UIImage(named: "ic_reveal_closed", in: Bundle.module, compatibleWith: nil)
+                self.icon = UIImage.Images.icRevealClosed
             }
         }
     }

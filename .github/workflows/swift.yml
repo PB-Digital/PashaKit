@@ -17,4 +17,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: xcodebuild -scheme PashaKit -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.0'
+      run: xcodebuild -scheme PashaKit -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.2'

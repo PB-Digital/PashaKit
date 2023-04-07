@@ -1,6 +1,6 @@
 //
 //  PBAttentionView.swift
-//  
+//
 //
 //  Created by Murad on 20.12.22.
 //
@@ -46,10 +46,16 @@ open class PBAttentionView: UIView {
     public enum AttentionLevel {
         /// Least level of attention
         ///
-        /// Use this case for attentions which are recommended to consider when doing action,
+        /// Use this case for attentions which are `recommended` to consider when doing action,
         /// but isn't must.
         ///
         case low
+
+        /// Intermediate level of attention
+        ///
+        /// Use this case for attentions which are `required` to consider when doing action, but isn't must.
+        ///
+        case medium
 
         /// Highest level of attention
         ///
@@ -60,9 +66,9 @@ open class PBAttentionView: UIView {
 
     /// Sets attention level for view.
     ///
-    /// By default `PBAttentionView` will be created with `low` level.
+    /// By default `PBAttentionView` will be created with `medium` level.
     ///
-    public var attentionLevel: AttentionLevel = .low {
+    public var attentionLevel: AttentionLevel = .medium {
         didSet {
             if self.attentionLevel != oldValue {
                 self.setupAttention(level: self.attentionLevel)
@@ -70,12 +76,34 @@ open class PBAttentionView: UIView {
         }
     }
 
+    private lazy var multilineConstraints: [NSLayoutConstraint] = {
+        return [
+            self.infoIcon.topAnchor.constraint(equalTo: self.topAnchor, constant: 16.0),
+            self.infoIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16.0),
+            self.infoBody.topAnchor.constraint(equalTo: self.topAnchor, constant: 16.0),
+            self.infoBody.leftAnchor.constraint(equalTo: self.infoIcon.rightAnchor, constant: 8.0),
+            self.infoBody.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16.0),
+            self.infoBody.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16.0)
+        ]
+    }()
+
+    private lazy var singlelineConstraints: [NSLayoutConstraint] = {
+        return [
+            self.infoIcon.centerYAnchor.constraint(equalTo: self.infoBody.centerYAnchor),
+            self.infoIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16.0),
+            self.infoBody.topAnchor.constraint(equalTo: self.topAnchor, constant: 16.0),
+            self.infoBody.leftAnchor.constraint(equalTo: self.infoIcon.rightAnchor, constant: 8.0),
+            self.infoBody.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16.0),
+            self.infoBody.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16.0)
+        ]
+    }()
+
     private lazy var infoIcon: UIImageView = {
         let view = UIImageView()
 
         self.addSubview(view)
 
-        view.setImage(withName: "ic_info")
+        view.image = UIImage.Images.icInfoDark
         view.contentMode = .scaleAspectFit
 
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -92,7 +120,7 @@ open class PBAttentionView: UIView {
         self.addSubview(label)
 
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        label.textColor = UIColor.Colors.PBBlackMedium
+        label.textColor = .darkText
         label.numberOfLines = 0
 
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -107,25 +135,28 @@ open class PBAttentionView: UIView {
 
     required public init?(coder: NSCoder) {
         super.init(coder: coder)
+        self.setupViews()
     }
 
     private func setupViews() {
         self.setupAttention(level: self.attentionLevel)
-        self.setupConstraints()
+        self.layoutSubviews()
+        self.setupDefaults()
     }
 
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            self.infoIcon.topAnchor.constraint(equalTo: self.topAnchor, constant: 16.0),
-            self.infoIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16.0)
-        ])
+        if self.infoBody.frame.height > 18.0 {
+            NSLayoutConstraint.activate(self.multilineConstraints)
+            NSLayoutConstraint.deactivate(self.singlelineConstraints)
+        } else {
+            NSLayoutConstraint.activate(self.singlelineConstraints)
+            NSLayoutConstraint.deactivate(self.multilineConstraints)
+        }
+    }
 
-        NSLayoutConstraint.activate([
-            self.infoBody.topAnchor.constraint(equalTo: self.infoIcon.topAnchor),
-            self.infoBody.leftAnchor.constraint(equalTo: self.infoIcon.rightAnchor, constant: 8.0),
-            self.infoBody.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16.0),
-            self.infoBody.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16.0)
-        ])
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        self.setupConstraints()
     }
 
     /// Sets informational text and its level for atttenion view.
@@ -134,9 +165,9 @@ open class PBAttentionView: UIView {
     ///  - text: informational text
     ///  - attentionLevel: attention level, default value is low
     ///
-    public func set(text: String, attentionLevel: AttentionLevel = .low) {
+    public func set(text: String) {
         self.infoBody.text = text
-        self.attentionLevel = attentionLevel
+        self.layoutSubviews()
     }
 
     private func setupDefaults() {
@@ -151,11 +182,15 @@ extension PBAttentionView {
         case .low:
             self.backgroundColor = UIColor.Colors.PBGrayTransparent
             self.infoBody.textColor = UIColor.Colors.PBBlackMedium
-            self.infoIcon.setImage(withName: "ic_info")
+            self.infoIcon.image = UIImage.Images.icInfoGray
+        case .medium:
+            self.backgroundColor = UIColor.Colors.PBGrayTransparent
+            self.infoBody.textColor = .darkText
+            self.infoIcon.image = UIImage.Images.icInfoDark
         case .high:
             self.backgroundColor = UIColor.Colors.PBRed8
             self.infoBody.textColor = UIColor.Colors.PBRed
-            self.infoIcon.setImage(withName: "ic_info_red")
+            self.infoIcon.image = UIImage.Images.icInfoRed
         }
     }
 }

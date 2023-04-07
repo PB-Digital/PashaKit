@@ -39,6 +39,8 @@ import UIKit
 ///
 open class PBContactRowView: UIView {
 
+    // MARK: - Public Properties
+
     /// A boolean value for showing card info
     ///
     /// If `showsCardInfo` is set to `true`, contact view will have info view. If card details are not
@@ -62,9 +64,9 @@ open class PBContactRowView: UIView {
     public var cardID: String = "" {
         didSet {
             if self.cardID.prefix(1) == "4" {
-                self.issuerLogo.setImage(withName: "ic_master_logo_colored")
+                self.issuerLogoView.image = UIImage.Images.icVisaLogoColored
             } else {
-                self.issuerLogo.setImage(withName: "ic_visa_logo_colored")
+                self.issuerLogoView.image = UIImage.Images.icMasterLogoColored
             }
 
             self.cardNumberLabel.text = cardID.lastFourDigits
@@ -78,6 +80,30 @@ open class PBContactRowView: UIView {
     public var shortLabelBackgroundColor: UIColor? {
         didSet {
             self.letterLabel.backgroundColor =  self.shortLabelBackgroundColor
+        }
+    }
+
+    // MARK: - Private Properties
+
+    private var contactName: String = "" {
+        didSet {
+            guard self.contactName.isEmpty == false else {
+                self.contactNameLabel.removeFromSuperview()
+                return
+            }
+
+            self.contactNameLabel.text = self.contactName
+        }
+    }
+
+    private var contactNumber: String = "" {
+        didSet {
+            guard self.contactNumber.isEmpty == false else {
+                self.contactNumberLabel.removeFromSuperview()
+                return
+            }
+
+            self.contactNumberLabel.text = self.contactNumber
         }
     }
 
@@ -141,7 +167,7 @@ open class PBContactRowView: UIView {
         return label
     }()
 
-    private lazy var contactName: UILabel = {
+    private lazy var contactNameLabel: UILabel = {
         let label = UILabel()
 
         self.addSubview(label)
@@ -156,7 +182,7 @@ open class PBContactRowView: UIView {
         return label
     }()
 
-    private lazy var contactNumber: UILabel = {
+    private lazy var contactNumberLabel: UILabel = {
         let label = UILabel()
 
         self.addSubview(label)
@@ -171,7 +197,7 @@ open class PBContactRowView: UIView {
         return label
     }()
 
-    private lazy var issuerLogo: UIImageView = {
+    private lazy var issuerLogoView: UIImageView = {
         let view = UIImageView()
 
         view.contentMode = .scaleAspectFit
@@ -205,15 +231,31 @@ open class PBContactRowView: UIView {
         self.setupViews()
     }
 
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if self.contactInfoStackView.arrangedSubviews.count == 1 {
+            self.contactInfoStackView.spacing = 0
+        } else {
+            self.contactInfoStackView.spacing = 2.0
+        }
+    }
+
     /// Sets the contact and card information into row view components.
     ///
     /// - Parameters:
     ///  - contact: accepts any entity conforming to `PBContactRepresentable` protocol. It holds contact's name, lastName, phoneNumber
     ///  - cardID: wrapped pan number of card
     ///
-    public func setData(contact: PBContactRepresentable, cardID: String = "") {
-        self.contactName.text = contact.name + " " + contact.lastName
-        self.contactNumber.text = contact.phoneNumber
+    public func setData(contact: PBContactRepresentable, cardID: String = "", isContactNumberHidden: Bool = false) {
+        self.contactName = contact.name + " " + contact.lastName
+
+        if isContactNumberHidden {
+            self.contactNumber = ""
+        } else {
+            self.contactNumber = contact.phoneNumber
+        }
+
         self.letterLabel.text = "\(contact.name.prefix(1))\(contact.lastName.prefix(1))"
         self.cardID = cardID
     }
@@ -229,9 +271,9 @@ open class PBContactRowView: UIView {
         self.primaryStackView.addArrangedSubview(self.contactInfoStackView)
         self.primaryStackView.addArrangedSubview(self.cardInfoStackView)
 
-        self.contactInfoStackView.addArrangedSubview(self.contactName)
-        self.contactInfoStackView.addArrangedSubview(self.contactNumber)
-        self.cardInfoStackView.addArrangedSubview(self.issuerLogo)
+        self.contactInfoStackView.addArrangedSubview(self.contactNameLabel)
+        self.contactInfoStackView.addArrangedSubview(self.contactNumberLabel)
+        self.cardInfoStackView.addArrangedSubview(self.issuerLogoView)
         self.cardInfoStackView.addArrangedSubview(self.cardNumberLabel)
 
         self.setupConstraints()
