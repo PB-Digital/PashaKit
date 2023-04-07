@@ -1,0 +1,30 @@
+name: Version Check
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  version-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Get Latest Version
+      id: latest_release_version
+      uses: pozetroninc/github-action-get-latest-release@v0.7.0
+      with:
+        owner: PB-Digital
+        repo: PashaKit
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11' 
+      
+    - name: Compare Versions
+      run: |
+        release_version=${{ steps.latest_release_version.outputs.release }}
+        python CI/version_check.py $release_version
