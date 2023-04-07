@@ -335,10 +335,14 @@ public class PBUITextField: UIView {
     ///     - animated: Boolean value defining whether text will be set with animation or not.
     ///     By default this value will be `false`.
     public func set(text: String, animated: Bool = false) {
-        guard !text.isEmpty else { return }
+        guard text != self.customTextField.text else { return }
 
         self.inputMaskDelegate.put(text: text, into: self.customTextField)
-        self.animatePlaceholderToActivePosition(animated: animated)
+        if text.isEmpty {
+            self.animatePlaceholderToInactivePosition(animated: animated)
+        } else {
+            self.animatePlaceholderToActivePosition(animated: animated)
+        }
         self.onTextSetted?(text)
     }
 
