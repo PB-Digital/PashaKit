@@ -1,3 +1,4 @@
 {
-    "version": "1.0.12"
+    "version": "1.0.12",
+    "release_notes": "Added right constraint to the placeholder of `PBUITextField`"
 }
