@@ -2,9 +2,16 @@ name: Build
 
 on:
   push:
+    paths-ignore:
+      - '**/*.md'
+      - '.gitignore'
     branches:
       - main
-    pull_request:
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+      - '.gitignore'
+    branches:
       - main
       - develop
 
