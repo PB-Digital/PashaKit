@@ -2,7 +2,10 @@ name: Version Check
 
 on:
   pull_request:
-    branches: [ "main" ]
+    paths-ignore:
+      - '**/*.md'
+      - '.gitignore'
+    branches: [main]
 
 jobs:
   version-check:
