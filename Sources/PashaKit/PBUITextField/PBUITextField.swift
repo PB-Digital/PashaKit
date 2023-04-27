@@ -103,6 +103,7 @@ public class PBUITextField: UIView {
     ///
     /// If not specified, placeholder will be just empty string. It's recommended to set
     /// placeholdertext for visual clarity of text field.
+    ///
     public var placeholderText: String = "" {
         didSet {
             self.customPlaceholder.text = self.placeholderText
@@ -400,8 +401,8 @@ public class PBUITextField: UIView {
     private lazy var customPlaceholder: UILabel = {
         let placeholder = UILabel()
 
-        placeholder.textAlignment = .left
         placeholder.translatesAutoresizingMaskIntoConstraints = false
+        placeholder.textAlignment = .left
 
         return placeholder
     }()
@@ -560,11 +561,6 @@ public class PBUITextField: UIView {
                 self.customRightView.rightAnchor.constraint(equalTo: self.customBorder.rightAnchor, constant: -self.leftPadding)
             ])
 
-            self.notEditingConstraints = [
-                self.customPlaceholder.leftAnchor.constraint(equalTo: self.customTextField.leftAnchor),
-                self.customPlaceholder.centerYAnchor.constraint(equalTo: self.customTextField.centerYAnchor)
-            ]
-
         case .underlined:
             NSLayoutConstraint.activate([
                 self.customTextField.leftAnchor.constraint(equalTo: self.customBorder.leftAnchor),
@@ -585,12 +581,16 @@ public class PBUITextField: UIView {
                 self.customRightView.centerYAnchor.constraint(equalTo: self.customTextField.centerYAnchor),
                 self.customRightView.rightAnchor.constraint(equalTo: self.customBorder.rightAnchor)
             ])
-
-            self.notEditingConstraints = [
-                self.customPlaceholder.leftAnchor.constraint(equalTo: self.customTextField.leftAnchor),
-                self.customPlaceholder.centerYAnchor.constraint(equalTo: self.customTextField.centerYAnchor)
-            ]
         }
+
+        NSLayoutConstraint.activate([
+            self.customPlaceholder.widthAnchor.constraint(equalTo: self.customTextField.widthAnchor)
+        ])
+
+        self.notEditingConstraints = [
+            self.customPlaceholder.leftAnchor.constraint(equalTo: self.customTextField.leftAnchor),
+            self.customPlaceholder.centerYAnchor.constraint(equalTo: self.customTextField.centerYAnchor)
+        ]
 
         NSLayoutConstraint.activate(self.notEditingConstraints)
         self.activeConstraints = self.notEditingConstraints
@@ -714,18 +714,14 @@ public class PBUITextField: UIView {
     }
 
     private func calculateEditingConstraints() {
-        let attributedStringPlaceholder = NSAttributedString(string: (self.placeholderText), attributes: [
-            NSAttributedString.Key.font : self.placeholderFont
-        ])
-        let originalWidth = attributedStringPlaceholder.boundingRect(with: CGSize(width: .greatestFiniteMagnitude, height: self.frame.height), options: [], context: nil).width
-
+        let originalWidth = customPlaceholder.bounds.width
         let xOffset = (originalWidth - (originalWidth * placeholderSizeFactor)) / 2
 
         switch self.textFieldStyle {
         case .bordered:
             self.editingConstraints = [
                 self.customPlaceholder.topAnchor.constraint(equalTo: self.topAnchor, constant: 6.0),
-                self.customPlaceholder.leftAnchor.constraint(equalTo: self.leftAnchor, constant: -xOffset + self.leftPadding)
+                self.customPlaceholder.leftAnchor.constraint(equalTo: self.customTextField.leftAnchor, constant: -xOffset)
             ]
         case .underlined:
             self.editingConstraints = [
@@ -736,7 +732,6 @@ public class PBUITextField: UIView {
     }
 
     private func animatePlaceholderIfNeeded(animationEnabled: Bool = true) {
-
         switch self.textFieldState {
         case .editing:
             self.animatePlaceholderToActivePosition()
@@ -755,48 +750,51 @@ public class PBUITextField: UIView {
 
     private func animatePlaceholderToActivePosition(animated: Bool = true) {
         self.calculateEditingConstraints()
-        self.layoutIfNeeded()
+
         NSLayoutConstraint.deactivate(self.activeConstraints)
         NSLayoutConstraint.activate(self.editingConstraints)
+
         self.activeConstraints = self.editingConstraints
 
         if animated {
             self.performAnimation {
-                self.layoutIfNeeded()
                 self.customPlaceholder.transform = CGAffineTransform(scaleX: self.placeholderSizeFactor, y: self.placeholderSizeFactor)
+
                 if self.textFieldStyle == .bordered {
                     self.customTextField.transform = CGAffineTransform(translationX: 0, y: 8)
-                } else {
-                    return
                 }
+
+                self.layoutIfNeeded()
             }
         } else {
             self.layoutIfNeeded()
+
             self.customPlaceholder.transform = CGAffineTransform(scaleX: self.placeholderSizeFactor, y: self.placeholderSizeFactor)
+            
             if self.textFieldStyle == .bordered {
                 self.customTextField.transform = CGAffineTransform(translationX: 0, y: 8)
-            } else {
-                return
             }
         }
     }
 
     private func animatePlaceholderToInactivePosition(animated: Bool = true) {
-        self.layoutIfNeeded()
         NSLayoutConstraint.deactivate(self.activeConstraints)
         NSLayoutConstraint.activate(self.notEditingConstraints)
+
         self.activeConstraints = self.notEditingConstraints
 
         if animated {
             self.performAnimation {
-                self.layoutIfNeeded()
                 self.customPlaceholder.transform = .identity
                 self.customTextField.transform = .identity
+
+                self.layoutIfNeeded()
             }
         } else {
-            self.layoutIfNeeded()
             self.customPlaceholder.transform = .identity
             self.customTextField.transform = .identity
+
+            self.layoutIfNeeded()
         }
     }
 

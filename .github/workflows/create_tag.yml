@@ -1,0 +1,50 @@
+name: Create tag and release
+on:
+  push:
+    branches: 
+      - main
+    paths-ignore:
+      - '**/*.md'
+      - '.gitignore'
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Get version number and release notes
+        id: version_and_notes
+        run: |
+          current_version=$(python CI/current_version.py)
+          release_notes=$(python CI/release_notes.py)
+          echo "::set-output name=tag::$current_version"
+          echo "::set-output name=notes::$release_notes"
+
+      - name: Create tag and release
+        uses: avakar/tag-and-release@v1
+        id: tag_and_release
+        with:
+          tag_name: ${{ steps.version_and_notes.outputs.tag }}
+          body: ${{ steps.version_and_notes.outputs.notes }}
+          release_name: 'v${{ steps.version_and_notes.outputs.tag }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Create branch from tag
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: 'release/v${{ steps.version_and_notes.outputs.tag }}'
+
+      - run: |
+          echo "Tag already present: ${{ env.TAG_EXISTS }}"
+
+      - run: |
+          echo "Tag already present: ${{ steps.tag_create.outputs.tag_exists }}"
