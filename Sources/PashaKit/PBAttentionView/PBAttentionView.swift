@@ -50,6 +50,13 @@ open class PBAttentionView: UIView {
         /// but isn't must.
         ///
         case low
+        
+        /// Informative level of attention
+        ///
+        /// Use this case for attentions which are `informative` to user
+        /// contains informations good to know
+        ///
+        case informative
 
         /// Intermediate level of attention
         ///
@@ -78,23 +85,23 @@ open class PBAttentionView: UIView {
 
     private lazy var multilineConstraints: [NSLayoutConstraint] = {
         return [
-            self.infoIcon.topAnchor.constraint(equalTo: self.topAnchor, constant: 16.0),
-            self.infoIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16.0),
-            self.infoBody.topAnchor.constraint(equalTo: self.topAnchor, constant: 16.0),
-            self.infoBody.leftAnchor.constraint(equalTo: self.infoIcon.rightAnchor, constant: 8.0),
-            self.infoBody.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16.0),
-            self.infoBody.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16.0)
+            self.infoIcon.topAnchor.constraint(equalTo: self.topAnchor, constant: 12.0),
+            self.infoIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 12.0),
+            self.infoBody.topAnchor.constraint(equalTo: self.topAnchor, constant: 12.0),
+            self.infoBody.leftAnchor.constraint(equalTo: self.infoIcon.rightAnchor, constant: 10.0),
+            self.infoBody.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -12.0),
+            self.infoBody.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -12.0)
         ]
     }()
 
     private lazy var singlelineConstraints: [NSLayoutConstraint] = {
         return [
             self.infoIcon.centerYAnchor.constraint(equalTo: self.infoBody.centerYAnchor),
-            self.infoIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16.0),
-            self.infoBody.topAnchor.constraint(equalTo: self.topAnchor, constant: 16.0),
-            self.infoBody.leftAnchor.constraint(equalTo: self.infoIcon.rightAnchor, constant: 8.0),
-            self.infoBody.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16.0),
-            self.infoBody.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16.0)
+            self.infoIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 12.0),
+            self.infoBody.topAnchor.constraint(equalTo: self.topAnchor, constant: 12.0),
+            self.infoBody.leftAnchor.constraint(equalTo: self.infoIcon.rightAnchor, constant: 10.0),
+            self.infoBody.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -12.0),
+            self.infoBody.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -12.0)
         ]
     }()
 
@@ -183,6 +190,10 @@ extension PBAttentionView {
             self.backgroundColor = UIColor.Colors.PBGrayTransparent
             self.infoBody.textColor = UIColor.Colors.PBBlackMedium
             self.infoIcon.image = UIImage.Images.icInfoGray
+        case .informative:
+            self.backgroundColor = UIColor.Colors.PBInfoYellowBG
+            self.infoBody.textColor = UIColor.Colors.PBInfoYellowFG
+            self.infoIcon.image = UIImage.Images.icInfoYellow
         case .medium:
             self.backgroundColor = UIColor.Colors.PBGrayTransparent
             self.infoBody.textColor = .darkText
