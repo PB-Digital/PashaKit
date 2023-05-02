@@ -69,17 +69,6 @@ class PBBaseUITextField: UITextField {
         }
     }
 
-    /// The keyboard type for text field.
-    ///
-    /// Text objects can be targeted for specific types of input, such as plain text, email, numeric entry, and so on.
-    ///
-    /// The keyboard style identifies what keys are available on the keyboard and which ones appear by default.
-    /// The default value for this property is UIKeyboardType.default.
-    ///
-    public func setKeyboardType(_ type: UIKeyboardType) {
-        self.keyboardType = type
-    }
-
     /// A Boolean value that determines whether the text is valid.
     ///
     /// Setting the value of this property to `false` it will change its text, placeholder and bottom border(if `hasBottomBorder` is true) color to `systemRed`
@@ -139,18 +128,7 @@ class PBBaseUITextField: UITextField {
     ///
     var bottomBorderThickness: CGFloat = 1.0 {
         didSet {
-            self.layoutIfNeeded()
-            NSLayoutConstraint.deactivate(self.activeConstraints)
-
-            self.editingConstraints = [
-                self.bottomBorder.heightAnchor.constraint(equalToConstant: self.bottomBorderThickness),
-                self.bottomBorder.leftAnchor.constraint(equalTo: self.leftAnchor),
-                self.bottomBorder.rightAnchor.constraint(equalTo: self.rightAnchor),
-                self.bottomBorder.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-            ]
-
-            NSLayoutConstraint.activate(self.editingConstraints)
-            self.activeConstraints = self.editingConstraints
+            self.updateBottomBorderConstraints()
         }
     }
 
@@ -203,11 +181,14 @@ class PBBaseUITextField: UITextField {
     private func setupConstraints() {
         self.addSubview(self.bottomBorder)
 
-        self.notEditingConstraints = [
-            self.bottomBorder.heightAnchor.constraint(equalToConstant: 1.0),
+        NSLayoutConstraint.activate([
             self.bottomBorder.leftAnchor.constraint(equalTo: self.leftAnchor),
             self.bottomBorder.rightAnchor.constraint(equalTo: self.rightAnchor),
             self.bottomBorder.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        ])
+
+        self.notEditingConstraints = [
+            self.bottomBorder.heightAnchor.constraint(equalToConstant: 1.0)
         ]
 
         NSLayoutConstraint.activate(self.notEditingConstraints)
@@ -220,6 +201,17 @@ class PBBaseUITextField: UITextField {
         self.attributedPlaceholder = self.isValid ? NSAttributedString(string: self.placeholder ?? "", attributes: [.foregroundColor: UIColor.Colors.PBGraySecondary]) :
         NSAttributedString(string: self.placeholder ?? "", attributes: [.foregroundColor: UIColor.systemRed])
         self.bottomBorder.backgroundColor = self.isValid ? UIColor.Colors.PBGreen : .systemRed
+    }
+
+    private func updateBottomBorderConstraints() {
+        NSLayoutConstraint.deactivate(self.activeConstraints)
+
+        self.editingConstraints = [
+            self.bottomBorder.heightAnchor.constraint(equalToConstant: self.bottomBorderThickness)
+        ]
+
+        NSLayoutConstraint.activate(self.editingConstraints)
+        self.activeConstraints = self.editingConstraints
     }
 
     override func textRect(forBounds bounds: CGRect) -> CGRect {
