@@ -81,8 +81,22 @@ public class PBUITextField: UIView {
 
     /// Defines the view size for the icon on the right side.
     ///
+    /// Based on frequent usage of similar sized icons, we defined 3 case:
+    ///  - `small`
+    ///  - `regular`
+    ///  - `custom` with given size parameter
+    ///
     public enum RightIconSize {
-        case small, regular
+        /// Constraints an icon to `16pt` width and `16pt` height
+        ///
+        case small
+
+        /// Constraints an icon to `24pt` width and `24pt` height
+        ///
+        case regular
+
+        /// Constraints an icon to given `CGSize`
+        ///
         case custom(CGSize)
     }
 
@@ -93,9 +107,16 @@ public class PBUITextField: UIView {
     /// input as it is shown on the screen. For that reason we are using `raw` case.
     ///
     public enum TextFieldTextFormat {
+        /// Returns the text inside of textfield by removing any whitespaces.
+        ///
         case whiteSpacesRemoved
+
+        /// Returns the text inside of textfield as it is displayed to user
+        ///
         case raw
     }
+
+    // MARK: - PUBLIC PROPERTIES
 
     public var id: String = ""
 
@@ -107,7 +128,6 @@ public class PBUITextField: UIView {
     public var placeholderText: String = "" {
         didSet {
             self.customPlaceholder.text = self.placeholderText
-            self.animatePlaceholderIfNeeded(animationEnabled: false)
         }
     }
 
@@ -115,30 +135,21 @@ public class PBUITextField: UIView {
     ///
     /// By default text field doesn't create footer label text. If you specify it, text field will be
     /// created with the `UILabel` under it.
+    ///
     public var footerLabelText: String? = nil {
         didSet {
             self.footerLabel.text = self.footerLabelText
-            self.setNeedsLayout()
         }
     }
 
     /// Sets the icon for displaying at the right end of text field.
     ///
-    /// If not specified, text field will be created without icon on the right. 
-    public var icon: UIImage? = nil {
+    /// If not specified, text field will be created without icon on the right.
+    ///
+    public var icon: UIImage? {
         didSet {
-            self.iconImage.image = self.icon
-            self.setupRightIconConstraints(for: self.iconSize)
-
-            if self.iconImage.image == nil {
-                self.customRightView.isHidden = true
-                self.customTextField.textFieldType = .plain
-            } else {
-                self.customRightView.isHidden = false
-                self.customTextField.textFieldType = .withRightImage
-            }
-
-            self.setNeedsLayout()
+            self.rightIconView.image = self.icon
+            self.rightIconView.isHidden = self.icon == nil
         }
     }
 
@@ -148,13 +159,8 @@ public class PBUITextField: UIView {
     /// setting this property to true, adds button to `hide` and `show` password with secured text.
     ///
     /// Secured text basically is traditional text field entry which replaces input info circular symbols for each letter.
+    ///
     public var isSecured: Bool = false {
-        didSet {
-            self.updateSecureEntry()
-        }
-    }
-
-    private var isRevealed: Bool = false {
         didSet {
             self.updateSecureEntry()
         }
@@ -180,7 +186,6 @@ public class PBUITextField: UIView {
     public var iconSize: RightIconSize = .regular {
         didSet {
             self.setupRightIconConstraints(for: self.iconSize)
-            self.setNeedsLayout()
         }
     }
 
@@ -195,29 +200,29 @@ public class PBUITextField: UIView {
     /// - card number with Luhn algorithm
     /// - email
     /// - password
+    ///
     public var isValid: PBTextFieldValidity = .valid {
         didSet {
             self.updateUI()
-            self.setNeedsLayout()
         }
     }
 
     /// Defines cursor color of textfield.
+    ///
     public  var placeholderCursorColor: UIColor = UIColor.Colors.PBGreen {
         didSet {
             self.customTextField.tintColor = self.placeholderCursorColor
-            self.setNeedsLayout()
         }
     }
 
     /// Sets the border color for text field when it's in `notEditing` state.
     ///
     /// By default this property will apply PBGraySecondary color to border.
+    ///
     public var defaultBorderColor: UIColor = UIColor.Colors.PBGraySecondary {
         didSet {
             if self.defaultBorderColor != oldValue {
                 self.updateUI()
-                self.setNeedsLayout()
             }
         }
     }
@@ -225,11 +230,11 @@ public class PBUITextField: UIView {
     /// Sets the border color for text field when it's in `editing` state for `bordered` style.
     ///
     /// By default this property will apply proper theme color to both types of border.
+    ///
     public  var editingBorderColor: UIColor = UIColor.Colors.PBGreen {
         didSet {
             if self.editingBorderColor != oldValue {
                 self.updateUI()
-                self.setNeedsLayout()
             }
         }
     }
@@ -237,11 +242,11 @@ public class PBUITextField: UIView {
     /// Sets the border color for text field when it's in `editing` state for `underlined` style.
     ///
     /// By default this property will apply proper theme color to both types of border.
+    ///
     public var textFieldBottomBorderColor: UIColor = UIColor.Colors.PBGreen {
         didSet {
             if self.textFieldBottomBorderColor != oldValue {
                 self.updateUI()
-                self.setNeedsLayout()
             }
         }
     }
@@ -249,11 +254,11 @@ public class PBUITextField: UIView {
     /// Sets the color for text field's `invalid` state.
     ///
     ///  By default this property will apply system red color to border, placeholder and footer label text color.
+    ///
     public var errorStateColor: UIColor = UIColor.systemRed {
         didSet {
             if self.errorStateColor != oldValue {
                 self.updateUI()
-                self.setNeedsLayout()
             }
         }
     }
@@ -261,6 +266,7 @@ public class PBUITextField: UIView {
     /// Sets color for placeholder text.
     ///
     /// By default this property will apply black color with alpha value of `0.6`.
+    ///
     public var placeholderTextColor: UIColor = UIColor.black.withAlphaComponent(0.6) {
         didSet {
             if self.placeholderTextColor != oldValue {
@@ -273,6 +279,7 @@ public class PBUITextField: UIView {
     /// Sets color for input text.
     ///
     /// By defualt this property will apply native darkText color.
+    ///
     public var textFieldTextColor: UIColor = UIColor.darkText {
         didSet {
             if self.textFieldTextColor != oldValue {
@@ -311,6 +318,7 @@ public class PBUITextField: UIView {
     ///
     /// When you need your PBUITextField to be open to gestures, but closed to manual input, just change the
     /// value of this property to `true`.
+    ///
     public var disableManualInput: Bool = false {
         didSet {
             self.customTextField.isUserInteractionEnabled = false
@@ -335,16 +343,27 @@ public class PBUITextField: UIView {
     ///     - text: The string literal you want to put into field
     ///     - animated: Boolean value defining whether text will be set with animation or not.
     ///     By default this value will be `false`.
+    ///
     public func set(text: String, animated: Bool = false) {
         guard text != self.customTextField.text else { return }
 
         self.inputMaskDelegate.put(text: text, into: self.customTextField)
-        if text.isEmpty {
-            self.animatePlaceholderToInactivePosition(animated: animated)
-        } else {
-            self.animatePlaceholderToActivePosition(animated: animated)
+
+        self.layoutCompletionBlock = {
+            if text.isEmpty {
+                self.animatePlaceholderToInactivePosition(animated: animated)
+            } else {
+                self.animatePlaceholderToActivePosition(animated: animated)
+            }
         }
+
         self.onTextSetted?(text)
+        self.layoutSubviews()
+    }
+
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layoutCompletionBlock?()
     }
 
     /// The keyboard type for text field.
@@ -355,7 +374,15 @@ public class PBUITextField: UIView {
     /// The default value for this property is UIKeyboardType.default.
     ///
     public func setKeyboardType(_ type: UIKeyboardType) {
-        self.customTextField.setKeyboardType(type)
+        self.customTextField.keyboardType = type
+    }
+
+    // MARK: - PRIVATE PROPERTIES
+
+    private var isRevealed: Bool = false {
+        didSet {
+            self.updateSecureEntry()
+        }
     }
 
     private var textFieldState: TextFieldState = .notEditing {
@@ -384,16 +411,19 @@ public class PBUITextField: UIView {
     }
 
     private var isComplete: Bool = false
+    private var layoutCompletionBlock: (() -> Void)?
+
+    // MARK: - VIEW HIERARCHY
 
     private lazy var customBorder: UIView = {
         let customBorder = UIView()
 
-        customBorder.frame = CGRect()
-        customBorder.layer.cornerRadius = 8
-        customBorder.layer.borderWidth = 1.0
-        customBorder.layer.borderColor = UIColor.Colors.PBGraySecondary.cgColor
-        customBorder.backgroundColor = .clear
         customBorder.translatesAutoresizingMaskIntoConstraints = false
+
+        customBorder.layer.cornerRadius = 12.0
+        customBorder.layer.borderWidth = 1.0
+        customBorder.layer.borderColor = self.defaultBorderColor.cgColor
+        customBorder.backgroundColor = .clear
 
         return customBorder
     }()
@@ -403,8 +433,22 @@ public class PBUITextField: UIView {
 
         placeholder.translatesAutoresizingMaskIntoConstraints = false
         placeholder.textAlignment = .left
+        placeholder.font = self.placeholderFont
+        placeholder.textColor = self.placeholderTextColor
 
         return placeholder
+    }()
+
+    private lazy var textFieldStack: UIStackView = {
+        let view = UIStackView()
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.axis = .horizontal
+        view.spacing = 8.0
+        view.alignment = .center
+        view.distribution = .fill
+
+        return view
     }()
 
     private lazy var customTextField: PBBaseUITextField = {
@@ -412,28 +456,20 @@ public class PBUITextField: UIView {
 
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
-        textField.backgroundColor = .clear
+        textField.textColor = self.textFieldTextColor
 
         return textField
     }()
 
-    private lazy var customRightView: UIView = {
-        let view = UIView()
-
-        view.contentMode = .scaleAspectFit
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        return view
-    }()
-
-    private lazy var iconImage: UIImageView = {
+    private lazy var rightIconView: UIImageView = {
         let view = UIImageView()
 
-        self.customRightView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFit
         view.isUserInteractionEnabled = true
+        view.layer.masksToBounds = true
         view.tintColor = self.theme.getPrimaryColor()
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onIconTap))
         view.addGestureRecognizer(tapGestureRecognizer)
@@ -503,34 +539,30 @@ public class PBUITextField: UIView {
     }
 
     private func setupViews() {
-
         self.addSubview(self.customBorder)
+
+        self.customBorder.addSubview(self.textFieldStack)
+
+        self.textFieldStack.addArrangedSubview(self.customTextField)
+        self.textFieldStack.addArrangedSubview(self.rightIconView)
+
         self.customBorder.addSubview(self.customPlaceholder)
-        self.customBorder.addSubview(self.customTextField)
-        self.customBorder.addSubview(self.customRightView)
-        self.customRightView.addSubview(self.iconImage)
+
         self.addSubview(self.footerLabel)
     }
 
     private func setupStyleOfTextField(basedOn style: TextFieldStyle) {
-
-        self.customPlaceholder.font = self.placeholderFont
-        self.customPlaceholder.textColor = self.placeholderTextColor
-        self.customPlaceholder.text = self.placeholderText
-        self.customTextField.textColor = self.textFieldTextColor
-
         switch style {
         case .bordered:
-            self.customTextField.hasBottomBorder = false
+            self.textFieldStack.removeExistingBottomBorder()
         case .underlined:
-            self.customTextField.hasBottomBorder = true
+            self.textFieldStack.addBottomBorder(thickness: 1.0, color: self.textFieldBottomBorderColor)
             self.customBorder.layer.borderWidth = 0.0
             self.customBorder.layer.borderColor = UIColor.clear.cgColor
         }
     }
 
     private func setupConstraints(for style: TextFieldStyle) {
-
         self.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -543,9 +575,9 @@ public class PBUITextField: UIView {
         switch style {
         case .bordered:
             NSLayoutConstraint.activate([
-                self.customTextField.leftAnchor.constraint(equalTo: self.customBorder.leftAnchor, constant: self.leftPadding),
-                self.customTextField.rightAnchor.constraint(equalTo: self.customBorder.rightAnchor, constant: -self.leftPadding),
-                self.customTextField.centerYAnchor.constraint(equalTo: self.customBorder.centerYAnchor)
+                self.textFieldStack.leftAnchor.constraint(equalTo: self.customBorder.leftAnchor, constant: self.leftPadding),
+                self.textFieldStack.rightAnchor.constraint(equalTo: self.customBorder.rightAnchor, constant: -self.leftPadding),
+                self.textFieldStack.centerYAnchor.constraint(equalTo: self.customBorder.centerYAnchor)
             ])
 
             NSLayoutConstraint.activate([
@@ -554,18 +586,11 @@ public class PBUITextField: UIView {
                 self.footerLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -self.leftPadding)
             ])
 
-            NSLayoutConstraint.activate([
-                self.customRightView.heightAnchor.constraint(equalToConstant: 24.0),
-                self.customRightView.widthAnchor.constraint(equalToConstant: 24.0),
-                self.customRightView.centerYAnchor.constraint(equalTo: self.customTextField.centerYAnchor),
-                self.customRightView.rightAnchor.constraint(equalTo: self.customBorder.rightAnchor, constant: -self.leftPadding)
-            ])
-
         case .underlined:
             NSLayoutConstraint.activate([
-                self.customTextField.leftAnchor.constraint(equalTo: self.customBorder.leftAnchor),
-                self.customTextField.rightAnchor.constraint(equalTo: self.customBorder.rightAnchor),
-                self.customTextField.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+                self.textFieldStack.leftAnchor.constraint(equalTo: self.customBorder.leftAnchor),
+                self.textFieldStack.rightAnchor.constraint(equalTo: self.customBorder.rightAnchor),
+                self.textFieldStack.bottomAnchor.constraint(equalTo: self.customBorder.bottomAnchor)
             ])
 
             NSLayoutConstraint.activate([
@@ -574,14 +599,14 @@ public class PBUITextField: UIView {
                 self.footerLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
                 self.footerLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
             ])
-
-            NSLayoutConstraint.activate([
-                self.customRightView.heightAnchor.constraint(equalToConstant: 24.0),
-                self.customRightView.widthAnchor.constraint(equalToConstant: 24.0),
-                self.customRightView.centerYAnchor.constraint(equalTo: self.customTextField.centerYAnchor),
-                self.customRightView.rightAnchor.constraint(equalTo: self.customBorder.rightAnchor)
-            ])
         }
+
+        self.activeRightIconConstraints = [
+            self.rightIconView.heightAnchor.constraint(equalToConstant: 24.0),
+            self.rightIconView.widthAnchor.constraint(equalToConstant: 24.0)
+        ]
+
+        NSLayoutConstraint.activate(self.activeRightIconConstraints)
 
         NSLayoutConstraint.activate([
             self.customPlaceholder.widthAnchor.constraint(equalTo: self.customTextField.widthAnchor)
@@ -592,42 +617,34 @@ public class PBUITextField: UIView {
             self.customPlaceholder.centerYAnchor.constraint(equalTo: self.customTextField.centerYAnchor)
         ]
 
-        NSLayoutConstraint.activate(self.notEditingConstraints)
         self.activeConstraints = self.notEditingConstraints
-
-        self.setNeedsLayout()
+        NSLayoutConstraint.activate(self.activeConstraints)
     }
 
     private func setupRightIconConstraints(for iconSize: RightIconSize) {
         NSLayoutConstraint.deactivate(self.activeRightIconConstraints)
 
         switch iconSize {
-        case .regular:
-            self.activeRightIconConstraints = [
-                self.iconImage.heightAnchor.constraint(equalToConstant: 24.0),
-                self.iconImage.widthAnchor.constraint(equalToConstant: 24.0),
-                self.iconImage.centerYAnchor.constraint(equalTo: self.customRightView.centerYAnchor),
-                self.iconImage.centerXAnchor.constraint(equalTo: self.customRightView.centerXAnchor)
-            ]
         case .small:
             self.activeRightIconConstraints = [
-                self.iconImage.heightAnchor.constraint(equalToConstant: 16.0),
-                self.iconImage.widthAnchor.constraint(equalToConstant: 16.0),
-                self.iconImage.centerYAnchor.constraint(equalTo: self.customRightView.centerYAnchor),
-                self.iconImage.centerXAnchor.constraint(equalTo: self.customRightView.centerXAnchor)
+                self.rightIconView.heightAnchor.constraint(equalToConstant: 16.0),
+                self.rightIconView.widthAnchor.constraint(equalToConstant: 16.0)
+            ]
+
+        case .regular:
+            self.activeRightIconConstraints = [
+                self.rightIconView.heightAnchor.constraint(equalToConstant: 24.0),
+                self.rightIconView.widthAnchor.constraint(equalToConstant: 24.0)
             ]
 
         case .custom(let iconSize):
             self.activeRightIconConstraints = [
-                self.iconImage.heightAnchor.constraint(equalToConstant: iconSize.height),
-                self.iconImage.widthAnchor.constraint(equalToConstant: iconSize.width),
-                self.iconImage.centerYAnchor.constraint(equalTo: self.customRightView.centerYAnchor),
-                self.iconImage.centerXAnchor.constraint(equalTo: self.customRightView.centerXAnchor)
+                self.rightIconView.heightAnchor.constraint(equalToConstant: iconSize.height),
+                self.rightIconView.widthAnchor.constraint(equalToConstant: iconSize.width)
             ]
         }
 
         NSLayoutConstraint.activate(self.activeRightIconConstraints)
-        self.customRightView.layoutIfNeeded()
     }
 
     private func updateUI() {
@@ -651,8 +668,6 @@ public class PBUITextField: UIView {
     private func updateInputBorder() {
         switch self.isValid {
         case .valid:
-            self.customPlaceholder.textColor = self.placeholderTextColor
-
             switch self.textFieldState {
             case .editing:
                 self.performAnimation { [weak self] in
@@ -669,13 +684,12 @@ public class PBUITextField: UIView {
                     self.customBorder.layer.borderWidth = 1.0
                 }
             }
-        case .invalid(_):
+        case .invalid:
             self.performAnimation { [weak self] in
                 guard let self = self else { return }
                 self.customPlaceholder.textColor = self.errorStateColor
                 self.customBorder.layer.borderColor = self.errorStateColor.cgColor
                 self.customBorder.layer.borderWidth = 1.0
-                self.customPlaceholder.textColor = self.errorStateColor
             }
         }
     }
@@ -683,49 +697,46 @@ public class PBUITextField: UIView {
     private func updateBottomBorder() {
         switch self.isValid {
         case .valid:
-            self.customPlaceholder.textColor = self.placeholderTextColor
-
             switch self.textFieldState {
             case .editing:
                 self.performAnimation { [weak self] in
                     guard let self = self else { return }
                     self.customPlaceholder.textColor = self.editingBorderColor
-                    self.customTextField.bottomBorderThickness = 2.0
-                    self.customTextField.bottomBorderColor = self.textFieldBottomBorderColor
+                    self.textFieldStack.updateExistingBottomBorderThickness(to: 2.0)
+                    self.textFieldStack.updateExistingBottomBorderColor(to: self.editingBorderColor)
                 }
             case .notEditing:
                 self.performAnimation { [weak self] in
                     guard let self = self else { return }
                     self.customPlaceholder.textColor = self.placeholderTextColor
-                    self.customTextField.bottomBorderThickness = 1.0
-                    self.customTextField.bottomBorderColor = self.textFieldBottomBorderColor
+                    self.textFieldStack.updateExistingBottomBorderThickness(to: 1.0)
+                    self.textFieldStack.updateExistingBottomBorderColor(to: self.textFieldBottomBorderColor)
                 }
             }
-        case .invalid(_):
+        case .invalid:
             self.performAnimation { [weak self] in
                 guard let self = self else { return }
                 self.customPlaceholder.textColor = self.errorStateColor
                 self.customBorder.layer.borderColor = self.errorStateColor.cgColor
-                self.customTextField.bottomBorderThickness = 1.0
-                self.customPlaceholder.textColor = self.errorStateColor
-                self.customTextField.bottomBorderColor = self.errorStateColor
+                self.textFieldStack.updateExistingBottomBorderThickness(to: 1.0)
+                self.textFieldStack.updateExistingBottomBorderColor(to: self.errorStateColor)
             }
         }
     }
 
-    private func calculateEditingConstraints() {
+    private func calculateEditingConstraints() -> [NSLayoutConstraint] {
         let originalWidth = customPlaceholder.bounds.width
         let xOffset = (originalWidth - (originalWidth * placeholderSizeFactor)) / 2
 
         switch self.textFieldStyle {
         case .bordered:
-            self.editingConstraints = [
+            return [
                 self.customPlaceholder.topAnchor.constraint(equalTo: self.topAnchor, constant: 6.0),
-                self.customPlaceholder.leftAnchor.constraint(equalTo: self.customTextField.leftAnchor, constant: -xOffset)
+                self.customPlaceholder.leftAnchor.constraint(equalTo: self.textFieldStack.leftAnchor, constant: -xOffset)
             ]
         case .underlined:
-            self.editingConstraints = [
-                self.customPlaceholder.bottomAnchor.constraint(equalTo: self.customTextField.topAnchor, constant: self.topPadding),
+            return [
+                self.customPlaceholder.bottomAnchor.constraint(equalTo: self.textFieldStack.topAnchor, constant: self.topPadding),
                 self.customPlaceholder.leftAnchor.constraint(equalTo: self.leftAnchor, constant: -xOffset)
             ]
         }
@@ -744,27 +755,22 @@ public class PBUITextField: UIView {
                 self.animatePlaceholderToActivePosition(animated: animationEnabled)
             }
         }
-
-        self.setNeedsLayout()
     }
 
     private func animatePlaceholderToActivePosition(animated: Bool = true) {
-        self.calculateEditingConstraints()
-
         NSLayoutConstraint.deactivate(self.activeConstraints)
-        NSLayoutConstraint.activate(self.editingConstraints)
-
-        self.activeConstraints = self.editingConstraints
+        self.activeConstraints = self.calculateEditingConstraints()
+        NSLayoutConstraint.activate(self.activeConstraints)
 
         if animated {
             self.performAnimation {
+                self.layoutIfNeeded()
+                
                 self.customPlaceholder.transform = CGAffineTransform(scaleX: self.placeholderSizeFactor, y: self.placeholderSizeFactor)
 
                 if self.textFieldStyle == .bordered {
                     self.customTextField.transform = CGAffineTransform(translationX: 0, y: 8)
                 }
-
-                self.layoutIfNeeded()
             }
         } else {
             self.layoutIfNeeded()
@@ -779,9 +785,8 @@ public class PBUITextField: UIView {
 
     private func animatePlaceholderToInactivePosition(animated: Bool = true) {
         NSLayoutConstraint.deactivate(self.activeConstraints)
-        NSLayoutConstraint.activate(self.notEditingConstraints)
-
         self.activeConstraints = self.notEditingConstraints
+        NSLayoutConstraint.activate(self.activeConstraints)
 
         if animated {
             self.performAnimation {
@@ -802,7 +807,7 @@ public class PBUITextField: UIView {
         self.placeholderCursorColor = self.theme.getPrimaryColor()
         self.editingBorderColor = self.theme.getPrimaryColor()
         self.textFieldBottomBorderColor = self.theme.getPrimaryColor()
-        self.iconImage.tintColor = self.theme.getPrimaryColor()
+        self.rightIconView.tintColor = self.theme.getPrimaryColor()
     }
 
     private func updateSecureEntry() {
@@ -836,7 +841,6 @@ public class PBUITextField: UIView {
     public func setInputView(view: UIView) {
         self.customTextField.inputView = view
     }
-
 
     /// Sets the contentType for text field
     ///
@@ -876,6 +880,14 @@ public class PBUITextField: UIView {
         self.customTextField.becomeFirstResponder()
     }
 
+    public func resetField() {
+        self.customTextField.text = nil
+        self.customTextField.resignFirstResponder()
+        self.footerLabel.text = self.footerLabelText
+        self.isValid = .valid
+        self.animatePlaceholderToInactivePosition(animated: false)
+    }
+
     public func addDoneButtonOnKeyboard(title: String) {
         self.customTextField.addDoneButtonOnKeyboard(title: title)
     }
@@ -889,6 +901,8 @@ public class PBUITextField: UIView {
     override public func resignFirstResponder() -> Bool {
         self.customTextField.resignFirstResponder()
     }
+
+    // MARK: - INPUT DELEGATES
 
     /// Get called when entered text updates.
     ///
