@@ -148,3 +148,77 @@ public extension UIView {
                 shadowRadius: 16))
     }
 }
+
+public extension UIView {
+
+    func addBottomBorder(thickness: CGFloat, color: UIColor) {
+        let border: UIView = self._getBorderView(forFrame: CGRect(x: 0, y: self.bounds.height - thickness, width: self.bounds.width, height: thickness),
+                                          color: color)
+        border.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
+        self.addSubview(border)
+    }
+
+    func updateExistingBottomBorderThickness(to newThickness: CGFloat) {
+        if let border = self.subviews.first(where: { $0.tag == 1 }) {
+            border.frame.size.height = newThickness
+        }
+    }
+
+    func updateExistingBottomBorderColor(to newColor: UIColor) {
+        if let border = self.subviews.first(where: { $0.tag == 1 }) {
+            border.backgroundColor = newColor
+        }
+    }
+
+    func removeExistingBottomBorder() {
+        if let border = self.subviews.first(where: { $0.tag == 1 }) {
+            border.removeFromSuperview()
+        }
+    }
+
+    private func _getBorderView(forFrame frame: CGRect, color: UIColor) -> UIView {
+        let view: UIView = UIView(frame: frame)
+        view.tag = 1
+        view.backgroundColor = color
+        return view
+    }
+}
+
+public extension UIView {
+    func addPerspectiveZoom(horizontalTilt xTilt: CGFloat, verticalTilt yTilt: CGFloat) {
+        let xAxisEffect = UIInterpolatingMotionEffect(keyPath: "center.x", type: .tiltAlongHorizontalAxis)
+        let yAxisEffect = UIInterpolatingMotionEffect(keyPath: "center.y", type: .tiltAlongVerticalAxis)
+
+        if xTilt != 0.0 {
+            xAxisEffect.minimumRelativeValue = -xTilt
+            xAxisEffect.maximumRelativeValue = xTilt
+
+            self.addMotionEffect(xAxisEffect)
+        }
+
+        if yTilt != 0.0 {
+            yAxisEffect.minimumRelativeValue = -xTilt
+            yAxisEffect.maximumRelativeValue = xTilt
+
+            self.addMotionEffect(yAxisEffect)
+        }
+    }
+}
+
+public extension UIView {
+    func applySubtractionMask(to view: UIView, maskRect: CGRect, cornerRadius: CGFloat = 0) {
+        let maskPath = UIBezierPath(rect: view.bounds)
+        let translatedMaskRect = view.convert(maskRect, from: view.superview)
+        let maskRectPath = UIBezierPath(roundedRect: translatedMaskRect, cornerRadius: cornerRadius)
+
+        maskPath.append(maskRectPath)
+        maskPath.usesEvenOddFillRule = true
+
+        let maskLayer = CAShapeLayer()
+        maskLayer.name = "subtraction_mask"
+        maskLayer.path = maskPath.cgPath
+        maskLayer.fillRule = .evenOdd
+
+        view.layer.mask = maskLayer
+    }
+}

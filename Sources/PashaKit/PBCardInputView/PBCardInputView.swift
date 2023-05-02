@@ -117,7 +117,7 @@ open class PBCardInputView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.font = UIFont.systemFont(ofSize: 24.0)
-        view.setKeyboardType(.numberPad)
+        view.keyboardType = .numberPad
         view.maskFormat = "[0000] [0000] [0000] [0000]"
         view.attributedPlaceholder = NSAttributedString(string: "0000 0000 0000 0000",
                                                         attributes: [
@@ -158,7 +158,7 @@ open class PBCardInputView: UIView {
 
         view.font = UIFont.systemFont(ofSize: 24.0)
         view.maskFormat = "[00] / [00]"
-        view.setKeyboardType(.numberPad)
+        view.keyboardType = .numberPad
         view.placeholder = "00 / 00"
         view.attributedPlaceholder = NSAttributedString(string: "00 / 00",
                                                         attributes: [
@@ -198,7 +198,7 @@ open class PBCardInputView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.font = UIFont.systemFont(ofSize: 24.0)
-        view.setKeyboardType(.numberPad)
+        view.keyboardType = .numberPad
         view.maskFormat = "[000]"
         view.placeholder = "000"
         view.isSecured = true

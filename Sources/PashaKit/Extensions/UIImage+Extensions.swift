@@ -43,6 +43,7 @@ extension UIImage {
         static let icChevronBottom = UIImage(named: "ic_chevron_bottom", in: Bundle.module, compatibleWith: nil)
         static let icChevronRight = UIImage(named: "ic_chevron_right", in: Bundle.module, compatibleWith: nil)
         static let icInfoDark = UIImage(named: "ic_info_dark", in: Bundle.module, compatibleWith: nil)
+        static let icInfoYellow = UIImage(named: "ic_info_yellow", in: Bundle.module, compatibleWith: nil)
         static let icInfoGray = UIImage(named: "ic_info_gray", in: Bundle.module, compatibleWith: nil)
         static let icInfoRed = UIImage(named: "ic_info_red", in: Bundle.module, compatibleWith: nil)
         static let icLogoWhite = UIImage(named: "ic_logo_white", in: Bundle.module, compatibleWith: nil)
