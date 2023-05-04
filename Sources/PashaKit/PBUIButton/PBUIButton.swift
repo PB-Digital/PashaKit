@@ -138,7 +138,6 @@ public class PBUIButton: UIButton {
     public var buttonTintColor: UIColor = UIColor.white {
         didSet {
             self.tintColor = self.buttonTintColor
-            self.setTitleColor(self.buttonTintColor, for: .normal)
         }
     }
 
@@ -188,6 +187,12 @@ public class PBUIButton: UIButton {
     public var styleOfButton: PBUIButtonStyle = .filled {
         didSet {
             self.prepareButtonByStyle()
+        }
+    }
+
+    public var isDisabled: Bool = false {
+        didSet {
+            self.makeButton(disabled: self.isDisabled)
         }
     }
 
@@ -272,6 +277,20 @@ public class PBUIButton: UIButton {
 
     private func makeCloseButton() {
         self.styleOfButton = .plain
+    }
+
+    private func makeButton(disabled: Bool) {
+        let currentButtonStyle = self.styleOfButton
+
+        if disabled {
+            self.isUserInteractionEnabled = false
+            self.borderColor = UIColor.Colors.PBGray90
+            self.baseBackgroundColor = UIColor.Colors.PBGray90
+            self.buttonTintColor = UIColor.Colors.PBGray70
+        } else {
+            self.isUserInteractionEnabled = true
+            self.styleOfButton = currentButtonStyle
+        }
     }
 
     private func setupDefaults() {
