@@ -392,7 +392,16 @@ public class PBUITextField: UIView {
         }
     }
 
-    private let inputMaskDelegate = MaskedTextFieldDelegate()
+    private lazy var inputMaskDelegate: MaskedTextFieldDelegate = {
+        let delegate = MaskedTextFieldDelegate()
+
+        delegate.primaryMaskFormat = self.maskFormat
+        delegate.delegate = self
+        delegate.autocomplete = false
+
+        return delegate
+    }()
+
     private let topPadding: CGFloat = 8.0
     private let placeholderFont = UIFont.systemFont(ofSize: 17, weight: .regular)
     private let placeholderSizeFactor: CGFloat = 0.73
@@ -520,9 +529,7 @@ public class PBUITextField: UIView {
         self.setupViews()
         self.textFieldStyle = style
         self.prepareTextField(for: style)
-        self.inputMaskDelegate.primaryMaskFormat = self.maskFormat
-        self.inputMaskDelegate.delegate = self
-        self.inputMaskDelegate.autocomplete = false
+
         self.customTextField.delegate = self.inputMaskDelegate
 
         self.customTextField.tintColor = self.placeholderCursorColor
@@ -823,6 +830,11 @@ public class PBUITextField: UIView {
         }
     }
 
+    @objc private func onIconTap() {
+        self.onActionIcon?()
+        self.isRevealed = !self.isRevealed
+    }
+
     /// Changes input accessory view with given view
     ///
     /// - Parameters:
@@ -869,17 +881,14 @@ public class PBUITextField: UIView {
         return self.isComplete
     }
 
-    @objc private func onIconTap() {
-        self.onActionIcon?()
-        self.isRevealed = !self.isRevealed
-    }
-
     /// Makes text field become first responder.
     ///
     public func makeFirstResponder() {
         self.customTextField.becomeFirstResponder()
     }
 
+    /// Resets text field to its initial form at the beginning
+    ///
     public func resetField() {
         self.customTextField.text = nil
         self.customTextField.resignFirstResponder()
@@ -927,7 +936,6 @@ public class PBUITextField: UIView {
 }
 
 extension PBUITextField: MaskedTextFieldDelegateListener {
-
     open func textField(
             _ textField: UITextField,
             didFillMandatoryCharacters complete: Bool,
