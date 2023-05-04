@@ -17,7 +17,7 @@ To integrate PashaKit, specify it as a dependency in your XCode project or <code
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/PB-Digital/PashaKit.git", exact: "1.0.0"),
+    .package(url: "https://github.com/PB-Digital/PashaKit.git", exact: "the_version_you_want"),
 ],
 ```
 
