@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  GradientView.swift
 //  
 //
 //  Created by Murad on 06.12.22.

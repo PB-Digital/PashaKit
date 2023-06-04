@@ -112,7 +112,7 @@ class PBBaseUITextField: UITextField {
     /// By default if you enable `hasBottomBorder` the added border will have `PBGreen` color.
     /// Use this property to change it.
     ///
-    var bottomBorderColor: UIColor = UIColor.Colors.PBGreen {
+    var bottomBorderColor: UIColor = UIColor.PBMeadow.main {
         didSet {
             self.performAnimation { [weak self] in
                 guard let self = self else { return }
@@ -143,7 +143,7 @@ class PBBaseUITextField: UITextField {
     private lazy var bottomBorder: UIView = {
         let view = UIView()
 
-        view.backgroundColor = UIColor.Colors.PBGreen
+        view.backgroundColor = UIColor.PBMeadow.main
         view.translatesAutoresizingMaskIntoConstraints = false
 
         return view
@@ -167,7 +167,7 @@ class PBBaseUITextField: UITextField {
     func setupViews() {
         self.borderStyle = .none
         self.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        self.tintColor = UIColor.Colors.PBGreen
+        self.tintColor = UIColor.PBMeadow.main
         self.translatesAutoresizingMaskIntoConstraints = false
         self.autocorrectionType = .no
 
@@ -200,7 +200,7 @@ class PBBaseUITextField: UITextField {
         self.textColor = self.isValid ? UIColor.white : UIColor.systemRed
         self.attributedPlaceholder = self.isValid ? NSAttributedString(string: self.placeholder ?? "", attributes: [.foregroundColor: UIColor.Colors.PBGraySecondary]) :
         NSAttributedString(string: self.placeholder ?? "", attributes: [.foregroundColor: UIColor.systemRed])
-        self.bottomBorder.backgroundColor = self.isValid ? UIColor.Colors.PBGreen : .systemRed
+        self.bottomBorder.backgroundColor = self.isValid ? UIColor.PBMeadow.main : .systemRed
     }
 
     private func updateBottomBorderConstraints() {

@@ -45,10 +45,30 @@ import UIKit
 ///
 public class PBUIButton: UIButton {
 
-    public enum PBUIButtonType {
-        case custom
-        case share
-        case close
+    /// Selection states for `PBUIButton`
+    ///
+    /// By default all the instances of the button will be created as in their `normal` states.
+    /// However depending on the properties and user actions, the state of
+    /// `PBUIButton` can change to `highlighted` or `disabled` states.
+    ///
+    public enum PBUIButtonState {
+        /// Normal state of button. This will render `PBUIButton` based on its
+        /// given style. Nothing will be added or configured on this state.
+        ///
+        case normal
+
+        /// Selected or highlighted state of `PBUIButton`. This state will be set itself
+        /// as a current state of `PBUIButton` when it will receive a touch from user.
+        ///
+        /// By default highlighted state will make selection effect by shrinking
+        /// button's scale and making its color more tinted on its `normal` state.
+        ///
+        case highlighted
+
+        /// Disabled state of `PBUIButton` applies specific color overlay to the button
+        /// depending on the value of `disabledBackgroundColor`
+        ///
+        case disabled
     }
 
     /// Specifies the style of button
@@ -83,7 +103,7 @@ public class PBUIButton: UIButton {
         case outlined
     }
 
-    private var seconds: Int = 0
+    // MARK: - PUBLIC PROPERTIES
 
     /// Sets the title to use for normal state.
     ///
@@ -94,9 +114,19 @@ public class PBUIButton: UIButton {
     /// func setTitle(_ title: String?, for state: UIControl.State)
     /// ```
     ///
-    public var buttonTitle: String = "" {
+    public var buttonTitle: String? {
+        get {
+            self.title(for: .normal)
+        }
+
+        set {
+            self.setTitle(newValue, for: .normal)
+        }
+    }
+
+    public var titleFont: UIFont = UIFont.systemFont(ofSize: 17, weight: .semibold) {
         didSet {
-            self.setTitle(self.buttonTitle, for: .normal)
+            self.titleLabel?.font = self.titleFont
         }
     }
 
@@ -106,8 +136,12 @@ public class PBUIButton: UIButton {
     /// leftImage in future, just set the desired image to this property.
     ///
     public var leftImage: UIImage? {
-        didSet {
-            self.setImage(self.leftImage, for: .normal)
+        get {
+            self.image(for: .normal)
+        }
+
+        set {
+            self.setImage(newValue, for: .normal)
         }
     }
 
@@ -116,28 +150,34 @@ public class PBUIButton: UIButton {
     /// By default it will set 16.0 to corner radius property of button.
     ///
     public var cornerRadius: CGFloat = 16.0 {
-        didSet {
-            self.layer.cornerRadius = self.cornerRadius
+        didSet(cornerRadius) {
+            self.layer.borderWidth = cornerRadius
         }
     }
 
-    /// Button's background color.
-    ///
-    /// By default button will be created with the background color for selected button style.
-    ///
-    public var baseBackgroundColor: UIColor = UIColor.Colors.PBGreen {
-        didSet {
-            self.backgroundColor = self.baseBackgroundColor
+    public var borderWidth: CGFloat = 0.0 {
+        didSet(borderWidth) {
+            self.layer.borderWidth = borderWidth
         }
     }
 
-    /// The tint color to apply to the button title and image.
-    ///
-    /// By default button will be created with the tint color for selected button style.
-    ///
-    public var buttonTintColor: UIColor = UIColor.white {
-        didSet {
-            self.tintColor = self.buttonTintColor
+    public override var backgroundColor: UIColor? {
+        get {
+            return self._backgroundColors[.normal]
+        }
+
+        set(backgroundColor) {
+            self._backgroundColors[.normal] = backgroundColor ?? .PBMeadow.background
+        }
+    }
+
+    public override var tintColor: UIColor! {
+        get {
+            return self._tintColors[.normal]
+        }
+
+        set(tintColor) {
+            self._tintColors[.normal] = tintColor ?? .white
         }
     }
 
@@ -145,18 +185,13 @@ public class PBUIButton: UIButton {
     ///
     /// By default button will be created with the border color for selected button style.
     ///
-    public var borderColor: UIColor = UIColor.Colors.PBGreen {
-        didSet {
-            switch self.styleOfButton {
-            case .plain:
-                self.layer.borderColor = UIColor.clear.cgColor
-            case .tinted:
-                self.layer.borderColor = UIColor.clear.cgColor
-            case .filled:
-                self.layer.borderColor = self.borderColor.cgColor
-            case .outlined:
-                self.layer.borderColor = self.borderColor.cgColor
-            }
+    public var borderColor: UIColor? {
+        get {
+            return self._borderColors[.normal]
+        }
+
+        set(borderColor) {
+            self._borderColors[.normal] = tintColor ?? .PBMeadow.background
         }
     }
 
@@ -168,15 +203,9 @@ public class PBUIButton: UIButton {
     /// * Title color
     /// * Tint color
     ///
-    public var theme: PBUIButtonTheme = .regular {
+    public var theme: PBUIButtonTheme? {
         didSet {
-            self.prepareButtonByStyle()
-        }
-    }
-
-    private var typeOfButton: PBUIButtonType = .custom {
-        didSet {
-            self.prepareButtonByType()
+            self.setupColorScheme(with: self.styleOfButton)
         }
     }
 
@@ -186,119 +215,235 @@ public class PBUIButton: UIButton {
     ///
     public var styleOfButton: PBUIButtonStyle = .filled {
         didSet {
-            self.prepareButtonByStyle()
+            self.setupColorScheme(with: self.styleOfButton)
         }
     }
 
-    public var isDisabled: Bool = false {
+    public override var isEnabled: Bool {
         didSet {
-            self.makeButton(disabled: self.isDisabled)
+            if self.isEnabled {
+                self._state = .normal
+            } else {
+                self._state = .disabled
+            }
         }
     }
 
-    override private init(frame: CGRect) {
+    private var _state: PBUIButtonState = .normal {
+        didSet {
+            switch self._state {
+            case .normal:
+                makeButton(enabled: true)
+            case .highlighted:
+                makeButton(highlighted: true)
+            case .disabled:
+                makeButton(enabled: false)
+            }
+        }
+    }
+
+    private lazy var _backgroundColors: [PBUIButtonState : UIColor] = [:] {
+        didSet {
+            self.updateColorScheme(for: self._state)
+        }
+    }
+
+    private lazy var _tintColors: [PBUIButtonState : UIColor] = [:] {
+        didSet {
+            self.updateColorScheme(for: self._state)
+        }
+    }
+
+    private lazy var _borderColors: [PBUIButtonState: UIColor] = [:] {
+        didSet {
+            self.updateColorScheme(for: self._state)
+        }
+    }
+
+    override init(frame: CGRect) {
         super.init(frame: frame)
+        self.commonInit()
     }
 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    /// Creates a new button of specified style.
-    ///
-    /// - Parameters:
-    ///    - localizableTitle: Sets the title text for button.
-    ///    - styleOfButton: Sets the style of button.
-    ///
-    public convenience init(localizableTitle: String, styleOfButton: PBUIButtonStyle = .filled) {
-        self.init(type: .system)
-        self.setupDefaults()
-        self.setTitle(localizableTitle, for: .normal)
-        self.styleOfButton = styleOfButton
-        self.prepareButtonByStyle()
-    }
-
-    public convenience init(localizableTitle: String, typeOfButton: PBUIButtonType) {
-        self.init(type: .system)
-        self.setupDefaults()
-        self.setTitle(localizableTitle, for: .normal)
-        self.buttonTitle = localizableTitle
-        self.typeOfButton = typeOfButton
-        self.prepareButtonByType()
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.commonInit()
     }
 
     public convenience init() {
         self.init(localizableTitle: "")
     }
 
-    private func prepareButtonByStyle() {
-        switch self.styleOfButton {
-        case .plain:
-            self.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-            self.baseBackgroundColor = .clear
-            self.buttonTintColor = self.theme.getPrimaryColor()
-            self.borderColor = UIColor.clear
-        case .tinted:
-            self.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-            self.baseBackgroundColor = self.theme.getPrimaryColor().withAlphaComponent(0.1)
-            self.buttonTintColor = self.theme.getPrimaryColor()
-            self.borderColor = self.theme.getPrimaryColor().withAlphaComponent(0.1)
-        case .filled:
-            self.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-            self.baseBackgroundColor = self.theme.getPrimaryColor()
-            self.buttonTintColor = UIColor.white
-            self.borderColor = self.theme.getPrimaryColor()
-        case .outlined:
-            self.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
-            self.baseBackgroundColor = .clear
-            self.borderColor = self.theme.getPrimaryColor()
-            self.buttonTintColor = self.theme.getPrimaryColor()
-            self.layer.borderWidth = 1.5
+    /// Creates a new button of specified style.
+    ///
+    /// - Parameters:
+    ///    - localizableTitle: Sets the title text for button.
+    ///    - style: Sets the style of button.
+    ///
+    public convenience init(localizableTitle: String, styleOfButton: PBUIButtonStyle = .filled) {
+        self.init(type: .custom)
+
+        self.buttonTitle = localizableTitle
+        self.styleOfButton = styleOfButton
+
+        self.commonInit()
+    }
+
+    private func commonInit() {
+        self.setupDefaults()
+
+        self.setTitle(self.buttonTitle, for: .normal)
+        self.setupColorScheme(with: self.styleOfButton)
+    }
+
+    private func setupColorScheme(with style: PBUIButtonStyle) {
+        if let theme = self.theme {
+            switch style {
+            case .plain:
+                self.set(backgroundColor: .clear, for: [.normal, .highlighted])
+                self.set(borderColor: .clear, for: [.normal, .highlighted])
+                self.set(tintColor: theme.getPrimaryColor(), for: [.normal, .highlighted])
+            case .tinted:
+                self.set(backgroundColor: theme.getPrimaryColor().withAlphaComponent(0.14), for: .normal)
+                self.set(backgroundColor: theme.getPrimaryColor().withAlphaComponent(0.24), for: .highlighted)
+
+                self.set(borderColor: theme.getPrimaryColor().withAlphaComponent(0.14), for: .normal)
+                self.set(borderColor: theme.getPrimaryColor().withAlphaComponent(0.24), for: .highlighted)
+
+                self.set(tintColor: theme.getPrimaryColor(), for: [.normal, .highlighted])
+            case .filled:
+                self.set(backgroundColor: theme.getPrimaryColor(), for: .normal)
+                self.set(backgroundColor: theme.getSecondaryColor(), for: .highlighted)
+
+                self.set(borderColor: theme.getPrimaryColor(), for: [.normal, .highlighted])
+
+                self.set(tintColor: .white, for: [.normal, .highlighted])
+            case .outlined:
+                self.set(backgroundColor: .clear, for: [.normal, .highlighted])
+                self.set(borderColor: theme.getPrimaryColor(), for: [.normal, .highlighted])
+                self.set(tintColor: theme.getPrimaryColor(), for: [.normal, .highlighted])
+            }
+
+            self.set(backgroundColor: .PBGray90, for: .disabled)
+            self.set(borderColor: .PBGray90, for: .disabled)
+            self.set(tintColor: .PBGray70, for: .disabled)
         }
     }
 
-    private func prepareButtonByType() {
-        switch self.typeOfButton {
-        case .custom:
-            self.styleOfButton = .plain
-        case .share:
-            self.makeShareButton()
-        case .close:
-            self.makeCloseButton()
-        }
+    private func updateColorScheme(for state: PBUIButtonState) {
+        self.updateBackgroundColor(to: self._backgroundColors[state])
+        self.updateBorderColor(to: self._borderColors[state])
+        self.updateTintColor(to: self._tintColors[state])
     }
 
-    private func makeShareButton() {
-        self.styleOfButton = .filled
-        self.setImage(UIImage.Images.icShare, for: .normal)
-        self.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
-    }
-
-    private func makeCloseButton() {
-        self.styleOfButton = .plain
-    }
-
-    private func makeButton(disabled: Bool) {
-        let currentButtonStyle = self.styleOfButton
-
-        if disabled {
-            self.isUserInteractionEnabled = false
-            self.borderColor = UIColor.Colors.PBGray90
-            self.baseBackgroundColor = UIColor.Colors.PBGray90
-            self.buttonTintColor = UIColor.Colors.PBGray70
-        } else {
+    private func makeButton(enabled: Bool) {
+        if enabled {
             self.isUserInteractionEnabled = true
-            self.styleOfButton = currentButtonStyle
+            self.updateColorScheme(for: PBUIButtonState.normal)
+        } else {
+            self.isUserInteractionEnabled = false
+            self.updateColorScheme(for: PBUIButtonState.disabled)
         }
+    }
+
+    private func makeButton(highlighted: Bool) {
+        self.updateColorScheme(for: PBUIButtonState.highlighted)
+    }
+
+    private func updateBackgroundColor(to newValue: UIColor?) {
+        switch self.styleOfButton {
+        case .plain, .outlined:
+            super.backgroundColor = .clear
+        case .tinted:
+            if let newValue {
+                if newValue.rgba.alpha >= 1.0 {
+                    super.backgroundColor = newValue.withAlphaComponent(0.14)
+                } else {
+                    super.backgroundColor = newValue
+                }
+            }
+        case .filled:
+            super.backgroundColor = newValue
+        }
+    }
+
+    private func updateBorderColor(to newValue: UIColor?) {
+        switch self.styleOfButton {
+        case .plain, .tinted:
+            super.layer.borderColor = UIColor.clear.cgColor
+        case .filled, .outlined:
+            super.layer.borderColor = newValue?.cgColor
+        }
+    }
+
+    private func updateTintColor(to newValue: UIColor?) {
+        super.tintColor = newValue
+        self.setTitleColor(newValue, for: .normal)
+        self.imageView?.tintColor = newValue
     }
 
     private func setupDefaults() {
-        self.layer.cornerRadius = self.cornerRadius
+        self.layer.cornerRadius = 16.0
+        self.layer.borderWidth = 2.0
         self.layer.masksToBounds = true
-        self.layer.borderWidth = 1.0
         self.translatesAutoresizingMaskIntoConstraints = false
         self.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         self.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
+    }
+
+    public func set(backgroundColor: UIColor, for state: PBUIButtonState) {
+        set(backgroundColor: backgroundColor, for: [state])
+    }
+
+    public func set(backgroundColor: UIColor, for states: [PBUIButtonState]) {
+        setColors(&_backgroundColors, backgroundColor, for: states)
+    }
+
+    public func set(borderColor: UIColor, for state: PBUIButtonState) {
+        set(borderColor: borderColor, for: [state])
+    }
+
+    public func set(borderColor: UIColor, for states: [PBUIButtonState]) {
+        setColors(&_borderColors, borderColor, for: states)
+    }
+
+    public func set(tintColor: UIColor, for state: PBUIButtonState) {
+        set(tintColor: tintColor, for: [state])
+    }
+
+    public func set(tintColor: UIColor, for states: [PBUIButtonState]) {
+        setColors(&_tintColors, tintColor, for: states)
+    }
+
+    private func setColors(_ colorDictionary: inout [PBUIButtonState: UIColor], _ color: UIColor, for states: [PBUIButtonState]) {
+        states.forEach { state in
+            colorDictionary[state] = color
+        }
+    }
+}
+
+extension PBUIButton {
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        self.performAnimation { [weak self] in
+            self?.transform = CGAffineTransform(scaleX: 0.98, y: 0.98)
+            self?._state = .highlighted
+        }
+    }
+
+    public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+        self.performAnimation { [weak self] in
+            self?.transform = .identity
+            self?._state = .normal
+        }
+    }
+
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        self.performAnimation { [weak self] in
+            self?.transform = .identity
+            self?._state = .normal
+        }
     }
 }

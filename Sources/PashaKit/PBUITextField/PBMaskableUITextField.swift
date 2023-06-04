@@ -38,7 +38,7 @@ import InputMask
 ///
 class PBMaskableUITextField: PBBaseUITextField {
 
-    private let inputMaskDelegate = MaskedTextFieldDelegate()
+    private let inputMaskDelegate = MaskedTextInputListener()
 
 
     /// Sets masking format for input text.

@@ -270,7 +270,7 @@ public class PBSelectableRowView: PBBaseSelectableView {
         }
     }
 
-    public var checkboxTintColor: UIColor = UIColor.Colors.PBGray40 {
+    public var checkboxTintColor: UIColor = UIColor.PBGray40 {
         didSet {
             if self.checkboxTintColor != oldValue {
                 self.checkBoxDefault.tintColor = self.checkboxTintColor

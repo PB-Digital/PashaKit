@@ -36,10 +36,12 @@ extension UIView {
             view.removeFromSuperview()
         }
 
-        let customView = GradientView.init(frame: self.bounds,
-                                           colorPoints: gradientConfig.colorPoints,
-                                           angle: gradientConfig.angle,
-                                           isReversed: gradientConfig.isReversed)
+        let customView = GradientView(
+            frame: self.bounds,
+            colorPoints: gradientConfig.colorPoints,
+            angle: gradientConfig.angle,
+            isReversed: gradientConfig.isReversed
+        )
 
         self.insertSubview(customView, at: 0)
         customView.fillSuperview()
@@ -59,18 +61,44 @@ extension UIView {
             self.rightAnchor.constraint(equalTo: parent.rightAnchor)
         ])
     }
+
+    public func set(height: CGFloat) {
+        if self.translatesAutoresizingMaskIntoConstraints {
+            self.translatesAutoresizingMaskIntoConstraints = false
+        }
+
+        NSLayoutConstraint.activate([
+            self.heightAnchor.constraint(equalToConstant: height)
+        ])
+    }
 }
 
 extension UIView {
-    func performAnimation(transform: CGAffineTransform) {
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, animations: {
-            self.transform = transform
-            self.layoutIfNeeded()
-        }, completion: nil)
+    func performAnimation(transform: CGAffineTransform, completion: ((Bool) -> Void)? = nil) {
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            usingSpringWithDamping: 1,
+            initialSpringVelocity: 1,
+            options: [.allowUserInteraction],
+            animations: {
+                self.transform = transform
+                self.layoutIfNeeded()
+            },
+            completion: completion
+        )
     }
 
-    func performAnimation(animation: @escaping (() -> Void)) {
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, animations: animation, completion: nil)
+    func performAnimation(animation: @escaping (() -> Void), completion: ((Bool) -> Void)? = nil) {
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            usingSpringWithDamping: 1,
+            initialSpringVelocity: 1,
+            options: [.allowUserInteraction],
+            animations: animation,
+            completion: completion
+        )
     }
 }
 
@@ -197,8 +225,8 @@ public extension UIView {
         }
 
         if yTilt != 0.0 {
-            yAxisEffect.minimumRelativeValue = -xTilt
-            yAxisEffect.maximumRelativeValue = xTilt
+            yAxisEffect.minimumRelativeValue = -yTilt
+            yAxisEffect.maximumRelativeValue = yTilt
 
             self.addMotionEffect(yAxisEffect)
         }

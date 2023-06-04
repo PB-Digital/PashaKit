@@ -37,10 +37,10 @@ import UIKit
 // - retail
 //
 // Each type of users have different accessibilities to PashaBank's services. On the UI side they
-// have differnt types of themes. Premimum customers' main color is PBFauxChestnut, which
+// have differnt types of themes. Premimum customers' main color is PBAlmondMain, which
 // is similar to brown, bronze color tones.
 //
-// However retail customers' main color is  PBGreen which is unique tone of green color.
+// However retail customers' main color is  PBMeadowMain which is unique tone of green color.
 //
 // Following enums are dedicated to adapt components to application's theme
 // 
@@ -64,9 +64,9 @@ public enum PBUIButtonTheme {
     func getPrimaryColor() -> UIColor {
         switch self {
         case .regular:
-            return UIColor.Colors.PBGreen
+            return UIColor.PBMeadow.main
         case .dark:
-            return UIColor.Colors.PBFauxChestnut
+            return UIColor.PBAlmond.main
         case .gray:
             return UIColor.black
         }
@@ -75,11 +75,11 @@ public enum PBUIButtonTheme {
     func getSecondaryColor() -> UIColor {
         switch self {
         case .regular:
-            return UIColor.Colors.PBGreenSecondary
+            return UIColor.PBMeadow.text
         case .dark:
-            return UIColor.Colors.PBFauxChestnut.withAlphaComponent(0.08)
+            return UIColor.PBAlmond.text
         case .gray:
-            return UIColor.Colors.PBGrayTransparent
+            return .clear
         }
     }
 }
@@ -90,9 +90,9 @@ public enum PBUITextFieldTheme {
     func getPrimaryColor() -> UIColor {
         switch self {
         case .regular:
-            return UIColor.Colors.PBGreen
+            return UIColor.PBMeadow.main
         case .dark:
-            return UIColor.Colors.PBFauxChestnut
+            return UIColor.PBAlmond.main
         }
     }
 }
@@ -103,9 +103,9 @@ public enum PBSelectableViewTheme {
     func getPrimaryColor() -> UIColor {
         switch self {
         case .regular:
-            return UIColor.Colors.PBGreen
+            return UIColor.PBMeadow.main
         case .dark:
-            return UIColor.Colors.PBFauxChestnut
+            return UIColor.PBAlmond.main
         }
     }
 
@@ -114,7 +114,7 @@ public enum PBSelectableViewTheme {
         case .regular:
             return UIColor.Colors.PBGreenSecondary
         case .dark:
-            return UIColor.Colors.PBFauxChestnut.withAlphaComponent(0.08)
+            return UIColor.PBAlmond.main.withAlphaComponent(0.08)
         }
     }
 }

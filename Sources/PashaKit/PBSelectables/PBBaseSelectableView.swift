@@ -105,7 +105,7 @@ open class PBBaseSelectableView: UIView {
     ///
     /// If theme option is not specified, this property will be in PBGreen color.
     ///
-    var selectedBorderColor: UIColor = UIColor.Colors.PBGreen {
+    var selectedBorderColor: UIColor = UIColor.PBMeadow.main {
         didSet {
             if self.selectedBorderColor != oldValue {
                 self.updateUI()
