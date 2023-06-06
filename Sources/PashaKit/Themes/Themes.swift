@@ -56,6 +56,15 @@ public enum PBCardInputViewTheme {
             return UIColor.black
         }
     }
+    
+    func getCursorColor() -> UIColor {
+        switch self {
+        case .regular:
+            return UIColor.Colors.PBGreen
+        case .dark:
+            return UIColor.Colors.PBFauxChestnut
+        }
+    }
 }
 
 public enum PBUIButtonTheme {
