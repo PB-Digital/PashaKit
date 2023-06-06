@@ -311,6 +311,9 @@ open class PBCardInputView: UIView {
 
     open override func layoutSubviews() {
         super.layoutSubviews()
+        self.cardNumberField.tintColor = self.theme.getCursorColor()
+        self.cardExpirationDateField.tintColor = self.theme.getCursorColor()
+        self.cardCVVField.tintColor = self.theme.getCursorColor()
         NSLayoutConstraint.activate([
             self.heightAnchor.constraint(equalToConstant: self.bounds.width * (472/750))
         ])
