@@ -206,6 +206,12 @@ public class PBUITextField: UIView {
             self.updateUI()
         }
     }
+    
+    public var hasInfoBar: PBTextFieldInfoBar = .none {
+        didSet {
+            self.updateUI()
+        }
+    }
 
     /// Defines cursor color of textfield.
     ///
@@ -665,7 +671,14 @@ public class PBUITextField: UIView {
         switch self.isValid {
         case .valid:
             self.footerLabel.textColor = self.placeholderTextColor
-            self.footerLabel.text = self.footerLabelText
+            
+            switch self.hasInfoBar {
+            case .has(let infoText):
+                self.footerLabel.text = infoText
+            case .none:
+                self.footerLabel.text = self.footerLabelText
+            }
+            
         case .invalid(let error):
             self.footerLabel.textColor = self.errorStateColor
             self.footerLabel.text = error
