@@ -72,7 +72,24 @@ class PBMaskableUITextField: PBBaseUITextField {
     override func setupViews() {
         self.inputMaskDelegate.delegate = self
         self.inputMaskDelegate.autocomplete = false
+        self.inputMaskDelegate.customNotations = [
+            Notation(
+                character: "N",
+                characterSet: CharacterSet.symbols
+                    .subtracting(CharacterSetHelper.emojiCharacterSet)
+                    .union(CharacterSet.whitespaces)
+                    .union(CharacterSet.decimalDigits)
+                    .union(CharacterSet.letters)
+                    .union(CharacterSet.punctuationCharacters)
+                    .union(CharacterSet.symbols),
+                isOptional: false
+            ),
+        ]
         self.delegate = self.inputMaskDelegate
+    }
+
+    public func set(text: String) {
+        self.inputMaskDelegate.put(text: text, into: self)
     }
 }
 
