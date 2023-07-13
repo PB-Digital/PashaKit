@@ -118,7 +118,7 @@ open class PBCardInputView: UIView {
 
         view.font = UIFont.systemFont(ofSize: 24.0)
         view.keyboardType = .numberPad
-        view.maskFormat = "[0000] [0000] [0000] [0000]"
+        view.maskFormat = "[NNNN] [NNNN] [NNNN] [NNNN]"
         view.attributedPlaceholder = NSAttributedString(string: "0000 0000 0000 0000",
                                                         attributes: [
                                                             .foregroundColor: UIColor.Colors.PBGraySecondary
@@ -356,7 +356,13 @@ open class PBCardInputView: UIView {
     /// Puts `number` into card number input field
     ///
     public func setCard(number: String) {
-        self.cardNumberField.text = number
+        self.cardNumberField.set(text: number)
+    }
+
+    /// Puts `expiryDate` into card expiration date field
+    ///
+    public func setCard(expiryDate: String) {
+        self.cardExpirationDateField.set(text: expiryDate)
     }
 
     /// Sets issuer logo for view
