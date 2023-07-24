@@ -52,18 +52,6 @@ import InputMask
 ///
 public class PBUITextField: UIView {
 
-    /// Specifies the state of textfield.
-    ///
-    public enum TextFieldState {
-        /// The state when text field has focus.
-        ///
-        case editing
-
-        /// The state when text field has no focus.
-        ///
-        case notEditing
-    }
-
     /// Specifies the border style for the text field.
     ///
     public enum TextFieldStyle {
@@ -98,22 +86,6 @@ public class PBUITextField: UIView {
         /// Constraints an icon to given `CGSize`
         ///
         case custom(CGSize)
-    }
-
-    /// Option for getting the text from field.
-    ///
-    /// In general, we use `whiteSpacesRemoved`
-    /// for sending the data to our back-end. However, there is time we need to send
-    /// input as it is shown on the screen. For that reason we are using `raw` case.
-    ///
-    public enum TextFieldTextFormat {
-        /// Returns the text inside of textfield by removing any whitespaces.
-        ///
-        case whiteSpacesRemoved
-
-        /// Returns the text inside of textfield as it is displayed to user
-        ///
-        case raw
     }
 
     // MARK: - PUBLIC PROPERTIES
