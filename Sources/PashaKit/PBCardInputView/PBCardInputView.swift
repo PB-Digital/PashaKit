@@ -29,18 +29,6 @@
 
 import UIKit
 
-public protocol PBCardInputValidatable {
-    var isPanValid: Bool { get }
-    var isExpireDateValid: Bool { get }
-    var isCVVValid: Bool { get }
-}
-
-public protocol PBCardInfoRepresentable {
-    var panNumber: String { get }
-    var expireDate: String { get }
-    var cvvNumber: String { get }
-}
-
 /// `PBCardInputView` is subclass of `UIView` used for entering card information.
 ///
 /// As a component it's designed to resemble real bank card with textfields for entering card details.
@@ -48,10 +36,13 @@ public protocol PBCardInfoRepresentable {
 ///
 open class PBCardInputView: UIView {
 
-    // MARK: -CONSTANTS
-    private let cornerRadius: CGFloat = 12.0
-
-    public var onCardScanClicked: (() -> Void)?
+    /// An enum for specifying the main components of card input
+    ///
+    public enum CardInputFields {
+        case pan
+        case expiryDate
+        case cvv
+    }
 
     /// Theme for `PBCardInputView`
     ///
@@ -63,15 +54,15 @@ open class PBCardInputView: UIView {
         }
     }
 
+    private let cornerRadius: CGFloat = 12.0
+
     private lazy var bankLogo: UIImageView = {
         let view = UIImageView()
 
         self.addSubview(view)
 
         view.translatesAutoresizingMaskIntoConstraints = false
-
         view.contentMode = .scaleAspectFit
-        view.image = UIImage.Images.icLogoWhite
 
         view.heightAnchor.constraint(equalToConstant: 32.0).isActive = true
 
@@ -84,7 +75,6 @@ open class PBCardInputView: UIView {
         self.addSubview(button)
 
         button.translatesAutoresizingMaskIntoConstraints = false
-
         button.setImage(UIImage.Images.icCardScan, for: .normal)
         button.addTarget(self, action: #selector(onScanButton), for: .touchUpInside)
 
@@ -100,7 +90,6 @@ open class PBCardInputView: UIView {
         self.addSubview(view)
 
         view.translatesAutoresizingMaskIntoConstraints = false
-
         view.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         view.textColor = UIColor.Colors.PBGraySecondary
 
@@ -115,18 +104,19 @@ open class PBCardInputView: UIView {
         self.addSubview(view)
 
         view.translatesAutoresizingMaskIntoConstraints = false
-
         view.font = UIFont.systemFont(ofSize: 24.0)
         view.keyboardType = .numberPad
         view.maskFormat = "[NNNN] [NNNN] [NNNN] [NNNN]"
-        view.attributedPlaceholder = NSAttributedString(string: "0000 0000 0000 0000",
-                                                        attributes: [
-                                                            .foregroundColor: UIColor.Colors.PBGraySecondary
-                                                        ])
+        view.attributedPlaceholder = NSAttributedString(
+            string: "0000 0000 0000 0000",
+            attributes: [
+                .foregroundColor: UIColor.Colors.PBGraySecondary
+            ]
+        )
         view.textColor = .white
 
-        view.onTextUpdate = { [weak self] text in
-            if text.count == 16 {
+        view.onMaskComplete = { [weak self] complete in
+            if complete {
                 self?.cardExpirationDateField.becomeFirstResponder()
             }
         }
@@ -140,7 +130,6 @@ open class PBCardInputView: UIView {
         self.addSubview(view)
 
         view.translatesAutoresizingMaskIntoConstraints = false
-
         view.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         view.textColor = UIColor.Colors.PBGraySecondary
 
@@ -155,19 +144,20 @@ open class PBCardInputView: UIView {
         self.addSubview(view)
 
         view.translatesAutoresizingMaskIntoConstraints = false
-
         view.font = UIFont.systemFont(ofSize: 24.0)
         view.maskFormat = "[00] / [00]"
         view.keyboardType = .numberPad
         view.placeholder = "00 / 00"
-        view.attributedPlaceholder = NSAttributedString(string: "00 / 00",
-                                                        attributes: [
-                                                            .foregroundColor: UIColor.Colors.PBGraySecondary
-                                                        ])
+        view.attributedPlaceholder = NSAttributedString(
+            string: "00 / 00",
+            attributes: [
+                .foregroundColor: UIColor.Colors.PBGraySecondary
+            ]
+        )
         view.textColor = .white
 
-        view.onTextUpdate = { [weak self] text in
-            if text.count == 4 {
+        view.onMaskComplete = { [weak self] complete in
+            if complete {
                 self?.cardCVVField.becomeFirstResponder()
             }
         }
@@ -181,7 +171,6 @@ open class PBCardInputView: UIView {
         self.addSubview(view)
 
         view.translatesAutoresizingMaskIntoConstraints = false
-
         view.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         view.textColor = UIColor.Colors.PBGraySecondary
 
@@ -196,21 +185,22 @@ open class PBCardInputView: UIView {
         self.addSubview(view)
 
         view.translatesAutoresizingMaskIntoConstraints = false
-
         view.font = UIFont.systemFont(ofSize: 24.0)
         view.keyboardType = .numberPad
         view.maskFormat = "[000]"
         view.placeholder = "000"
         view.isSecured = true
         view.hasBottomBorder = true
-        view.attributedPlaceholder = NSAttributedString(string: "***",
-                                                        attributes: [
-                                                            .foregroundColor: UIColor.Colors.PBGraySecondary
-                                                        ])
+        view.attributedPlaceholder = NSAttributedString(
+            string: "***",
+            attributes: [
+                .foregroundColor: UIColor.Colors.PBGraySecondary
+            ]
+        )
         view.textColor = .white
 
-        view.onTextUpdate = { [weak self] text in
-            if text.count == 3 {
+        view.onMaskComplete = { [weak self] complete in
+            if complete {
                 self?.cardCVVField.resignFirstResponder()
             }
         }
@@ -222,8 +212,9 @@ open class PBCardInputView: UIView {
         let view = UIImageView()
 
         self.addSubview(view)
-        view.contentMode = .scaleAspectFit
+
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFit
 
         return view
     }()
@@ -240,7 +231,11 @@ open class PBCardInputView: UIView {
 
     /// Creates `PBCardInputView` with proper title texts for entering input
     ///
-    public convenience init(localizableCardNumberTitle: String, localizableCardExpirationDateTitle: String, localizableCardCVVTitle: String) {
+    public convenience init(
+        localizableCardNumberTitle: String,
+        localizableCardExpirationDateTitle: String,
+        localizableCardCVVTitle: String
+    ) {
         self.init(frame: .zero)
         self.cardNumberTitle.text = localizableCardNumberTitle
         self.cardExpirationDateTitle.text = localizableCardExpirationDateTitle
@@ -253,6 +248,17 @@ open class PBCardInputView: UIView {
         
         self.setTheme()
         self.setupConstraints()
+    }
+
+    private func setTheme() {
+        self.backgroundColor = theme.getPrimaryColor()
+
+        switch self.theme {
+        case .regular:
+            self.cardScan.setImage(UIImage.Images.icCardScan, for: .normal)
+        case .dark:
+            self.cardScan.setImage(UIImage.Images.icCardScanPrivateBlack, for: .normal)
+        }
     }
 
     private func setupConstraints() {
@@ -328,29 +334,17 @@ open class PBCardInputView: UIView {
     ///  Depending on such kind of states, input fields' text colors will change to `systemRed` or `PBGraySecondary`
     ///
     public func set(validation: PBCardInputValidatable) {
-        if validation.isPanValid {
-            self.cardNumberTitle.textColor = UIColor.Colors.PBGraySecondary
-            self.cardNumberField.isValid = true
-        } else {
-            self.cardNumberTitle.textColor = .systemRed
-            self.cardNumberField.isValid = false
-        }
+        self.updateUI(for: self.cardNumberField, with: validation.isPanValid)
+        self.updateUI(for: self.cardExpirationDateField, with: validation.isExpireDateValid)
+        self.updateUI(for: self.cardCVVField, with: validation.isCVVValid)
+    }
 
-        if validation.isExpireDateValid {
-            self.cardExpirationDateTitle.textColor = UIColor.Colors.PBGraySecondary
-            self.cardExpirationDateField.isValid = true
-        } else {
-            self.cardExpirationDateTitle.textColor = .systemRed
-            self.cardExpirationDateField.isValid = false
-        }
-
-        if validation.isCVVValid {
-            self.cardCVVTitle.textColor = UIColor.Colors.PBGraySecondary
-            self.cardCVVField.isValid = true
-        } else {
-            self.cardCVVTitle.textColor = .systemRed
-            self.cardCVVField.isValid = false
-        }
+    private func updateUI(
+        for textField: PBMaskableUITextField,
+        with isValid: Bool
+    ) {
+        textField.textColor = isValid ? UIColor.Colors.PBGraySecondary : .systemRed
+        textField.isValid = isValid
     }
 
     /// Puts `number` into card number input field
@@ -383,17 +377,6 @@ open class PBCardInputView: UIView {
         return CardInput(panNumber: cardNumber, expireDate: expirationDate, cvvNumber: cvvNumber)
     }
 
-    private func setTheme() {
-        self.backgroundColor = theme.getPrimaryColor()
-
-        switch self.theme {
-        case .regular:
-            self.cardScan.setImage(UIImage.Images.icCardScan, for: .normal)
-        case .dark:
-            self.cardScan.setImage(UIImage.Images.icCardScanPrivateBlack, for: .normal)
-        }
-    }
-
     /// Hides CVV field
     ///
     /// Under the hood it changes `isHidden` properties of cvv title and field to `true` while also hiding
@@ -418,6 +401,17 @@ open class PBCardInputView: UIView {
         self.bankLogo.isHidden = true
     }
 
+    public func updateManualInputAllowance(for field: CardInputFields, to isEnabled: Bool) {
+        switch field {
+        case .pan:
+            self.cardNumberField.isUserInteractionEnabled = isEnabled
+        case .expiryDate:
+            self.cardExpirationDateField.isUserInteractionEnabled = isEnabled
+        case .cvv:
+            self.cardCVVField.isUserInteractionEnabled = isEnabled
+        }
+    }
+
     public func addDoneButtonOnKeyboard(title: String) {
         self.cardNumberField.addDoneButtonOnKeyboard(title: title)
         self.cardExpirationDateField.addDoneButtonOnKeyboard(title: title)
@@ -427,6 +421,9 @@ open class PBCardInputView: UIView {
     @objc func onScanButton(_ sender: UIButton) {
         self.onCardScanClicked?()
     }
+
+    // MARK: - CALLBACKS
+    public var onCardScanClicked: (() -> Void)?
 }
 
 extension PBCardInputView {

@@ -69,6 +69,11 @@ class PBMaskableUITextField: PBBaseUITextField {
     /// Use this callback to access user input and for tracking it real-time
     var onTextUpdate: ((String) -> Void)?
 
+    /// Called when the mandatory characters defined by
+    /// mask format entered correctly by user
+    ///
+    var onMaskComplete: ((Bool) -> Void)?
+
     override func setupViews() {
         self.inputMaskDelegate.delegate = self
         self.inputMaskDelegate.autocomplete = false
@@ -103,6 +108,7 @@ extension PBMaskableUITextField: MaskedTextFieldDelegateListener {
         let cleanText = value
             .replacingOccurrences(of: " ", with: "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
-            self.onTextUpdate?(cleanText)
+        self.onTextUpdate?(cleanText)
+        self.onMaskComplete?(complete)
     }
 }
