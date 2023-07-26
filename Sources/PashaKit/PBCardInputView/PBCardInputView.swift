@@ -38,10 +38,11 @@ open class PBCardInputView: UIView {
 
     /// An enum for specifying the main components of card input
     ///
-    public enum CardInputFields {
+    public enum CardInputComponents {
         case pan
         case expiryDate
         case cvv
+        case scanner
     }
 
     /// Theme for `PBCardInputView`
@@ -63,6 +64,7 @@ open class PBCardInputView: UIView {
 
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFit
+        view.isHidden = true
 
         view.heightAnchor.constraint(equalToConstant: 32.0).isActive = true
 
@@ -215,6 +217,7 @@ open class PBCardInputView: UIView {
 
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFit
+        view.isHidden = true
 
         return view
     }()
@@ -377,37 +380,35 @@ open class PBCardInputView: UIView {
         return CardInput(panNumber: cardNumber, expireDate: expirationDate, cvvNumber: cvvNumber)
     }
 
-    /// Hides CVV field
+    /// A helper method for toggling  `isHidden` property of components..
     ///
-    /// Under the hood it changes `isHidden` properties of cvv title and field to `true` while also hiding
-    /// `issuerLogo` and `bankLogo`.
-    ///
-    public func hideCVV() {
-        self.cardCVVTitle.isHidden = true
-        self.cardCVVField.isHidden = true
-        self.issuerLogo.isHidden = false
-        self.bankLogo.isHidden = false
+    public func updateVisibility(for component: CardInputComponents, to isVisible: Bool) {
+        switch component {
+        case .pan:
+            self.cardNumberTitle.isHidden = !isVisible
+            self.cardNumberField.isHidden = !isVisible
+        case .expiryDate:
+            self.cardExpirationDateTitle.isHidden = !isVisible
+            self.cardExpirationDateField.isHidden = !isVisible
+        case .cvv:
+            self.cardCVVTitle.isHidden = !isVisible
+            self.cardCVVField.isHidden = !isVisible
+        case .scanner:
+            self.cardScan.isHidden = !isVisible
+        }
     }
 
-    /// Shows CVV field
+    /// A helper method for toggling  `isUserInteractionEnabled` property of components...
     ///
-    /// Under the hood it changes `isHidden` properties of cvv title and field to `false` while also showing
-    /// `issuerLogo` and `bankLogo`.
-    ///
-    public func showCVV() {
-        self.cardCVVTitle.isHidden = false
-        self.cardCVVField.isHidden = false
-        self.issuerLogo.isHidden = true
-        self.bankLogo.isHidden = true
-    }
-
-    public func updateManualInputAllowance(for field: CardInputFields, to isEnabled: Bool) {
-        switch field {
+    public func updateUserInteractionAllowance(for component: CardInputComponents, to isEnabled: Bool) {
+        switch component {
         case .pan:
             self.cardNumberField.isUserInteractionEnabled = isEnabled
         case .expiryDate:
             self.cardExpirationDateField.isUserInteractionEnabled = isEnabled
         case .cvv:
+            self.cardCVVField.isUserInteractionEnabled = isEnabled
+        case .scanner:
             self.cardCVVField.isUserInteractionEnabled = isEnabled
         }
     }
