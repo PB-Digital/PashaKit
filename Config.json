@@ -1,4 +1,4 @@
 {
-    "version": "1.2.0",
-    "release_notes": "Introducing `PBUITextView` - the multiline text field alternative to `PBUITextField`"
+    "version": "1.2.1",
+    "release_notes": "Made helpter methods for controlling user interaction and visibility states of `PBCardInput` components."
 }
