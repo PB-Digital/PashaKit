@@ -60,7 +60,6 @@ open class PBRowView: UIView, PBSkeletonable {
     /// we have added an option for setting it.
     ///
     public enum IsNew {
-        /// 
         case `true`(localizableTitle: String)
         case `false`
     }
@@ -268,10 +267,8 @@ open class PBRowView: UIView, PBSkeletonable {
     public var isChevronIconVisible: Bool = true {
         didSet {
             if self.isChevronIconVisible {
-                self.primaryStackView.addArrangedSubview(self.rightIconWrapperView)
                 self.rightIconWrapperView.isHidden = false
             } else {
-                self.primaryStackView.removeArrangedSubview(self.rightIconWrapperView)
                 self.rightIconWrapperView.isHidden = true
             }
 
@@ -358,7 +355,7 @@ open class PBRowView: UIView, PBSkeletonable {
     }()
 
     private lazy var isNewView: PBPaddingLabel = {
-        let label = PBPaddingLabel(topInset: 4, leftInset: 8, bottomInset: 4, rightInset: 8)
+        let label = PBPaddingLabel(edgeInsets: UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8))
 
         label.translatesAutoresizingMaskIntoConstraints = false
 
@@ -366,8 +363,6 @@ open class PBRowView: UIView, PBSkeletonable {
         label.backgroundColor = UIColor.Colors.PBRed8
         label.textColor = UIColor.Colors.PBRed
         label.textAlignment = .center
-        label.layer.cornerRadius = 6.0
-        label.clipsToBounds = true
         label.sizeToFit()
 
         label.heightAnchor.constraint(equalToConstant: 24.0).isActive = true
@@ -386,6 +381,20 @@ open class PBRowView: UIView, PBSkeletonable {
         label.isSkeletonable = true
 
         return label
+    }()
+
+    private lazy var rightSideContentStack: UIStackView = {
+        let view = UIStackView()
+
+        self.addSubview(view)
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        view.alignment = .center
+        view.axis = .horizontal
+        view.spacing = 8.0
+
+        return view
     }()
 
     private lazy var rightIconWrapperView: UIView = {
@@ -516,6 +525,8 @@ open class PBRowView: UIView, PBSkeletonable {
 
     private func setupViews() {
         self.primaryStackView.addArrangedSubview(self.leftIconWrapperView)
+        self.primaryStackView.addArrangedSubview(self.secondaryStackView)
+        self.primaryStackView.addArrangedSubview(self.rightSideContentStack)
 
         switch self.leftIconStyle {
         case .roundedRect(cornerRadius: let cornerRadius):
@@ -524,22 +535,15 @@ open class PBRowView: UIView, PBSkeletonable {
             self.leftIconWrapperView.layer.cornerRadius = self.leftViewSize.width / 2
         }
 
-        self.primaryStackView.addArrangedSubview(self.secondaryStackView)
+        self.rightSideContentStack.addArrangedSubview(self.rightIconWrapperView)
+
         self.setupTitleAndSubtitlePlacement()
-
-        self.primaryStackView.addArrangedSubview(self.rightIconWrapperView)
-
-
-        if self.isChevronIconVisible {
-            self.primaryStackView.addArrangedSubview(self.rightIconWrapperView)
-        } else {
-            self.rightIconWrapperView.removeFromSuperview()
-        }
-
         self.setupConstraints()
     }
 
     private func setupTitleAndSubtitlePlacement() {
+        self.secondaryStackView.removeAllArrangedSubviews()
+
         switch self.textLayoutPreference {
         case .titleFirst:
             self.secondaryStackView.addArrangedSubview(self.titleLabel)
@@ -561,7 +565,6 @@ open class PBRowView: UIView, PBSkeletonable {
     }
 
     private func setupConstraints() {
-
         NSLayoutConstraint.activate([
             self.primaryStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8.0),
             self.primaryStackView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16.0),
@@ -609,7 +612,7 @@ open class PBRowView: UIView, PBSkeletonable {
             NSLayoutConstraint.activate([
                 self.isNewView.centerYAnchor.constraint(equalTo: self.titleLabel.centerYAnchor),
                 self.isNewView.leftAnchor.constraint(equalTo: self.titleLabel.rightAnchor, constant: 16.0),
-                self.isNewView.rightAnchor.constraint(lessThanOrEqualTo: self.rightAnchor, constant: -16.0)
+                self.isNewView.rightAnchor.constraint(lessThanOrEqualTo: self.secondaryStackView.rightAnchor)
             ])
         }
     }
@@ -638,6 +641,11 @@ open class PBRowView: UIView, PBSkeletonable {
         case .false:
             self.isNewView.removeFromSuperview()
         }
+    }
+
+    public func add(bagde paddingLabel: PBPaddingLabel) {
+        self.rightSideContentStack.addArrangedSubview(paddingLabel)
+        self.rightSideContentStack.semanticContentAttribute = .forceRightToLeft
     }
 }
 

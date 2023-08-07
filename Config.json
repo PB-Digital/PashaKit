@@ -1,4 +1,4 @@
 {
-    "version": "1.2.1",
-    "release_notes": "Made helpter methods for controlling user interaction and visibility states of `PBCardInput` components."
+    "version": "1.2.2",
+    "release_notes": "Made a method for adding badges to `PBRowView`"
 }
