@@ -33,31 +33,17 @@ import UIKit
 /// `PBPaddingLabel` is a type of UILabel witth customizable insets from its frame
 ///
 open class PBPaddingLabel: UILabel {
+    var edgeInsets: UIEdgeInsets
 
-    /// Insets from top for text
-    ///
-    var topInset: CGFloat
-
-    /// Insets from left for text
-    ///
-    var leftInset: CGFloat
-
-    /// Insets from bottom for text
-    ///
-    var bottomInset: CGFloat
-
-    /// Insets from right for text
-    ///
-    var rightInset: CGFloat
-
-    required public init(topInset top: CGFloat, leftInset left: CGFloat, bottomInset bottom: CGFloat, rightInset right: CGFloat) {
-
-        self.topInset = top
-        self.leftInset = left
-        self.bottomInset = bottom
-        self.rightInset = right
-
+    required public init(
+        edgeInsets: UIEdgeInsets,
+        cornerRadius: CGFloat = 6.0
+    ) {
+        self.edgeInsets = edgeInsets
         super.init(frame: CGRect.zero)
+        self.clipsToBounds = true
+        self.layer.cornerRadius = cornerRadius
+        self.layer.masksToBounds = true
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -65,16 +51,15 @@ open class PBPaddingLabel: UILabel {
     }
 
     open override func drawText(in rect: CGRect) {
-        let insets = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
-        super.drawText(in: rect.inset(by: insets))
+        super.drawText(in: rect.inset(by: self.edgeInsets))
     }
 
     open override var intrinsicContentSize: CGSize {
         get {
             var contentSize = super.intrinsicContentSize
 
-            contentSize.height += topInset + bottomInset
-            contentSize.width +=  leftInset + rightInset
+            contentSize.height += self.edgeInsets.top + self.edgeInsets.bottom
+            contentSize.width +=  self.edgeInsets.left + self.edgeInsets.right
 
             return contentSize
         }
