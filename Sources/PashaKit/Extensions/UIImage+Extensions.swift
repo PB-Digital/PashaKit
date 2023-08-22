@@ -37,12 +37,10 @@ extension UIImage {
         static let icCheckboxDefault = UIImage(named: "ic_checkbox_default", in: Bundle.module, compatibleWith: nil)
         static let icCheckboxSelectedPrivate = UIImage(named: "ic_checkbox_selected_private", in: Bundle.module, compatibleWith: nil)
         static let icCheckboxSelected = UIImage(named: "ic_checkbox_selected", in: Bundle.module, compatibleWith: nil)
-        static let icCheckedCircularPrivate = UIImage(named: "ic_checked_circular_private", in: Bundle.module, compatibleWith: nil)
-        static let icCheckedCircularRed = UIImage(named: "ic_checked_circular_red", in: Bundle.module, compatibleWith: nil)
         static let icCheckedCircular = UIImage(named: "ic_checked_circular", in: Bundle.module, compatibleWith: nil)
         static let icChevronBottom = UIImage(named: "ic_chevron_bottom", in: Bundle.module, compatibleWith: nil)
         static let icChevronRight = UIImage(named: "ic_chevron_right", in: Bundle.module, compatibleWith: nil)
-        static let icInfoDark = UIImage(named: "ic_info_dark", in: Bundle.module, compatibleWith: nil)
+        static let icInfo = UIImage(named: "ic_info", in: Bundle.module, compatibleWith: nil)
         static let icInfoYellow = UIImage(named: "ic_info_yellow", in: Bundle.module, compatibleWith: nil)
         static let icInfoGray = UIImage(named: "ic_info_gray", in: Bundle.module, compatibleWith: nil)
         static let icInfoRed = UIImage(named: "ic_info_red", in: Bundle.module, compatibleWith: nil)
@@ -52,6 +50,5 @@ extension UIImage {
         static let icRevealOpen = UIImage(named: "ic_reveal_open", in: Bundle.module, compatibleWith: nil)
         static let icShare = UIImage(named: "ic_share", in: Bundle.module, compatibleWith: nil)
         static let icVisaLogoColored = UIImage(named: "ic_visa_logo_colored", in: Bundle.module, compatibleWith: nil)
-        static let icVisa = UIImage(named: "ic_visa", in: Bundle.module, compatibleWith: nil)
     }
 }
