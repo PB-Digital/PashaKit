@@ -1,5 +1,5 @@
 //
-//  PBAttentionView.swift
+//  PBInfoBar.swift
 //
 //
 //  Created by Murad on 20.12.22.
@@ -29,19 +29,21 @@
 
 import UIKit
 
-/// `PBAttentionView` is a type of `UIView` for showing information, alerts to customers.
+/// `PBInfoBar` is a type of `UIView` for showing information, alerts to customers.
 ///
-/// There is 2 levels of `AttentionLevel` for `PBAttentionView`:
+/// There is 2 levels of `AttentionLevel` for `PBInfoBar`:
 ///  - `low`
 ///  - `high`
-/// Low level attention views are in grayish theme, while high level alerts are in red one.
+/// Low level info bars are in grayish theme, while high level alerts are in red one.
 ///
-open class PBAttentionView: UIView {
+@available(*, deprecated, renamed: "PBInfoBar")
+public typealias PBAttentionView = PBInfoBar
+open class PBInfoBar: UIView {
 
     /// Attention level of information
     ///
-    /// Used for setting up attention view. Depending on its case,
-    /// attention view' s theme can change into gray and red ones.
+    /// Used for setting up info bar. Depending on its case,
+    /// info bar' s theme can change into gray and red ones.
     ///
     public enum AttentionLevel {
         /// Least level of attention
@@ -73,12 +75,12 @@ open class PBAttentionView: UIView {
 
     /// Sets attention level for view.
     ///
-    /// By default `PBAttentionView` will be created with `medium` level.
+    /// By default `PBInfoBar` will be created with `medium` level.
     ///
     public var attentionLevel: AttentionLevel = .medium {
         didSet {
             if self.attentionLevel != oldValue {
-                self.setupAttention(level: self.attentionLevel)
+                self.setup(attentionLevel: self.attentionLevel)
             }
         }
     }
@@ -110,7 +112,7 @@ open class PBAttentionView: UIView {
 
         self.addSubview(view)
 
-        view.image = UIImage.Images.icInfoDark
+        view.image = UIImage.Images.icInfo
         view.contentMode = .scaleAspectFit
 
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -146,7 +148,7 @@ open class PBAttentionView: UIView {
     }
 
     private func setupViews() {
-        self.setupAttention(level: self.attentionLevel)
+        self.setup(attentionLevel: self.attentionLevel)
         self.layoutSubviews()
         self.setupDefaults()
     }
@@ -177,31 +179,65 @@ open class PBAttentionView: UIView {
         self.layoutSubviews()
     }
 
+    /// Sets an attributed text and its level for atttenion view.
+    ///
+    /// - Parameters:
+    ///  - text: informational attributed text
+    ///  - attentionLevel: attention level, default value is low
+    ///
+    public func set(attributedText: NSMutableAttributedString?) {
+        attributedText?.setColor(color: self.getForegroundColor(for: self.attentionLevel))
+        self.infoBody.attributedText = attributedText
+        self.layoutSubviews()
+    }
+
     private func setupDefaults() {
         self.backgroundColor = UIColor.Colors.PBGrayTransparent
         self.layer.cornerRadius = 12.0
     }
-}
 
-extension PBAttentionView {
-    func setupAttention(level: AttentionLevel) {
-        switch level {
+    func setup(attentionLevel: AttentionLevel) {
+        self.infoIcon.tintColor = self.getTintColor(for: attentionLevel)
+        self.infoBody.textColor = self.getForegroundColor(for: attentionLevel)
+        self.backgroundColor = self.getBackgroundColor(for: attentionLevel)
+    }
+
+    private func getTintColor(for attentionLevel: AttentionLevel) -> UIColor {
+        switch attentionLevel {
         case .low:
-            self.backgroundColor = UIColor.Colors.PBGrayTransparent
-            self.infoBody.textColor = UIColor.Colors.PBBlackMedium
-            self.infoIcon.image = UIImage.Images.icInfoGray
+            return UIColor.Colors.PBBlackMedium
         case .informative:
-            self.backgroundColor = UIColor.Colors.PBInfoYellowBG
-            self.infoBody.textColor = UIColor.Colors.PBInfoYellowFG
-            self.infoIcon.image = UIImage.Images.icInfoYellow
+            return UIColor.Colors.PBInfoYellowFG
         case .medium:
-            self.backgroundColor = UIColor.Colors.PBGrayTransparent
-            self.infoBody.textColor = .darkText
-            self.infoIcon.image = UIImage.Images.icInfoDark
+            return UIColor.Colors.PBGray40
         case .high:
-            self.backgroundColor = UIColor.Colors.PBRed8
-            self.infoBody.textColor = UIColor.Colors.PBRed
-            self.infoIcon.image = UIImage.Images.icInfoRed
+            return UIColor.Colors.PBRed
+        }
+    }
+
+    private func getForegroundColor(for attentionLevel: AttentionLevel) -> UIColor {
+        switch attentionLevel {
+        case .low:
+            return UIColor.Colors.PBBlackMedium
+        case .informative:
+            return UIColor.Colors.PBInfoYellowFG
+        case .medium:
+            return .darkText
+        case .high:
+            return UIColor.Colors.PBRed
+        }
+    }
+
+    private func getBackgroundColor(for attentionLevel: AttentionLevel) -> UIColor {
+        switch attentionLevel {
+        case .low:
+            return UIColor.Colors.PBGrayTransparent
+        case .informative:
+            return UIColor.Colors.PBInfoYellowBG
+        case .medium:
+            return UIColor.Colors.PBGrayTransparent
+        case .high:
+            return UIColor.Colors.PBRed8
         }
     }
 }

@@ -8,7 +8,7 @@ PashaKit contains native UIKit components aligned with Pasha Bank's design syste
 
 #### Requirements
 
-- iOS 12.0+
+- iOS 13.0+
 - Swift 5.7
 
 #### Using Swift Package Manager
