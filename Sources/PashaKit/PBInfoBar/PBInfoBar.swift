@@ -36,6 +36,8 @@ import UIKit
 ///  - `high`
 /// Low level info bars are in grayish theme, while high level alerts are in red one.
 ///
+@available(*, deprecated, renamed: "PBInfoBar")
+public typealias PBAttentionView = PBInfoBar
 open class PBInfoBar: UIView {
 
     /// Attention level of information
