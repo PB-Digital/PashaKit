@@ -96,8 +96,8 @@ public class PBSelectableCardView: PBBaseSelectableView {
         view.contentMode = .scaleAspectFit
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        view.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 24.0).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 24.0).isActive = true
 
         return view
     }()
@@ -112,8 +112,8 @@ public class PBSelectableCardView: PBBaseSelectableView {
 
         view.image = UIImage.Images.icCheckedCircular
 
-        view.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 20.0).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 24.0).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 24.0).isActive = true
 
         return view
     }()
@@ -200,16 +200,16 @@ public class PBSelectableCardView: PBBaseSelectableView {
 
         switch self.theme {
         case .regular:
-            self.checkBoxSelected.image = UIImage.Images.icCheckedCircular
+            self.checkBoxSelected.tintColor = UIColor.Colors.PBGreen
         case .dark:
-            self.checkBoxSelected.image = UIImage.Images.icCheckedCircularPrivate
+            self.checkBoxSelected.tintColor = UIColor.Colors.PBFauxChestnut
         }
     }
 
     public func makeInvalid() {
-        self.selectedBorderColor = .systemRed
+        self.selectedBorderColor = UIColor.Colors.PBRed
         self.selectedStateColor = .systemRed.withAlphaComponent(0.1)
-        self.checkBoxSelected.image = UIImage.Images.icCheckedCircularRed
+        self.checkBoxSelected.tintColor = UIColor.Colors.PBRed
     }
 }
 

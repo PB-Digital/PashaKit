@@ -6,7 +6,7 @@ import PackageDescription
 public let package = Package(
     name: "PashaKit",
     platforms: [
-        .iOS(.v12)
+        .iOS(.v13)
     ],
     products: [
         .library(name: "PashaKit", targets: ["PashaKit"]),

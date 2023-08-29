@@ -54,9 +54,9 @@ extension UIView {
 
         NSLayoutConstraint.activate([
             self.topAnchor.constraint(equalTo: parent.topAnchor),
-            self.leftAnchor.constraint(equalTo: parent.leftAnchor),
+            self.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
             self.bottomAnchor.constraint(equalTo: parent.bottomAnchor),
-            self.rightAnchor.constraint(equalTo: parent.rightAnchor)
+            self.trailingAnchor.constraint(equalTo: parent.trailingAnchor)
         ])
     }
 }

@@ -134,6 +134,17 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// Toggles the multiline support for title and subtitle labels.
+    ///
+    /// By default `PBRowView` does not support 
+    /// multiline content
+    ///
+    public var supportsMultilineContent: Bool = false {
+        didSet {
+            self.updateMultilineSupport(to: self.supportsMultilineContent)
+        }
+    }
+
     /// Sets the given string to `subtitleLabel` of row view.
     ///
     /// By default this property is set to `nil`. Depending on how you want to fill your row view it can be set directly
@@ -646,6 +657,16 @@ open class PBRowView: UIView, PBSkeletonable {
     public func add(bagde paddingLabel: PBPaddingLabel) {
         self.rightSideContentStack.addArrangedSubview(paddingLabel)
         self.rightSideContentStack.semanticContentAttribute = .forceRightToLeft
+    }
+
+    private func updateMultilineSupport(to isEnabled: Bool) {
+        if isEnabled {
+            self.titleLabel.numberOfLines = 0
+            self.subtitleLabel.numberOfLines = 0
+        } else {
+            self.titleLabel.numberOfLines = 0
+            self.subtitleLabel.numberOfLines = 0
+        }
     }
 }
 
