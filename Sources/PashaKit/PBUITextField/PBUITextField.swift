@@ -293,7 +293,21 @@ public class PBUITextField: UIView {
     ///
     public var disableManualInput: Bool = false {
         didSet {
-            self.customTextField.isUserInteractionEnabled = false
+            self.customTextField.isUserInteractionEnabled = !self.disableManualInput
+        }
+    }
+
+    public var shouldGrayifyBackgroundWhenDisabled: Bool = false {
+        didSet {
+            if self.disableManualInput && shouldGrayifyBackgroundWhenDisabled {
+                self.performAnimation {
+                    self.customBorder.backgroundColor = .black.withAlphaComponent(0.06)
+                }
+            } else {
+                self.performAnimation {
+                    self.customBorder.backgroundColor = .white
+                }
+            }
         }
     }
 
@@ -404,7 +418,6 @@ public class PBUITextField: UIView {
         customBorder.layer.cornerRadius = 12.0
         customBorder.layer.borderWidth = 1.0
         customBorder.layer.borderColor = self.defaultBorderColor.cgColor
-        customBorder.backgroundColor = .clear
 
         return customBorder
     }()
