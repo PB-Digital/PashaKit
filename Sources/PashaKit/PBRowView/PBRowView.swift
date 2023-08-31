@@ -474,7 +474,14 @@ open class PBRowView: UIView, PBSkeletonable {
         self.subtitleLabel.text = subtitleText
         self.isChevronIconVisible = isChevronIconVisible
 
+        self.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+
         self.setupViews()
+    }
+
+    init() {
+        super.init(frame: .zero)
+        self.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
     }
 
     /// Sets data for a row view.
@@ -577,19 +584,15 @@ open class PBRowView: UIView, PBSkeletonable {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            self.primaryStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8.0),
-            self.primaryStackView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16.0),
-            self.primaryStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8.0),
-            self.primaryStackView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16.0)
+            self.primaryStackView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor),
+            self.primaryStackView.leftAnchor.constraint(equalTo: self.layoutMarginsGuide.leftAnchor),
+            self.primaryStackView.bottomAnchor.constraint(equalTo: self.layoutMarginsGuide.bottomAnchor),
+            self.primaryStackView.rightAnchor.constraint(equalTo: self.layoutMarginsGuide.rightAnchor)
         ])
 
         self.setupLeftIconWrapperConstraints(for: self.leftViewSize)
         self.setupLeftIconConstraints()
         self.setupIsNewConstraints()
-
-        NSLayoutConstraint.activate([
-            self.subtitleLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 100.0)
-        ])
 
         NSLayoutConstraint.activate([
             self.rightIconView.topAnchor.constraint(equalTo: self.rightIconWrapperView.topAnchor, constant: 3.0),
@@ -667,6 +670,11 @@ open class PBRowView: UIView, PBSkeletonable {
             self.titleLabel.numberOfLines = 0
             self.subtitleLabel.numberOfLines = 0
         }
+    }
+
+    open override func safeAreaInsetsDidChange() {
+        super.safeAreaInsetsDidChange()
+        self.setupConstraints()
     }
 }
 
