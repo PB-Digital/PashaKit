@@ -59,9 +59,20 @@ open class PBRowView: UIView, PBSkeletonable {
     /// there are some feature which are introduced newly and displayed as row view
     /// we have added an option for setting it.
     ///
-    public enum IsNew {
+    public enum IsNew: Equatable {
         case `true`(localizableTitle: String)
         case `false`
+
+        public static func == (lhs: IsNew, rhs: IsNew) -> Bool {
+            switch(lhs, rhs) {
+            case (.true, .true):
+                return true
+            case (.false, .false):
+                return true
+            default:
+                return false
+            }
+        }
     }
 
     /// Sets the icon to the left side of view.
@@ -73,7 +84,6 @@ open class PBRowView: UIView, PBSkeletonable {
         didSet {
             self.leftIconView.image = nil
             self.leftIconView.image = self.leftIcon
-            self.setupViews()
         }
     }
 
@@ -184,7 +194,9 @@ open class PBRowView: UIView, PBSkeletonable {
     ///
     public var leftIconStyle: Style = .circle {
         didSet {
-            self.setupViews()
+            if self.leftIconStyle != oldValue {
+                self.setupLeftIconCornerRadius(style: self.leftIconStyle)
+            }
         }
     }
 
@@ -195,7 +207,9 @@ open class PBRowView: UIView, PBSkeletonable {
     ///
     public var isNewFeature: IsNew = .false {
         didSet {
-            self.setupNewView(state: self.isNewFeature)
+            if self.isNewFeature != oldValue {
+                self.setupNewView(state: self.isNewFeature)
+            }
         }
     }
 
@@ -204,10 +218,10 @@ open class PBRowView: UIView, PBSkeletonable {
     /// By default edgeInsets will be `0` from all sides. Changing this property
     /// will affect `leftIconView` by proper insets for each side.
     ///
-    public var leftIconContentInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) {
+    public var leftIconContentInsets: UIEdgeInsets = UIEdgeInsets(all: 0.0) {
         didSet {
             if self.leftIconContentInsets != oldValue {
-                self.setupLeftIconConstraints()
+                self.setupLeftIconConstraints(for: self.leftIconContentInsets)
             }
         }
     }
@@ -216,10 +230,11 @@ open class PBRowView: UIView, PBSkeletonable {
     ///
     ///  By default the size for `leftIconWrapperView` is `40.0` both for width and height.
     ///
-    public var leftViewSize: CGSize = CGSizeMake(40, 40) {
+    public var leftViewSize: CGSize = CGSize(width: 40.0, height: 40.0) {
         didSet {
             if self.leftViewSize != oldValue {
-                self.setupViews()
+                self.setupLeftIconWrapperConstraints(for: self.leftViewSize)
+                self.setupDividerConstraints(by: self.leftPaddingForDivider)
             }
         }
     }
@@ -234,17 +249,7 @@ open class PBRowView: UIView, PBSkeletonable {
     ///
     public var textLayoutPreference: PreferredTextPlacement = .titleFirst {
         didSet {
-            self.secondaryStackView.removeArrangedSubview(self.titleLabel)
-            self.secondaryStackView.removeArrangedSubview(self.subtitleLabel)
-
-            switch self.textLayoutPreference {
-            case .titleFirst:
-                self.secondaryStackView.addArrangedSubview(self.titleLabel)
-                self.secondaryStackView.addArrangedSubview(self.subtitleLabel)
-            case .subtitleFirst:
-                self.secondaryStackView.addArrangedSubview(self.subtitleLabel)
-                self.secondaryStackView.addArrangedSubview(self.titleLabel)
-            }
+            self.setupTitleAndSubtitlePlacement()
         }
     }
 
@@ -282,8 +287,6 @@ open class PBRowView: UIView, PBSkeletonable {
             } else {
                 self.rightIconWrapperView.isHidden = true
             }
-
-            self.setupConstraints()
         }
     }
 
@@ -299,8 +302,13 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
+    private var leftPaddingForDivider: CGFloat {
+        return self.layoutMargins.left + self.leftViewSize.width + 12.0
+    }
+
     private var activeLeftIconConstraints: [NSLayoutConstraint] = []
     private var activeLeftIconWrapperConstraints: [NSLayoutConstraint] = []
+    private var activeDividerConstraints: [NSLayoutConstraint] = []
 
     private lazy var primaryStackView: UIStackView = {
         let view = UIStackView()
@@ -351,6 +359,18 @@ open class PBRowView: UIView, PBSkeletonable {
         return view
     }()
 
+    private lazy var titleStack: UIStackView = {
+        let view = UIStackView()
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        view.axis = .horizontal
+        view.alignment = .center
+        view.spacing = 16.0
+
+        return view
+    }()
+
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
 
@@ -359,7 +379,6 @@ open class PBRowView: UIView, PBSkeletonable {
         label.font = UIFont.systemFont(ofSize: 17, weight: self.titleTextWeight)
         label.textColor = self.titleTextColor
         label.numberOfLines = 1
-        label.sizeToFit()
         label.isSkeletonable = true
 
         return label
@@ -374,9 +393,6 @@ open class PBRowView: UIView, PBSkeletonable {
         label.backgroundColor = UIColor.Colors.PBRed8
         label.textColor = UIColor.Colors.PBRed
         label.textAlignment = .center
-        label.sizeToFit()
-
-        label.heightAnchor.constraint(equalToConstant: 24.0).isActive = true
 
         return label
     }()
@@ -421,7 +437,7 @@ open class PBRowView: UIView, PBSkeletonable {
         return view
     }()
 
-    lazy var rightIconView: UIImageView = {
+    private lazy var rightIconView: UIImageView = {
         let view = UIImageView()
 
         self.rightIconWrapperView.addSubview(view)
@@ -434,7 +450,7 @@ open class PBRowView: UIView, PBSkeletonable {
         return view
     }()
 
-    lazy var divider: UIView = {
+    private lazy var divider: UIView = {
         let view = UIView()
 
         self.addSubview(view)
@@ -475,13 +491,14 @@ open class PBRowView: UIView, PBSkeletonable {
         self.isChevronIconVisible = isChevronIconVisible
 
         self.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
-
         self.setupViews()
     }
 
-    init() {
+    public init() {
         super.init(frame: .zero)
+
         self.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        self.setupViews()
     }
 
     /// Sets data for a row view.
@@ -546,15 +563,10 @@ open class PBRowView: UIView, PBSkeletonable {
         self.primaryStackView.addArrangedSubview(self.secondaryStackView)
         self.primaryStackView.addArrangedSubview(self.rightSideContentStack)
 
-        switch self.leftIconStyle {
-        case .roundedRect(cornerRadius: let cornerRadius):
-            self.leftIconWrapperView.layer.cornerRadius = cornerRadius
-        case .circle:
-            self.leftIconWrapperView.layer.cornerRadius = self.leftViewSize.width / 2
-        }
-
+        self.titleStack.addArrangedSubview(self.titleLabel)
         self.rightSideContentStack.addArrangedSubview(self.rightIconWrapperView)
 
+        self.setupLeftIconCornerRadius(style: self.leftIconStyle)
         self.setupTitleAndSubtitlePlacement()
         self.setupConstraints()
     }
@@ -564,7 +576,7 @@ open class PBRowView: UIView, PBSkeletonable {
 
         switch self.textLayoutPreference {
         case .titleFirst:
-            self.secondaryStackView.addArrangedSubview(self.titleLabel)
+            self.secondaryStackView.addArrangedSubview(self.titleStack)
 
             if self.subtitleLabel.text == nil {
                 self.subtitleLabel.removeFromSuperview()
@@ -578,11 +590,45 @@ open class PBRowView: UIView, PBSkeletonable {
                 self.secondaryStackView.addArrangedSubview(self.subtitleLabel)
             }
 
-            self.secondaryStackView.addArrangedSubview(self.titleLabel)
+            self.secondaryStackView.addArrangedSubview(self.titleStack)
+        }
+    }
+
+    private func setupNewView(state: IsNew) {
+        switch state {
+        case .true(let localizableTitle):
+            self.isNewView.text = localizableTitle
+            self.titleStack.addArrangedSubview(self.isNewView)
+            self.setupIsNewConstraints()
+        case .false:
+            self.isNewView.removeFromSuperview()
+        }
+    }
+
+    public func add(bagde paddingLabel: PBPaddingLabel) {
+        self.rightSideContentStack.addArrangedSubview(paddingLabel)
+
+        NSLayoutConstraint.activate([
+            paddingLabel.widthAnchor.constraint(equalToConstant: paddingLabel.intrinsicContentSize.width),
+            paddingLabel.heightAnchor.constraint(equalToConstant: paddingLabel.intrinsicContentSize.height),
+        ])
+
+        self.rightSideContentStack.semanticContentAttribute = .forceRightToLeft
+    }
+
+    private func updateMultilineSupport(to isEnabled: Bool) {
+        if isEnabled {
+            self.titleLabel.numberOfLines = 0
+            self.subtitleLabel.numberOfLines = 0
+        } else {
+            self.titleLabel.numberOfLines = 1
+            self.subtitleLabel.numberOfLines = 1
         }
     }
 
     private func setupConstraints() {
+        self.translatesAutoresizingMaskIntoConstraints = false
+
         NSLayoutConstraint.activate([
             self.primaryStackView.topAnchor.constraint(equalTo: self.layoutMarginsGuide.topAnchor),
             self.primaryStackView.leftAnchor.constraint(equalTo: self.layoutMarginsGuide.leftAnchor),
@@ -591,8 +637,8 @@ open class PBRowView: UIView, PBSkeletonable {
         ])
 
         self.setupLeftIconWrapperConstraints(for: self.leftViewSize)
-        self.setupLeftIconConstraints()
-        self.setupIsNewConstraints()
+        self.setupLeftIconConstraints(for: self.leftIconContentInsets)
+        self.setupDividerConstraints(by: self.leftPaddingForDivider)
 
         NSLayoutConstraint.activate([
             self.rightIconView.topAnchor.constraint(equalTo: self.rightIconWrapperView.topAnchor, constant: 3.0),
@@ -601,34 +647,7 @@ open class PBRowView: UIView, PBSkeletonable {
             self.rightIconView.rightAnchor.constraint(equalTo: self.rightIconWrapperView.rightAnchor)
         ])
 
-        NSLayoutConstraint.activate([
-            self.divider.leftAnchor.constraint(equalTo: self.titleLabel.leftAnchor),
-            self.divider.rightAnchor.constraint(equalTo: self.rightAnchor),
-            self.divider.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        ])
-    }
-
-    private func setupLeftIconConstraints() {
-        NSLayoutConstraint.deactivate(self.activeLeftIconConstraints)
-
-        self.activeLeftIconConstraints = [
-            self.leftIconView.topAnchor.constraint(equalTo: self.leftIconWrapperView.topAnchor, constant: self.leftIconContentInsets.top),
-            self.leftIconView.leftAnchor.constraint(equalTo: self.leftIconWrapperView.leftAnchor, constant: self.leftIconContentInsets.left),
-            self.leftIconView.bottomAnchor.constraint(equalTo: self.leftIconWrapperView.bottomAnchor, constant: -self.leftIconContentInsets.bottom),
-            self.leftIconView.rightAnchor.constraint(equalTo: self.leftIconWrapperView.rightAnchor, constant: -self.leftIconContentInsets.right)
-        ]
-
-        NSLayoutConstraint.activate(self.activeLeftIconConstraints)
-    }
-
-    private func setupIsNewConstraints() {
-        if self.subviews.contains(self.isNewView) {
-            NSLayoutConstraint.activate([
-                self.isNewView.centerYAnchor.constraint(equalTo: self.titleLabel.centerYAnchor),
-                self.isNewView.leftAnchor.constraint(equalTo: self.titleLabel.rightAnchor, constant: 16.0),
-                self.isNewView.rightAnchor.constraint(lessThanOrEqualTo: self.secondaryStackView.rightAnchor)
-            ])
-        }
+        self.setNeedsUpdateConstraints()
     }
 
     private func setupLeftIconWrapperConstraints(for size: CGSize) {
@@ -642,39 +661,47 @@ open class PBRowView: UIView, PBSkeletonable {
         NSLayoutConstraint.activate(self.activeLeftIconWrapperConstraints)
     }
 
-    private func setupDefaults() {
-        self.translatesAutoresizingMaskIntoConstraints = false
+    private func setupLeftIconConstraints(for contentInsets: UIEdgeInsets) {
+        NSLayoutConstraint.deactivate(self.activeLeftIconConstraints)
+
+        self.activeLeftIconConstraints = [
+            self.leftIconView.topAnchor.constraint(equalTo: self.leftIconWrapperView.topAnchor, constant: contentInsets.top),
+            self.leftIconView.leftAnchor.constraint(equalTo: self.leftIconWrapperView.leftAnchor, constant: contentInsets.left),
+            self.leftIconView.bottomAnchor.constraint(equalTo: self.leftIconWrapperView.bottomAnchor, constant: -contentInsets.bottom),
+            self.leftIconView.rightAnchor.constraint(equalTo: self.leftIconWrapperView.rightAnchor, constant: -contentInsets.right)
+        ]
+
+        NSLayoutConstraint.activate(self.activeLeftIconConstraints)
     }
 
-    private func setupNewView(state: IsNew) {
-        switch state {
-        case .true(let localizableTitle):
-            self.isNewView.text = localizableTitle
-            self.addSubview(self.isNewView)
-            self.setupIsNewConstraints()
-        case .false:
-            self.isNewView.removeFromSuperview()
+    private func setupIsNewConstraints() {
+        NSLayoutConstraint.activate([
+            self.isNewView.widthAnchor.constraint(equalToConstant: self.isNewView.intrinsicContentSize.width),
+            self.isNewView.heightAnchor.constraint(equalToConstant: self.isNewView.intrinsicContentSize.height),
+        ])
+
+        self.setNeedsUpdateConstraints()
+    }
+
+    private func setupDividerConstraints(by padding: CGFloat) {
+        NSLayoutConstraint.deactivate(self.activeDividerConstraints)
+
+        self.activeDividerConstraints = [
+            self.divider.leftAnchor.constraint(equalTo: self.leftAnchor, constant: padding),
+            self.divider.rightAnchor.constraint(equalTo: self.rightAnchor),
+            self.divider.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        ]
+
+        NSLayoutConstraint.activate(self.activeDividerConstraints)
+    }
+
+    private func setupLeftIconCornerRadius(style: Style) {
+        switch style {
+        case .roundedRect(cornerRadius: let cornerRadius):
+            self.leftIconWrapperView.layer.cornerRadius = cornerRadius
+        case .circle:
+            self.leftIconWrapperView.layer.cornerRadius = self.leftViewSize.width / 2
         }
-    }
-
-    public func add(bagde paddingLabel: PBPaddingLabel) {
-        self.rightSideContentStack.addArrangedSubview(paddingLabel)
-        self.rightSideContentStack.semanticContentAttribute = .forceRightToLeft
-    }
-
-    private func updateMultilineSupport(to isEnabled: Bool) {
-        if isEnabled {
-            self.titleLabel.numberOfLines = 0
-            self.subtitleLabel.numberOfLines = 0
-        } else {
-            self.titleLabel.numberOfLines = 0
-            self.subtitleLabel.numberOfLines = 0
-        }
-    }
-
-    open override func safeAreaInsetsDidChange() {
-        super.safeAreaInsetsDidChange()
-        self.setupConstraints()
     }
 }
 
