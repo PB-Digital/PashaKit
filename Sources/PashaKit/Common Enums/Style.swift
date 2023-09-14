@@ -34,7 +34,7 @@ import UIKit
 /// This enum right now is used by `PBRoundedView` for configuring its shape.
 /// However since it's public, you can use it anywhere you want to customize your view.
 ///
-public enum Style {
+public enum Style: Equatable {
     ///
     /// Used for making rounded corners. Implementation depends on you
     ///
@@ -49,7 +49,7 @@ public enum Style {
 /// Divider is a thin line under tableview cells , row views. This enum is used by
 /// `PBRowView`, `PBTransactionRowView`
 ///
-public enum DividerStyle {
+public enum DividerStyle: Equatable {
 
     /// Used for drawing divider partiallly
     ///
