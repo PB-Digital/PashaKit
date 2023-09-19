@@ -1,4 +1,4 @@
 {
-    "version": "1.3.2",
-    "release_notes": "Enhancements to `PBRowView` component"
+    "version": "1.3.3",
+    "release_notes": "Minor additions, such as `PBSnappyLayout` for collection views, `joined` support for attributed strings and non-intristic sized table view component."
 }
