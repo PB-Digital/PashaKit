@@ -234,6 +234,7 @@ open class PBRowView: UIView, PBSkeletonable {
         didSet {
             if self.leftViewSize != oldValue {
                 self.setupLeftIconWrapperConstraints(for: self.leftViewSize)
+                self.setupLeftIconCornerRadius(style: self.leftIconStyle)
                 self.setupDividerConstraints(by: self.leftPaddingForDivider)
             }
         }
