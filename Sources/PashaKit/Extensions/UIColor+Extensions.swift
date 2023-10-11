@@ -58,5 +58,122 @@ extension UIColor {
         static let PBStatusRedBG = UIColor(red: 0.925, green: 0.18, blue: 0.141, alpha: 0.08)
         static let PBInfoYellowFG = UIColor(red: 0.643, green: 0.443, blue: 0, alpha: 1)
         static let PBInfoYellowBG = UIColor(red: 0.842, green: 0.607, blue: 0.077, alpha: 0.12)
+        
+        // MARK: Pasha Business
+        
+        static var PBBGreen: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.298, green: 0.745, blue: 0.620, alpha: 1) :
+                UIColor(red: 0.020, green: 0.553, blue: 0.400, alpha: 1)
+            }
+        }
+        
+        static var PBBGray: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.922, green: 0.922, blue: 0.961, alpha: 0.3) :
+                UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.3)
+            }
+        }
+        
+        static var PBBBackgroundGray: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.463, green: 0.463, blue: 0.502, alpha: 0.24) :
+                UIColor(red: 0.463, green: 0.463, blue: 0.502, alpha: 0.12)
+            }
+        }
+        
+        static var PBBRed: UIColor {
+            return UIColor { (traits) -> UIColor in
+                // TODO: Add dark color
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.886, green: 0.263, blue: 0.325, alpha: 1) :
+                UIColor(red: 0.886, green: 0.263, blue: 0.325, alpha: 1)
+            }
+        }
+        
+        static var PBBYellow: UIColor {
+            return UIColor { (traits) -> UIColor in
+                // TODO: Add dark color
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.925, green: 0.643, blue: 0, alpha: 1) :
+                UIColor(red: 0.925, green: 0.643, blue: 0, alpha: 1)
+            }
+        }
+        
+        static var PBBBlue: UIColor {
+            return UIColor { (traits) -> UIColor in
+                // TODO: Add dark color
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0, green: 0.565, blue: 0.757, alpha: 1) :
+                UIColor(red: 0, green: 0.565, blue: 0.757, alpha: 1)
+            }
+        }
+        
+        static var PBBInfoGrayBackground: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.110, green: 0.110, blue: 0.118, alpha: 1) :
+                UIColor(red: 0.949, green: 0.949, blue: 0.969, alpha: 1)
+            }
+        }
+        
+        static var PBBInfoBlueBackground: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.180, green: 0.643, blue: 0.800, alpha: 0.08) :
+                UIColor(red: 0.0, green: 0.565, blue: 0.757, alpha: 0.08)
+            }
+        }
+        
+        static var PBBInfoYellowBackground: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.945, green: 0.737, blue: 0.271, alpha: 0.08) :
+                UIColor(red: 0.925, green: 0.643, blue: 0.0, alpha: 0.08)
+            }
+        }
+        
+        static var PBBInfoRedBackground: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.918, green: 0.357, blue: 0.416, alpha: 0.08) :
+                UIColor(red: 0.886, green: 0.263, blue: 0.325, alpha: 0.08)
+            }
+        }
+        
+        static var PBBInfoGreenBackground: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.298, green: 0.745, blue: 0.620, alpha: 0.08) :
+                UIColor(red: 0.020, green: 0.553, blue: 0.400, alpha: 0.08)
+            }
+        }
+        
+        static var PBBInfoTitle: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1) :
+                UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1)
+            }
+        }
+        
+        static var PBBInfoDescription: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.922, green: 0.922, blue: 0.961, alpha: 0.6) :
+                UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.6)
+            }
+        }
+        
+        static var PBBTextFieldLabel: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.502, green: 0.502, blue: 0.514, alpha: 1) :
+                UIColor(red: 0.596, green: 0.596, blue: 0.624, alpha: 1)
+            }
+        }
     }
 }
