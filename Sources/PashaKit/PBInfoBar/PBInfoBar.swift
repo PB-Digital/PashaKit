@@ -131,6 +131,7 @@ open class PBInfoBar: UIView {
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         label.textColor = .darkText
         label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
 
         label.translatesAutoresizingMaskIntoConstraints = false
 
