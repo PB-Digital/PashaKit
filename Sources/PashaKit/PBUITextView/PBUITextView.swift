@@ -378,6 +378,10 @@ public class PBUITextView: UIView {
         }
     }
 
+    public func makeFirstResponder() {
+        self.textView.becomeFirstResponder()
+    }
+
     // MARK: - INPUT DELEGATES
 
     /// Gets called when textview gets resigned from being first responder.
