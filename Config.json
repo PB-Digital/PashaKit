@@ -1,4 +1,4 @@
 {
-    "version": "1.3.4",
-    "release_notes": "Corner radius recalculation issue of `PBRowView`."
+    "version": "1.3.5",
+    "release_notes": "A swift style getter and setter added for text of `PBUITextView`. Old getter deprecated"
 }
