@@ -365,9 +365,21 @@ public class PBUITextView: UIView {
 
     /// Returns the current text from text field. If there's no text, this method
     /// will return empty string literal.
-    ///
+    @available(*, deprecated, renamed: "text")
     public func getText() -> String {
         return self.textView.text ?? ""
+    }
+
+    public var text: String {
+        get {
+            self.textView.text ?? ""
+        } set {
+            self.textView.text = newValue
+        }
+    }
+
+    public func makeFirstResponder() {
+        self.textView.becomeFirstResponder()
     }
 
     // MARK: - INPUT DELEGATES
