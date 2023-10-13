@@ -74,6 +74,11 @@ open class PBRowView: UIView, PBSkeletonable {
             }
         }
     }
+    
+    public enum HasIndicator: Equatable {
+        case `true`(color: UIColor)
+        case `false`
+    }
 
     /// Sets the icon to the left side of view.
     ///
@@ -212,6 +217,15 @@ open class PBRowView: UIView, PBSkeletonable {
             }
         }
     }
+    
+    public var hasIndicator: HasIndicator = .false {
+        didSet {
+            if self.hasIndicator != oldValue {
+                self.setupIndicator(state: self.hasIndicator)
+            }
+        }
+    }
+    
 
     /// The parameter for setting edge insets for `leftIconView`.
     ///
@@ -397,6 +411,17 @@ open class PBRowView: UIView, PBSkeletonable {
 
         return label
     }()
+    
+    private lazy var indicatorView: UIView = {
+        let view = UIView()
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.heightAnchor.constraint(equalToConstant: 10.0).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 10.0).isActive = true
+        view.layer.cornerRadius = 5
+        
+        return view
+    }()
 
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
@@ -563,6 +588,7 @@ open class PBRowView: UIView, PBSkeletonable {
         self.primaryStackView.addArrangedSubview(self.leftIconWrapperView)
         self.primaryStackView.addArrangedSubview(self.secondaryStackView)
         self.primaryStackView.addArrangedSubview(self.rightSideContentStack)
+        self.primaryStackView.addArrangedSubview(self.indicatorView)
 
         self.titleStack.addArrangedSubview(self.titleLabel)
         self.rightSideContentStack.addArrangedSubview(self.rightIconWrapperView)
@@ -603,6 +629,17 @@ open class PBRowView: UIView, PBSkeletonable {
             self.setupIsNewConstraints()
         case .false:
             self.isNewView.removeFromSuperview()
+        }
+    }
+    
+    private func setupIndicator(state: HasIndicator) {
+        switch state {
+        case .true(let color):
+            self.indicatorView.backgroundColor = color
+            self.indicatorView.isHidden = false
+        case .false:
+            self.indicatorView.backgroundColor = nil
+            self.indicatorView.isHidden = true
         }
     }
 
@@ -682,6 +719,13 @@ open class PBRowView: UIView, PBSkeletonable {
         ])
 
         self.setNeedsUpdateConstraints()
+    }
+    
+    private func setupindicatorConstraints() {
+        NSLayoutConstraint.activate([
+            self.indicatorView.centerYAnchor.constraint(equalTo: self.primaryStackView.centerYAnchor),
+            self.indicatorView.rightAnchor.constraint(equalTo: self.primaryStackView.rightAnchor, constant: -10)
+        ])
     }
 
     private func setupDividerConstraints(by padding: CGFloat) {
