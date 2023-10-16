@@ -61,7 +61,7 @@ extension UIColor {
         
         // MARK: Pasha Business
         
-        static var PBBGreen: UIColor {
+        static var SMEGreen: UIColor {
             return UIColor { (traits) -> UIColor in
                 return traits.userInterfaceStyle == .dark ?
                 UIColor(red: 0.298, green: 0.745, blue: 0.620, alpha: 1) :
@@ -69,7 +69,7 @@ extension UIColor {
             }
         }
         
-        static var PBBGray: UIColor {
+        static var SMEGray: UIColor {
             return UIColor { (traits) -> UIColor in
                 return traits.userInterfaceStyle == .dark ?
                 UIColor(red: 0.922, green: 0.922, blue: 0.961, alpha: 0.3) :
@@ -77,7 +77,7 @@ extension UIColor {
             }
         }
         
-        static var PBBBackgroundGray: UIColor {
+        static var SMEBackgroundGray: UIColor {
             return UIColor { (traits) -> UIColor in
                 return traits.userInterfaceStyle == .dark ?
                 UIColor(red: 0.463, green: 0.463, blue: 0.502, alpha: 0.24) :
@@ -85,7 +85,7 @@ extension UIColor {
             }
         }
         
-        static var PBBRed: UIColor {
+        static var SMERed: UIColor {
             return UIColor { (traits) -> UIColor in
                 // TODO: Add dark color
                 return traits.userInterfaceStyle == .dark ?
@@ -94,7 +94,7 @@ extension UIColor {
             }
         }
         
-        static var PBBYellow: UIColor {
+        static var SMEYellow: UIColor {
             return UIColor { (traits) -> UIColor in
                 // TODO: Add dark color
                 return traits.userInterfaceStyle == .dark ?
@@ -103,7 +103,7 @@ extension UIColor {
             }
         }
         
-        static var PBBBlue: UIColor {
+        static var SMEBlue: UIColor {
             return UIColor { (traits) -> UIColor in
                 // TODO: Add dark color
                 return traits.userInterfaceStyle == .dark ?
@@ -112,7 +112,7 @@ extension UIColor {
             }
         }
         
-        static var PBBInfoGrayBackground: UIColor {
+        static var SMEInfoGrayBackground: UIColor {
             return UIColor { (traits) -> UIColor in
                 return traits.userInterfaceStyle == .dark ?
                 UIColor(red: 0.110, green: 0.110, blue: 0.118, alpha: 1) :
@@ -120,7 +120,7 @@ extension UIColor {
             }
         }
         
-        static var PBBInfoBlueBackground: UIColor {
+        static var SMEInfoBlueBackground: UIColor {
             return UIColor { (traits) -> UIColor in
                 return traits.userInterfaceStyle == .dark ?
                 UIColor(red: 0.180, green: 0.643, blue: 0.800, alpha: 0.08) :
@@ -128,7 +128,7 @@ extension UIColor {
             }
         }
         
-        static var PBBInfoYellowBackground: UIColor {
+        static var SMEInfoYellowBackground: UIColor {
             return UIColor { (traits) -> UIColor in
                 return traits.userInterfaceStyle == .dark ?
                 UIColor(red: 0.945, green: 0.737, blue: 0.271, alpha: 0.08) :
@@ -136,7 +136,7 @@ extension UIColor {
             }
         }
         
-        static var PBBInfoRedBackground: UIColor {
+        static var SMEInfoRedBackground: UIColor {
             return UIColor { (traits) -> UIColor in
                 return traits.userInterfaceStyle == .dark ?
                 UIColor(red: 0.918, green: 0.357, blue: 0.416, alpha: 0.08) :
@@ -144,7 +144,7 @@ extension UIColor {
             }
         }
         
-        static var PBBInfoGreenBackground: UIColor {
+        static var SMEInfoGreenBackground: UIColor {
             return UIColor { (traits) -> UIColor in
                 return traits.userInterfaceStyle == .dark ?
                 UIColor(red: 0.298, green: 0.745, blue: 0.620, alpha: 0.08) :
@@ -152,7 +152,7 @@ extension UIColor {
             }
         }
         
-        static var PBBInfoTitle: UIColor {
+        static var SMEInfoTitle: UIColor {
             return UIColor { (traits) -> UIColor in
                 return traits.userInterfaceStyle == .dark ?
                 UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1) :
@@ -160,7 +160,7 @@ extension UIColor {
             }
         }
         
-        static var PBBInfoDescription: UIColor {
+        static var SMEInfoDescription: UIColor {
             return UIColor { (traits) -> UIColor in
                 return traits.userInterfaceStyle == .dark ?
                 UIColor(red: 0.922, green: 0.922, blue: 0.961, alpha: 0.6) :
@@ -168,7 +168,7 @@ extension UIColor {
             }
         }
         
-        static var PBBTextFieldLabel: UIColor {
+        static var SMETextFieldLabel: UIColor {
             return UIColor { (traits) -> UIColor in
                 return traits.userInterfaceStyle == .dark ?
                 UIColor(red: 0.502, green: 0.502, blue: 0.514, alpha: 1) :

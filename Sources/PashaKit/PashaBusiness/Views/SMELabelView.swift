@@ -1,5 +1,5 @@
 //
-//  PBBLabelView.swift
+//  SMELabelView.swift
 //
 //
 //  Created by Farid Valiyev on 31.07.23.
@@ -39,20 +39,20 @@ import UIKit
 /// * Connect one or more action methods to the button.
 /// * Provide accessibility information and localized strings.
 ///
-/// - Note: PBBLabelView is optimized for looking as expected with minimum effort at the `height` of 72.0 pt.
+/// - Note: SMELabelView is optimized for looking as expected with minimum effort at the `height` of 72.0 pt.
 ///
 /// However feel free to customize it.
 ///
 
-public class PBBLabelView: UIView {
+public class SMELabelView: UIView {
     
-    public enum PBBLabelViewType {
+    public enum SMELabelViewType {
         case plain(localizedText: String)
         case small(localizedText: String)
         case withIcon(localizedText: String, icon: UIImage)
     }
     
-    public enum PBBLabelViewStatus {
+    public enum SMELabelViewStatus {
         case new
         case draft
         case error
@@ -103,9 +103,9 @@ public class PBBLabelView: UIView {
     
     /// Specifies style of the actionView.
     ///
-    /// If not specified by outside, PBBActionView will be created with filled style.
+    /// If not specified by outside, SMEActionView will be created with filled style.
     ///
-    public var statusOfLabel: PBBLabelViewStatus = .draft {
+    public var statusOfLabel: SMELabelViewStatus = .draft {
         didSet {
             self.prepareLabelViewByStatus()
         }
@@ -113,9 +113,9 @@ public class PBBLabelView: UIView {
     
     /// Specifies style of the actionView.
     ///
-    /// If not specified by outside, PBBLabelView will be created with filled style.
+    /// If not specified by outside, SMELabelView will be created with filled style.
     ///
-    public var typeOfLabel: PBBLabelViewType = .plain(localizedText: "") {
+    public var typeOfLabel: SMELabelViewType = .plain(localizedText: "") {
         didSet {
             self.prepareLabelViewByType()
         }
@@ -141,15 +141,6 @@ public class PBBLabelView: UIView {
         return view
     }()
     
-    override private init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        fatalError("init(coder:) has not been implemented")
-    }
-
     /// Creates a new button of specified style.
     ///
     /// - Parameters:
@@ -157,7 +148,7 @@ public class PBBLabelView: UIView {
     ///    - statusOfLabel: Sets the type of Label.
     ///
     
-    public convenience init(statusOfLabel: PBBLabelViewStatus = .draft) {
+    public convenience init(statusOfLabel: SMELabelViewStatus = .draft) {
         self.init()
         
         UIFont.registerCustomFonts()
@@ -171,7 +162,7 @@ public class PBBLabelView: UIView {
         
     }
     
-    public convenience init(statusOfLabel: PBBLabelViewStatus = .draft, typeOfLabel: PBBLabelViewType = .plain(localizedText: "")) {
+    public convenience init(statusOfLabel: SMELabelViewStatus = .draft, typeOfLabel: SMELabelViewType = .plain(localizedText: "")) {
         self.init()
         
         UIFont.registerCustomFonts()
@@ -186,7 +177,7 @@ public class PBBLabelView: UIView {
         
     }
     
-    private func setupViews(for type: PBBLabelViewStatus) {
+    private func setupViews(for type: SMELabelViewStatus) {
         
         self.addSubview(self.titleLabel)
         
@@ -199,7 +190,7 @@ public class PBBLabelView: UIView {
         self.setupConstraints(for: type)
     }
     
-    private func setupConstraints(for type: PBBLabelViewStatus) {
+    private func setupConstraints(for type: SMELabelViewStatus) {
         
         switch self.typeOfLabel {
         case .plain:
@@ -262,22 +253,22 @@ public class PBBLabelView: UIView {
         switch self.statusOfLabel {
         case .new:
             self.titleLabel.textColor = .white
-            self.baseBackgroundColor = UIColor.Colors.PBBRed
+            self.baseBackgroundColor = UIColor.Colors.SMERed
         case .waiting:
-            self.titleLabel.textColor = UIColor.Colors.PBBYellow
-            self.baseBackgroundColor = UIColor.Colors.PBBYellow.withAlphaComponent(0.08)
+            self.titleLabel.textColor = UIColor.Colors.SMEYellow
+            self.baseBackgroundColor = UIColor.Colors.SMEYellow.withAlphaComponent(0.08)
         case .inprogress:
-            self.titleLabel.textColor = UIColor.Colors.PBBBlue
-            self.baseBackgroundColor = UIColor.Colors.PBBBlue.withAlphaComponent(0.08)
+            self.titleLabel.textColor = UIColor.Colors.SMEBlue
+            self.baseBackgroundColor = UIColor.Colors.SMEBlue.withAlphaComponent(0.08)
         case .done:
-            self.titleLabel.textColor = UIColor.Colors.PBBGreen
-            self.baseBackgroundColor = UIColor.Colors.PBBGreen.withAlphaComponent(0.08)
+            self.titleLabel.textColor = UIColor.Colors.SMEGreen
+            self.baseBackgroundColor = UIColor.Colors.SMEGreen.withAlphaComponent(0.08)
         case .draft:
             self.titleLabel.textColor = .black
-            self.baseBackgroundColor = UIColor.Colors.PBBBackgroundGray.withAlphaComponent(0.08)
+            self.baseBackgroundColor = UIColor.Colors.SMEBackgroundGray.withAlphaComponent(0.08)
         case .error:
-            self.titleLabel.textColor = UIColor.Colors.PBBRed
-            self.baseBackgroundColor = UIColor.Colors.PBBRed.withAlphaComponent(0.08)
+            self.titleLabel.textColor = UIColor.Colors.SMERed
+            self.baseBackgroundColor = UIColor.Colors.SMERed.withAlphaComponent(0.08)
             
         }
     }

@@ -1,5 +1,5 @@
 //
-//  PBBRoundButton.swift
+//  SMERoundButton.swift
 //
 //
 //  Created by Farid Valiyev on 28.07.23.
@@ -39,31 +39,31 @@ import UIKit
 /// * Connect one or more action methods to the button.
 /// * Provide accessibility information and localized strings.
 ///
-/// - Note: PBBRoundButton is optimized for looking as expected with minimum effort at the `height` of 56.0 pt.
+/// - Note: SMERoundButton is optimized for looking as expected with minimum effort at the `height` of 56.0 pt.
 ///
 /// However feel free to customize it.
 ///
-public class PBBRoundButton: UIView {
+public class SMERoundButton: UIView {
 
-    public enum PBBRoundButtonType {
+    public enum SMERoundButtonType {
         case plain
         case withTitle(localizableTitle: String)
         case disabled(localizableTitle: String, localizableDisableTitle: String)
     }
 
     /// Specifies the state of button
-    public enum PBBRoundButtonState {
+    public enum SMERoundButtonState {
 
-        /// A  button with clear background color and PBBGreen title color
+        /// A  button with clear background color and SMEGreen title color
         ///
-        /// By default title color of button will be in PBBGreen color. However if theme option is used,
+        /// By default title color of button will be in SMEGreen color. However if theme option is used,
         /// its title color may be PBFauxChestnut depending on returned user type.
         ///
         case normal
 
-        /// A button with 0.1 opacity PBGreen background color and PBBGreen title color
+        /// A button with 0.1 opacity PBGreen background color and SMEGreen title color
         ///
-        /// By default background color of button will be in PBBGreen color with 0.1 opacity. However if theme option is used,
+        /// By default background color of button will be in SMEGreen color with 0.1 opacity. However if theme option is used,
         /// its background color may be different color depending on returned user type.
         ///
         case disabled
@@ -84,7 +84,7 @@ public class PBBRoundButton: UIView {
     
     /// Sets the title to use for normal state.
     ///
-    /// Since we're using only normal state for UIButton, at the moment PBBRoundButton also uses only normal state when setting
+    /// Since we're using only normal state for UIButton, at the moment SMERoundButton also uses only normal state when setting
     /// button title.
     /// For different states use native
     /// ```
@@ -163,19 +163,19 @@ public class PBBRoundButton: UIView {
 
     /// The theme for the button's appearance.
     ///
-    /// PBUIButton is using theme parameter for defining its color palette for components. These include button's
+    /// SMERoundButton is using theme parameter for defining its color palette for components. These include button's
     /// * Background color
     /// * Border color
     /// * Title color
     /// * Tint color
     ///
-    public var theme: PBBUIButtonTheme = .regular {
+    public var theme: SMEUIButtonTheme = .regular {
         didSet {
             self.prepareButtonByState()
         }
     }
 
-    private var typeOfButton: PBBRoundButtonType = .plain {
+    private var typeOfButton: SMERoundButtonType = .plain {
         didSet {
             self.prepareButtonByType()
         }
@@ -185,7 +185,7 @@ public class PBBRoundButton: UIView {
     ///
     /// If not specified by outside, PBBRoundButton will be created with filled style.
     ///
-    public var stateOfButton: PBBRoundButtonState = .normal {
+    public var stateOfButton: SMERoundButtonState = .normal {
         didSet {
             self.prepareButtonByState()
         }
@@ -270,15 +270,6 @@ public class PBBRoundButton: UIView {
         return view
     }()
 
-    override private init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        fatalError("init(coder:) has not been implemented")
-    }
-
     /// Creates a new button of specified style.
     ///
     /// - Parameters:
@@ -286,7 +277,7 @@ public class PBBRoundButton: UIView {
     ///    - typeOfButton: Sets the type of button.
     ///
     
-    public convenience init(typeOfButton: PBBRoundButtonType = .plain) {
+    public convenience init(typeOfButton: SMERoundButtonType = .plain) {
         self.init()
         
         UIFont.registerCustomFonts()
@@ -300,7 +291,8 @@ public class PBBRoundButton: UIView {
         
     }
 
-    public convenience init(typeOfButton: PBBRoundButtonType = .plain, stateOfButton: PBBRoundButtonState) {
+    public convenience init(typeOfButton: SMERoundButtonType = .plain,
+                            stateOfButton: SMERoundButtonState) {
         self.init()
         
         UIFont.registerCustomFonts()
@@ -314,7 +306,7 @@ public class PBBRoundButton: UIView {
         
     }
     
-    private func setupViews(for type: PBBRoundButtonType) {
+    private func setupViews(for type: SMERoundButtonType) {
         
         self.iconWrapperView.addSubview(self.iconView)
         
@@ -335,7 +327,7 @@ public class PBBRoundButton: UIView {
         self.setupConstraints(for: type)
     }
     
-    private func setupConstraints(for type: PBBRoundButtonType) {
+    private func setupConstraints(for type: SMERoundButtonType) {
         switch type {
         case .plain:
             
@@ -430,10 +422,10 @@ public class PBBRoundButton: UIView {
             self.iconWrapperView.backgroundColor = self.theme.getPrimaryColor()
         case .disabled:
             self.titleLabel.font = UIFont.sfProText(ofSize: 13, weight: .semibold)
-            self.titleLabel.textColor = UIColor.Colors.PBBGray
+            self.titleLabel.textColor = UIColor.Colors.SMEGray
             self.disableTitleLabel.font = UIFont.sfProText(ofSize: 11, weight: .medium)
             self.disableTitleLabel.textColor = .white
-            self.iconBackgroundColor = UIColor.Colors.PBBBackgroundGray
+            self.iconBackgroundColor = UIColor.Colors.SMEBackgroundGray
         }
     }
 

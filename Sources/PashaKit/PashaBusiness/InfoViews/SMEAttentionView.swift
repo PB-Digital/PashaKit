@@ -1,5 +1,5 @@
 //
-//  PBBAttentionView.swift
+//  SMEAttentionView.swift
 //  
 //
 //  Created by Farid Valiyev on 05.08.23.
@@ -29,14 +29,14 @@
 
 import UIKit
 
-/// `PBBAttentionView` is a type of `UIView` for showing information, alerts to customers.
+/// `SMEAttentionView` is a type of `UIView` for showing information, alerts to customers.
 ///
-/// There is 2 levels of `AttentionType` for `PBBAttentionView`:
+/// There is 2 levels of `AttentionType` for `SMEAttentionView`:
 ///  - `normal`
 ///  - `detailed`
 /// normal type attention views is in one line, while detailed type are in two lines.
 ///
-open class PBBAttentionView: UIView {
+open class SMEAttentionView: UIView {
     
     /// Attention type of information
     ///
@@ -102,7 +102,7 @@ open class PBBAttentionView: UIView {
 
     /// Sets attention type for view.
     ///
-    /// By default `PBBAttentionView` will be created with `normal` type.
+    /// By default `SMEAttentionView` will be created with `normal` type.
     ///
     public var attentionType: AttentionType = .normal(localizedTitle: "") {
         didSet {
@@ -112,7 +112,7 @@ open class PBBAttentionView: UIView {
     
     /// Sets attention style for view.
     ///
-    /// By default `PBBAttentionView` will be created with `info` style.
+    /// By default `SMEAttentionView` will be created with `info` style.
     ///
     public var attentionStyle: AttentionStyle = .info {
         didSet {
@@ -176,16 +176,6 @@ open class PBBAttentionView: UIView {
         return view
     }()
 
-    required public override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setupViews()
-    }
-
-    required public init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.setupViews()
-    }
-    
     public convenience init(typeOfAttention: AttentionType = .normal(localizedTitle: "")) {
         self.init()
         
@@ -202,7 +192,8 @@ open class PBBAttentionView: UIView {
         self.setupConstraints()
     }
     
-    public convenience init(typeOfAttention: AttentionType = .normal(localizedTitle: ""), styleOfAttention: AttentionStyle = .info) {
+    public convenience init(typeOfAttention: AttentionType = .normal(localizedTitle: ""),
+                            styleOfAttention: AttentionStyle = .info) {
         self.init()
         
         UIFont.registerCustomFonts()
@@ -274,25 +265,25 @@ open class PBBAttentionView: UIView {
     func prepareAttentionByStyle(style: AttentionStyle) {
         self.layer.cornerRadius = 12.0
         self.infoTitle.font = UIFont.sfProText(ofSize: 15, weight: .medium)
-        self.infoTitle.textColor = UIColor.Colors.PBBInfoTitle
+        self.infoTitle.textColor = UIColor.Colors.SMEInfoTitle
         self.infoBody.font = UIFont.sfProText(ofSize: 13, weight: .regular)
-        self.infoBody.textColor = UIColor.Colors.PBBInfoDescription
+        self.infoBody.textColor = UIColor.Colors.SMEInfoDescription
         switch style {
         case .info:
-            self.backgroundColor = UIColor.Colors.PBBInfoGrayBackground
-            self.infoIcon.image = UIImage.Images.icPBBInfoGray
+            self.backgroundColor = UIColor.Colors.SMEInfoGrayBackground
+            self.infoIcon.image = UIImage.Images.icSMEInfoGray
         case .waiting:
-            self.backgroundColor = UIColor.Colors.PBBInfoYellowBackground
-            self.infoIcon.image = UIImage.Images.icPBBInfoYellow
+            self.backgroundColor = UIColor.Colors.SMEInfoYellowBackground
+            self.infoIcon.image = UIImage.Images.icSMEInfoYellow
         case .inprogress:
-            self.backgroundColor = UIColor.Colors.PBBInfoBlueBackground
-            self.infoIcon.image = UIImage.Images.icPBBInfoBlue
+            self.backgroundColor = UIColor.Colors.SMEInfoBlueBackground
+            self.infoIcon.image = UIImage.Images.icSMEInfoBlue
         case .error:
-            self.backgroundColor = UIColor.Colors.PBBInfoRedBackground
-            self.infoIcon.image = UIImage.Images.icPBBInfoRed
+            self.backgroundColor = UIColor.Colors.SMEInfoRedBackground
+            self.infoIcon.image = UIImage.Images.icSMEInfoRed
         case .done:
-            self.backgroundColor = UIColor.Colors.PBBInfoGreenBackground
-            self.infoIcon.image = UIImage.Images.icPBBInfoGreen
+            self.backgroundColor = UIColor.Colors.SMEInfoGreenBackground
+            self.infoIcon.image = UIImage.Images.icSMEInfoGreen
         }
     }
 }

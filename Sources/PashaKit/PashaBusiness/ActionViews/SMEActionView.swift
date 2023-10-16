@@ -1,5 +1,5 @@
 //
-//  PBBActionView.swift
+//  SMEActionView.swift
 //
 //
 //  Created by Farid Valiyev on 30.07.23.
@@ -39,35 +39,35 @@ import UIKit
 /// * Connect one or more action methods to the button.
 /// * Provide accessibility information and localized strings.
 ///
-/// - Note: PBBActionView is optimized for looking as expected with minimum effort at the `height` of 72.0 pt.
+/// - Note: SMEActionView is optimized for looking as expected with minimum effort at the `height` of 72.0 pt.
 ///
 /// However feel free to customize it.
 ///
 
-public class PBBActionView: UIView {
+public class SMEActionView: UIView {
 
-    public enum PBBIcon {
+    public enum SMEIcon {
         case none
         case hasIcon(icon: UIImage)
     }
     
-    public enum PBBActionType {
-        case normal(icon: PBBIcon = .none, localizedTitleText: String)
-        case detailed(icon: PBBIcon = .none, localizedTitleText: String, localizedSubTitleText: String)
-        case footerLabel(icon: PBBIcon = .none, localizedTitleText: String, localizedSubTitleText: String, localizedDescriptionText: String)
+    public enum SMEActionType {
+        case normal(icon: SMEIcon = .none, localizedTitleText: String)
+        case detailed(icon: SMEIcon = .none, localizedTitleText: String, localizedSubTitleText: String)
+        case footerLabel(icon: SMEIcon = .none, localizedTitleText: String, localizedSubTitleText: String, localizedDescriptionText: String)
     }
     
-    public enum PBBActionState {
+    public enum SMEActionState {
         case normal
         case disabled
         case selected
     }
 
-    public enum PBBActionStyle {
+    public enum SMEActionStyle {
         case none
         case chevron
         case chevronWithText(localizedText: String)
-        case chevronWithStatus(localizedText: String, status: PBBLabelView.PBBLabelViewStatus)
+        case chevronWithStatus(localizedText: String, status: SMELabelView.SMELabelViewStatus)
         case chevronWithButton(localizedText: String)
         case radioButton(isSelected: Bool)
         case switchButton(isSelected: Bool)
@@ -160,34 +160,44 @@ public class PBBActionView: UIView {
     
     /// The theme for the button's appearance.
     ///
-    /// PBUIButton is using theme parameter for defining its color palette for components. These include button's
+    /// SMEUIButton is using theme parameter for defining its color palette for components. These include button's
     /// * Background color
     /// * Border color
     /// * Title color
     /// * Tint color
     ///
-    public var theme: PBBUIButtonTheme = .regular {
-        didSet {}
+    public var theme: SMEUIButtonTheme = .regular {
+        didSet {/*TODO: Review again*/}
     }
     
-    private var typeOfAction: PBBActionType = .normal(localizedTitleText: "") {
-        didSet {}
+    private var typeOfAction: SMEActionType = .normal(localizedTitleText: "") {
+        didSet {
+            /*TODO: Review again*/
+            self.prepareActionViewByType()
+        }
     }
 
     /// Specifies style of the actionView.
     ///
-    /// If not specified by outside, PBBActionView will be created with filled style.
+    /// If not specified by outside, SMEActionView will be created with filled style.
     ///
-    public var stateOfAction: PBBActionState = .normal {
-        didSet {}
+    public var stateOfAction: SMEActionState = .normal {
+        didSet {
+            /*TODO: Review again*/
+            self.prepareActionViewByState()
+        }
     }
     
-    public var statusTypeOfAction: PBBLabelView.PBBLabelViewStatus = .new {
-        didSet {}
+    public var statusTypeOfAction: SMELabelView.SMELabelViewStatus = .new {
+        didSet {
+            /*TODO: Review again*/
+        }
     }
     
-    public var styleOfAction: PBBActionStyle = .none {
-        didSet {}
+    public var styleOfAction: SMEActionStyle = .none {
+        didSet {
+            self.prepareActionViewByStyle()
+        }
     }
     
     public var iconSize: IconSize = .large {
@@ -318,7 +328,7 @@ public class PBBActionView: UIView {
     private lazy var chevronIcon: UIImageView = {
         let view = UIImageView()
         
-        view.image = UIImage.Images.icPBBChevronRight
+        view.image = UIImage.Images.icSMEChevronRight
         
         view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -327,8 +337,8 @@ public class PBBActionView: UIView {
         return view
     }()
     
-    private lazy var button: PBBUIButton = {
-        let view = PBBUIButton(localizableTitle: "", styleOfButton: .plain)
+    private lazy var button: SMEUIButton = {
+        let view = SMEUIButton(localizableTitle: "", styleOfButton: .plain)
         
         view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -353,8 +363,8 @@ public class PBBActionView: UIView {
         return view
     }()
     
-    private lazy var statusLabelView: PBBLabelView = {
-        let view = PBBLabelView(statusOfLabel: .new, typeOfLabel: .small(localizedText: ""))
+    private lazy var statusLabelView: SMELabelView = {
+        let view = SMELabelView(statusOfLabel: .new, typeOfLabel: .small(localizedText: ""))
         
         view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -372,15 +382,6 @@ public class PBBActionView: UIView {
 
         return view
     }()
-    
-    override private init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        fatalError("init(coder:) has not been implemented")
-    }
 
     /// Creates a new button of specified style.
     ///
@@ -389,7 +390,7 @@ public class PBBActionView: UIView {
     ///    - typeOfButton: Sets the type of button.
     ///
     
-    public convenience init(typeOfAction: PBBActionType = .normal(icon: .none, localizedTitleText: "")) {
+    public convenience init(typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: "")) {
         self.init()
         
         UIFont.registerCustomFonts()
@@ -402,7 +403,8 @@ public class PBBActionView: UIView {
         self.setupViews(for: typeOfAction)
     }
     
-    public convenience init(typeOfAction: PBBActionType = .normal(icon: .none, localizedTitleText: ""), styleOfAction: PBBActionStyle = .none  ) {
+    public convenience init(typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: ""),
+                            styleOfAction: SMEActionStyle = .none  ) {
         self.init()
         
         UIFont.registerCustomFonts()
@@ -416,7 +418,8 @@ public class PBBActionView: UIView {
         self.setupViews(for: typeOfAction)
     }
 
-    public convenience init(typeOfAction: PBBActionType = .normal(icon: .none, localizedTitleText: ""), stateOfAction: PBBActionState = .normal) {
+    public convenience init(typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: ""),
+                            stateOfAction: SMEActionState = .normal) {
         self.init()
         
         UIFont.registerCustomFonts()
@@ -429,7 +432,7 @@ public class PBBActionView: UIView {
         self.setupViews(for: typeOfAction)
     }
     
-    private func setupViews(for type: PBBActionType) {
+    private func setupViews(for type: SMEActionType) {
         
         self.baseView.addSubview(self.titleStackView)
         
@@ -473,7 +476,7 @@ public class PBBActionView: UIView {
         self.setupConstraints(for: type)
     }
     
-    private func setupViewsIcon(for icon: PBBIcon) {
+    private func setupViewsIcon(for icon: SMEIcon) {
         switch icon {
         case .hasIcon:
             self.leftIconWrapperView.addSubview(self.leftIconView)
@@ -482,7 +485,7 @@ public class PBBActionView: UIView {
         }
     }
     
-    private func setupConstraints(for type: PBBActionType) {
+    private func setupConstraints(for type: SMEActionType) {
         
         self.titleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
         
@@ -536,7 +539,7 @@ public class PBBActionView: UIView {
         self.iconSize = .large
     }
     
-    private func setupConstraintsByIcon(icon: PBBIcon) {
+    private func setupConstraintsByIcon(icon: SMEIcon) {
         switch icon {
         case .none:
             NSLayoutConstraint.activate([
@@ -636,17 +639,18 @@ public class PBBActionView: UIView {
 
     private func prepareActionViewByState() {
         switch self.stateOfAction {
-        case .normal: break
+        case .normal: break /*TODO: Review again*/
+            
 //            self.titleLabel.font = UIFont.sfProText(ofSize: 13, weight: self.buttonTitleWeight)
 //            self.iconBackgroundColor = self.theme.getPrimaryColor()
 //            self.iconWrapperView.backgroundColor = self.theme.getPrimaryColor()
-        case .disabled: break
+        case .disabled: break /*TODO: Review again*/
 //            self.titleLabel.font = UIFont.sfProText(ofSize: 13, weight: .semibold)
-//            self.titleLabel.textColor = UIColor.Colors.PBBGray
+//            self.titleLabel.textColor = UIColor.Colors.SMEGray
 //            self.disableTitleLabel.font = UIFont.sfProText(ofSize: 11, weight: .medium)
 //            self.disableTitleLabel.textColor = .white
-//            self.iconBackgroundColor = UIColor.Colors.PBBBackgroundGray
-        case .selected: break
+//            self.iconBackgroundColor = UIColor.Colors.SMEBackgroundGray
+        case .selected: break /*TODO: Review again*/
         }
     }
 
@@ -654,30 +658,30 @@ public class PBBActionView: UIView {
         switch self.typeOfAction {
         case .normal(let icon, let localizedTitleText):
             self.title = localizedTitleText
-            self.titleLabel.font = UIFont.sfProText(ofSize: 17, weight: .medium) //TODO: PARAMETR KIMI ELAVE ET
+            self.titleLabel.font = UIFont.sfProText(ofSize: 17, weight: .medium) //TODO: Add as parameter
             self.prepareActionViewByIcon(icon: icon)
         case .detailed(let icon, let localizedTitleText, let localizedSubTitleText):
             self.title = localizedTitleText
             self.subTitle = localizedSubTitleText
-            self.titleLabel.font = UIFont.sfProText(ofSize: 17, weight: .medium) //TODO: PARAMETR KIMI ELAVE ET
-            self.subTitleLabel.font = UIFont.sfProText(ofSize: 13, weight: .regular) //TODO: PARAMETR KIMI ELAVE ET
-            self.subTitleLabel.textColor = UIColor.Colors.PBBGray
+            self.titleLabel.font = UIFont.sfProText(ofSize: 17, weight: .medium) //TODO: Add as parameter
+            self.subTitleLabel.font = UIFont.sfProText(ofSize: 13, weight: .regular) //TODO: Add as parameter
+            self.subTitleLabel.textColor = UIColor.Colors.SMEGray
             self.prepareActionViewByIcon(icon: icon)
         case .footerLabel(let icon, let localizedTitleText, let localizedSubTitleText, let localizedDescriptionText):
             self.title = localizedTitleText
             self.subTitle = localizedSubTitleText
             self.infoDescriptionText = localizedDescriptionText
-            self.titleLabel.font = UIFont.sfProText(ofSize: 17, weight: .medium) //TODO: PARAMETR KIMI ELAVE ET
-            self.subTitleLabel.font = UIFont.sfProText(ofSize: 13, weight: .regular) //TODO: PARAMETR KIMI ELAVE ET
-            self.infoDescriptionLabel.font = UIFont.sfProText(ofSize: 12, weight: .regular) //TODO: PARAMETR KIMI ELAVE ET
+            self.titleLabel.font = UIFont.sfProText(ofSize: 17, weight: .medium) //TODO: Add as parameter
+            self.subTitleLabel.font = UIFont.sfProText(ofSize: 13, weight: .regular) //TODO: Add as parameter
+            self.infoDescriptionLabel.font = UIFont.sfProText(ofSize: 12, weight: .regular) //TODO: Add as parameter
             
-            self.subTitleLabel.textColor = UIColor.Colors.PBBGray // TODO: Reng 60% oposity ile olmaslidir
-            self.infoDescriptionLabel.textColor = UIColor.Colors.PBBGray // TODO: Reng 60% oposity ile olmaslidir
+            self.subTitleLabel.textColor = UIColor.Colors.SMEGray // TODO: Color oposity should be 60%
+            self.infoDescriptionLabel.textColor = UIColor.Colors.SMEGray // TODO: Color oposity should be 60%
             self.prepareActionViewByIcon(icon: icon)
         }
     }
     
-    private func prepareActionViewByIcon(icon: PBBIcon) {
+    private func prepareActionViewByIcon(icon: SMEIcon) {
         switch icon {
         case .hasIcon(let icon):
             self.leftIcon = icon
@@ -697,7 +701,7 @@ public class PBBActionView: UIView {
         case .chevronWithText(let localizedText):
             self.descriptionLabel.text = localizedText
             self.descriptionLabel.font = UIFont.sfProText(ofSize: 17, weight: .regular)
-            self.descriptionLabel.textColor = UIColor.Colors.PBBGray
+            self.descriptionLabel.textColor = UIColor.Colors.SMEGray
         case .radioButton(let isSelected):
             self.radioButtonStatus = isSelected
         case .switchButton(let isOn):

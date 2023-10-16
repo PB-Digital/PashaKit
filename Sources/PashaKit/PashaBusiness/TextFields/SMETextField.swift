@@ -1,5 +1,5 @@
 //
-//  PBUITextField.swift
+//  SMETextField.swift
 //
 //
 //  Created by Farid Valiyev on 03.08.23
@@ -33,7 +33,7 @@ import InputMask
 /// Wrapper view of UITexField with custom animation and overall style.
 ///
 /// PBUITextField differs from native `UITextField` by its custom placeholder animation and border style.
-/// Under the hood PBUITextField has 3 distinct components. These are
+/// Under the hood SMEITextField has 3 distinct components. These are
 /// * UIView named `customBorder` which is used for border style.
 /// * UILabel named `footerLabel` for displaying text under bordered view
 /// * UILabel named `customPlaceholder` which replaces the traditional placeholder of UITextField
@@ -47,14 +47,14 @@ import InputMask
 /// * Optional: Supply a footer label text.
 /// * Optional: Define its validity.
 ///
-/// - Note: PBUIButton is optimized for looking as expected with default adjustments at the `height` of `64.0pt`.
+/// - Note: SMEUIButton is optimized for looking as expected with default adjustments at the `height` of `64.0pt`.
 ///         However feel free to customize it.
 ///
-public class PBBTextField: UIView {
+public class SMETextField: UIView {
 
     /// Specifies the state of textfield.
     ///
-    public enum PBBTextFieldState {
+    public enum SMETextFieldState {
         /// The state when text field has focus.
         ///
         case editing
@@ -70,7 +70,7 @@ public class PBBTextField: UIView {
 
     /// Specifies the border style for the text field.
     ///
-    public enum PBBTextFieldStyle {
+    public enum SMETextFieldStyle {
         /// Sets text field style to bordered.
         ///
         /// In the bordered style textfield appears with rectangle around it with defined corner radius. If not editing this custom
@@ -85,7 +85,7 @@ public class PBBTextField: UIView {
     
     /// Specifies the input type style for the text field.
     ///
-    public enum PBBTextFieldInputType {
+    public enum SMETextFieldInputType {
         /// Sets text field input type.
         ///
         /// In the bordered style textfield appears with rectangle around it with defined corner radius. If not editing this custom
@@ -197,7 +197,7 @@ public class PBBTextField: UIView {
 
     /// The theme for the text field's appearance.
     ///
-    /// `PBBTextField` is using theme parameter for defining its color palette for components. These include field's
+    /// `SMETextField` is using theme parameter for defining its color palette for components. These include field's
     /// * Border color for `bordered` style, underline color for `underlined` style
     /// * Cursor color
     /// * Tint color for right icon
@@ -238,7 +238,7 @@ public class PBBTextField: UIView {
 
     /// Defines cursor color of textfield.
     ///
-    public  var placeholderCursorColor: UIColor = UIColor.Colors.PBBGreen {
+    public  var placeholderCursorColor: UIColor = UIColor.Colors.SMEGreen {
         didSet {
             self.customTextField.tintColor = self.placeholderCursorColor
         }
@@ -248,7 +248,7 @@ public class PBBTextField: UIView {
     ///
     /// By default this property will apply PBGraySecondary color to border.
     ///
-    public var defaultBorderColor: UIColor = UIColor.Colors.PBGraySecondary { //TODO: Change color PBB colors
+    public var defaultBorderColor: UIColor = UIColor.Colors.PBGraySecondary { //TODO: Change color SME colors
         didSet {
             if self.defaultBorderColor != oldValue {
                 self.updateUI()
@@ -260,7 +260,7 @@ public class PBBTextField: UIView {
     ///
     /// By default this property will apply proper theme color to both types of border.
     ///
-    public  var editingBorderColor: UIColor = UIColor.Colors.PBBGreen {
+    public  var editingBorderColor: UIColor = UIColor.Colors.SMEGreen {
         didSet {
             if self.editingBorderColor != oldValue {
                 self.updateUI()
@@ -272,7 +272,7 @@ public class PBBTextField: UIView {
     ///
     /// By default this property will apply proper theme color to both types of border.
     ///
-    public var textFieldBottomBorderColor: UIColor = UIColor.Colors.PBBGray {
+    public var textFieldBottomBorderColor: UIColor = UIColor.Colors.SMEGray {
         didSet {
             if self.textFieldBottomBorderColor != oldValue {
                 self.updateUI()
@@ -345,7 +345,7 @@ public class PBBTextField: UIView {
     ///
     /// This property just changes `isUserInteractionEnabled` property of base text field to `false`
     ///
-    /// When you need your PBBTextField to be open to gestures, but closed to manual input, just change the
+    /// When you need your SMETextField to be open to gestures, but closed to manual input, just change the
     /// value of this property to `true`.
     ///
     public var disableManualInput: Bool = false {
@@ -414,14 +414,14 @@ public class PBBTextField: UIView {
         }
     }
     
-    private var textFieldInputType: PBBTextFieldInputType = .text {
+    private var textFieldInputType: SMETextFieldInputType = .text {
         didSet {
             self.updateUI()
             self.animatePlaceholderIfNeeded()
         }
     }
 
-    private var textFieldState: PBBTextFieldState = .notEditing {
+    private var textFieldState: SMETextFieldState = .notEditing {
         didSet {
             self.updateUI()
             self.animatePlaceholderIfNeeded()
@@ -449,7 +449,7 @@ public class PBBTextField: UIView {
     private var activeConstraints: [NSLayoutConstraint] = []
     private var activeRightIconConstraints: [NSLayoutConstraint] = []
 
-    private var textFieldStyle: PBBTextFieldStyle = .underlined {
+    private var textFieldStyle: SMETextFieldStyle = .underlined {
         didSet {
             self.prepareTextFieldByStyle(for: textFieldStyle)
         }
@@ -513,7 +513,7 @@ public class PBBTextField: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFit
         view.isUserInteractionEnabled = true
-        view.tintColor = UIColor.Colors.PBBTextFieldLabel
+        view.tintColor = UIColor.Colors.SMETextFieldLabel
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onIconTap))
         view.addGestureRecognizer(tapGestureRecognizer)
 
@@ -539,23 +539,16 @@ public class PBBTextField: UIView {
         return view
     }()
 
-    override public init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
     /// Creates a new text field of specified style.
     ///
     /// - Parameters:
     ///    - style: The style for field.
     ///
-    public convenience init(localizedPlaceholder: String, type: PBBTextFieldInputType = .text) {
+    public convenience init(localizedPlaceholder: String,
+                            type: SMETextFieldInputType = .text) {
         self.init(frame: .zero)
 
-        self.placeholderTextColor = UIColor.Colors.PBBTextFieldLabel
+        self.placeholderTextColor = UIColor.Colors.SMETextFieldLabel
         
         self.inputMaskDelegate.customNotations = [
             Notation(
@@ -585,10 +578,13 @@ public class PBBTextField: UIView {
         self.customTextField.textColor = self.textFieldTextColor
     }
     
-    public convenience init(localizedPlaceholder: String, type: PBBTextFieldInputType = .text, state: PBBTextFieldState = .editing, style: PBBTextFieldStyle = .underlined) {
+    public convenience init(localizedPlaceholder: String,
+                            type: SMETextFieldInputType = .text,
+                            state: SMETextFieldState = .editing,
+                            style: SMETextFieldStyle = .underlined) {
         self.init(frame: .zero)
         
-        self.placeholderTextColor = UIColor.Colors.PBBTextFieldLabel
+        self.placeholderTextColor = UIColor.Colors.SMETextFieldLabel
         
         self.textFieldState = state
         self.textFieldStyle = style
@@ -624,7 +620,7 @@ public class PBBTextField: UIView {
         self.init(frame: .zero)
     }
     
-    private func prepareTextFieldByType(for type: PBBTextFieldInputType) {
+    private func prepareTextFieldByType(for type: SMETextFieldInputType) {
        
         switch type {
         case .text:
@@ -667,16 +663,16 @@ public class PBBTextField: UIView {
     private func validationByInputType() {
         switch self.textFieldInputType {
         case .email(let localizedError):
-            self.isValid = PBBTextFieldValidations.validateEmail(for: self.customTextField.text ?? "") ? .valid : .invalid(localizedError)
+            self.isValid = SMETextFieldValidations.validateEmail(for: self.customTextField.text ?? "") ? .valid : .invalid(localizedError)
         case .azPhone(let localizedError):
-            self.isValid = PBBTextFieldValidations.validatePhone(for: self.customTextField.text?.components(separatedBy: .whitespaces).joined() ?? "") ? .valid : .invalid(localizedError)
+            self.isValid = SMETextFieldValidations.validatePhone(for: self.customTextField.text?.components(separatedBy: .whitespaces).joined() ?? "") ? .valid : .invalid(localizedError)
         case .pan(let localizedError):
-            self.isValid = PBBTextFieldValidations.validateCardNumber(for: self.customTextField.text?.components(separatedBy: .whitespaces).joined() ?? "") ? .valid : .invalid(localizedError)
+            self.isValid = SMETextFieldValidations.validateCardNumber(for: self.customTextField.text?.components(separatedBy: .whitespaces).joined() ?? "") ? .valid : .invalid(localizedError)
         default: break
         }
     }
 
-    private func prepareTextFieldByStyle(for style: PBBTextFieldStyle) {
+    private func prepareTextFieldByStyle(for style: SMETextFieldStyle) {
         self.setupConstraints(for: style)
         self.setupStyleOfTextField(basedOn: style)
     }
@@ -694,7 +690,7 @@ public class PBBTextField: UIView {
         self.addSubview(self.footerLabel)
     }
 
-    private func setupStyleOfTextField(basedOn style: PBBTextFieldStyle) {
+    private func setupStyleOfTextField(basedOn style: SMETextFieldStyle) {
         switch style {
         case .bordered:
             self.textFieldStack.removeExistingBottomBorder()
@@ -705,7 +701,7 @@ public class PBBTextField: UIView {
         }
     }
 
-    private func setupConstraints(for style: PBBTextFieldStyle) {
+    private func setupConstraints(for style: SMETextFieldStyle) {
         self.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -864,7 +860,7 @@ public class PBBTextField: UIView {
                     self.customPlaceholder.textColor = self.placeholderTextColor
                     self.textFieldStack.updateExistingBottomBorderThickness(to: 1.0)
                     self.textFieldStack.updateExistingBottomBorderColor(to: self.textFieldBottomBorderColor)
-                    self.rightIconView.tintColor = UIColor.Colors.PBBTextFieldLabel
+                    self.rightIconView.tintColor = UIColor.Colors.SMETextFieldLabel
                 }
             case .disabled: break
                 
@@ -964,8 +960,7 @@ public class PBBTextField: UIView {
     private func setTheme() {
         self.placeholderCursorColor = self.theme.getPrimaryColor()
         self.editingBorderColor = self.theme.getPrimaryColor()
-        self.textFieldBottomBorderColor = UIColor.Colors.PBBBackgroundGray
-//        self.rightIconView.tintColor = UIColor.Colors.PBBTextFieldLabel
+        self.textFieldBottomBorderColor = UIColor.Colors.SMEBackgroundGray
     }
 
     private func updateSecureEntry() {
@@ -1086,7 +1081,7 @@ public class PBBTextField: UIView {
     public var onDidBegin: (() -> Void)?
 }
 
-extension PBBTextField: MaskedTextFieldDelegateListener {
+extension SMETextField: MaskedTextFieldDelegateListener {
     open func textField(
             _ textField: UITextField,
             didFillMandatoryCharacters complete: Bool,
