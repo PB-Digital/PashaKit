@@ -1,4 +1,4 @@
 {
-    "version": "1.3.5",
-    "release_notes": "A swift style getter and setter added for text of `PBUITextView`, old getter deprecated. makeFirstResponder functionality was added."
+    "version": "1.4.0",
+    "release_notes": "Pasha Business Views added"
 }

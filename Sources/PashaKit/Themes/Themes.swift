@@ -127,3 +127,21 @@ public enum PBSelectableViewTheme {
         }
     }
 }
+
+public enum SMEUIButtonTheme {
+    case regular
+
+    func getPrimaryColor() -> UIColor {
+        switch self {
+        case .regular:
+            return UIColor.Colors.SMEGreen
+        }
+    }
+
+    func getSecondaryColor() -> UIColor {
+        switch self {
+        case .regular:
+            return UIColor.Colors.SMEGreen.lighter.withAlphaComponent(0.08)
+        }
+    }
+}
