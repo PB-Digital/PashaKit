@@ -32,6 +32,7 @@ import UIKit
 extension UIColor {
     struct Colors {
         static let PBGreen = UIColor(red: 0.11, green: 0.678, blue: 0.573, alpha: 1)
+        static let PBGreenMain = UIColor(red: 0.124, green: 0.608, blue: 0.405, alpha: 1)
         static let PBGreenCardInput = UIColor(red: 0.043, green: 0.29, blue: 0.247, alpha: 1)
         static let PBGreenSecondary = UIColor(red: 0.011, green: 0.68, blue: 0.491, alpha: 0.08)
         static let PBGray = UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.6)
@@ -58,7 +59,9 @@ extension UIColor {
         static let PBStatusRedBG = UIColor(red: 0.925, green: 0.18, blue: 0.141, alpha: 0.08)
         static let PBInfoYellowFG = UIColor(red: 0.643, green: 0.443, blue: 0, alpha: 1)
         static let PBInfoYellowBG = UIColor(red: 0.842, green: 0.607, blue: 0.077, alpha: 0.12)
-        
+        static let PBInfoGreenFG = UIColor(red: 0, green: 0.498, blue: 0.31, alpha: 1)
+        static let PBInfoGreenBG = UIColor(red: 0.011, green: 0.68, blue: 0.491, alpha: 0.08)
+
         // MARK: Pasha Business
         
         static var SMEGreen: UIColor {

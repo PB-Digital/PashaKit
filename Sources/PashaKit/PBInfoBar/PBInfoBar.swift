@@ -60,6 +60,13 @@ open class PBInfoBar: UIView {
         ///
         case informative
 
+        /// Recommended level of attention
+        ///
+        /// Use this case for the information which can be
+        /// `benefical`   to know for user
+        ///
+        case recommended
+
         /// Intermediate level of attention
         ///
         /// Use this case for attentions which are `required` to consider when doing action, but isn't must.
@@ -208,6 +215,8 @@ open class PBInfoBar: UIView {
             return UIColor.Colors.PBBlackMedium
         case .informative:
             return UIColor.Colors.PBInfoYellowFG
+        case .recommended:
+            return UIColor.Colors.PBGreenMain
         case .medium:
             return UIColor.Colors.PBGray40
         case .high:
@@ -221,6 +230,8 @@ open class PBInfoBar: UIView {
             return UIColor.Colors.PBBlackMedium
         case .informative:
             return UIColor.Colors.PBInfoYellowFG
+        case .recommended:
+            return UIColor.Colors.PBInfoGreenFG
         case .medium:
             return .darkText
         case .high:
@@ -234,6 +245,8 @@ open class PBInfoBar: UIView {
             return UIColor.Colors.PBGrayTransparent
         case .informative:
             return UIColor.Colors.PBInfoYellowBG
+        case .recommended:
+            return UIColor.Colors.PBInfoGreenBG
         case .medium:
             return UIColor.Colors.PBGrayTransparent
         case .high:
