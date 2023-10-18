@@ -1,4 +1,4 @@
 {
-    "version": "1.4.0",
-    "release_notes": "Pasha Business Views added"
+    "version": "1.4.1",
+    "release_notes": "New `recommended` attention level for `PBInfoBar`"
 }
