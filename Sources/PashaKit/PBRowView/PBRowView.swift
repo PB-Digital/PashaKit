@@ -620,10 +620,16 @@ open class PBRowView: UIView, PBSkeletonable {
     private func updateMultilineSupport(to isEnabled: Bool) {
         if isEnabled {
             self.titleLabel.numberOfLines = 0
+            self.titleLabel.lineBreakMode = .byWordWrapping
+
             self.subtitleLabel.numberOfLines = 0
+            self.subtitleLabel.lineBreakMode = .byWordWrapping
         } else {
             self.titleLabel.numberOfLines = 1
+            self.titleLabel.lineBreakMode = .byTruncatingTail
+
             self.subtitleLabel.numberOfLines = 1
+            self.subtitleLabel.lineBreakMode = .byTruncatingTail
         }
     }
 
