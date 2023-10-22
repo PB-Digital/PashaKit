@@ -431,6 +431,22 @@ public class SMEActionView: UIView {
         self.setupViews(for: typeOfAction)
     }
     
+    public convenience init(typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: ""),
+                            styleOfAction: SMEActionStyle = .none,
+                            stateOfAction: SMEActionState = .normal) {
+        self.init()
+        
+        UIFont.registerCustomFonts()
+        
+        self.typeOfAction = typeOfAction
+        self.styleOfAction = styleOfAction
+        self.stateOfAction = stateOfAction
+        self.prepareActionViewByType()
+        self.prepareActionViewByState()
+       
+        self.setupViews(for: typeOfAction)
+    }
+    
     private func setupViews(for type: SMEActionType) {
         
         self.baseView.addSubview(self.titleStackView)
