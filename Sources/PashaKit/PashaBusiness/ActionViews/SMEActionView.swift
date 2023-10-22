@@ -656,7 +656,7 @@ public class SMEActionView: UIView {
         switch self.stateOfAction {
         case .normal:  /*TODO: Review again*/
             self.borderColor = .clear
-            self.baseBackgroundColor = .clear
+            self.baseBackgroundColor = .white
         case .disabled: break /*TODO: Review again*/
         case .selected: /*TODO: Review again*/
             self.borderColor = self.theme.getPrimaryColor()
