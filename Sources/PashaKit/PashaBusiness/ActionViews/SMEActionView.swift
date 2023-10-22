@@ -245,7 +245,6 @@ public class SMEActionView: UIView {
 
         view.translatesAutoresizingMaskIntoConstraints = false
 
-
         return view
     }()
     
@@ -639,18 +638,13 @@ public class SMEActionView: UIView {
 
     private func prepareActionViewByState() {
         switch self.stateOfAction {
-        case .normal: break /*TODO: Review again*/
-            
-//            self.titleLabel.font = UIFont.sfProText(ofSize: 13, weight: self.buttonTitleWeight)
-//            self.iconBackgroundColor = self.theme.getPrimaryColor()
-//            self.iconWrapperView.backgroundColor = self.theme.getPrimaryColor()
+        case .normal:  /*TODO: Review again*/
+            self.borderColor = .clear
+            self.baseBackgroundColor = .clear
         case .disabled: break /*TODO: Review again*/
-//            self.titleLabel.font = UIFont.sfProText(ofSize: 13, weight: .semibold)
-//            self.titleLabel.textColor = UIColor.Colors.SMEGray
-//            self.disableTitleLabel.font = UIFont.sfProText(ofSize: 11, weight: .medium)
-//            self.disableTitleLabel.textColor = .white
-//            self.iconBackgroundColor = UIColor.Colors.SMEBackgroundGray
-        case .selected: break /*TODO: Review again*/
+        case .selected: /*TODO: Review again*/
+            self.borderColor = self.theme.getPrimaryColor()
+            self.baseBackgroundColor = self.theme.getPrimaryColor().withAlphaComponent(0.08)
         }
     }
 
