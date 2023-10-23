@@ -586,9 +586,9 @@ public class SMETextField: UIView {
         
         self.placeholderTextColor = UIColor.Colors.SMETextFieldLabel
         
-        self.textFieldState = state
-        self.textFieldStyle = style
         self.textFieldInputType = type
+        self.textFieldStyle = style
+        self.textFieldState = state
         self.placeholderText = localizedPlaceholder
         
         self.inputMaskDelegate.customNotations = [
