@@ -647,6 +647,7 @@ public class SMETextField: UIView {
             
         case .select:
             self.textFieldState = .notEditing
+            self.rightIconView.image = UIImage.Images.icSMEChevronBottom
         // TODO: set bottom arrow Icon with state and dark mode
         case .pan:
             self.maskFormat = "[0000] [0000] [0000] [0000]"
@@ -978,7 +979,13 @@ public class SMETextField: UIView {
 
     @objc private func onIconTap() {
         self.onActionIcon?()
-        self.isRevealed = !self.isRevealed
+        
+        switch self.textFieldInputType {
+        case .password:
+            self.isRevealed = !self.isRevealed
+        default:
+            break
+        }
     }
 
     /// Changes input accessory view with given view

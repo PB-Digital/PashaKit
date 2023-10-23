@@ -63,5 +63,6 @@ extension UIImage {
         static let icSMEInfoYellow = UIImage(named: "ic_sme_info_yellow", in: Bundle.module, compatibleWith: nil)
         static let icEyeOpen = UIImage(named: "ic_eye_open", in: Bundle.module, compatibleWith: nil)
         static let icEyeClosed = UIImage(named: "ic_eye_closed", in: Bundle.module, compatibleWith: nil)
+        static let icSMEChevronBottom = UIImage(named: "ic_sme_chevron_bottom", in: Bundle.module, compatibleWith: nil)
     }
 }
