@@ -192,7 +192,7 @@ open class PBInfoBar: UIView {
     }
 
     private func setupDefaults() {
-        self.backgroundColor = UIColor.Colors.PBGrayTransparent
+        self.backgroundColor = Colors.PBGrayTransparent
         self.layer.cornerRadius = 12.0
     }
 
@@ -205,39 +205,39 @@ open class PBInfoBar: UIView {
     private func getTintColor(for attentionLevel: AttentionLevel) -> UIColor {
         switch attentionLevel {
         case .low:
-            return UIColor.Colors.PBBlackMedium
+            return Colors.PBBlackMedium
         case .informative:
-            return UIColor.Colors.PBInfoYellowFG
+            return Colors.PBInfoYellowFG
         case .medium:
-            return UIColor.Colors.PBGray40
+            return UIColor(resource: .grey800)
         case .high:
-            return UIColor.Colors.PBRed
+            return Colors.PBRed
         }
     }
 
     private func getForegroundColor(for attentionLevel: AttentionLevel) -> UIColor {
         switch attentionLevel {
         case .low:
-            return UIColor.Colors.PBBlackMedium
+            return Colors.PBBlackMedium
         case .informative:
-            return UIColor.Colors.PBInfoYellowFG
+            return Colors.PBInfoYellowFG
         case .medium:
             return .darkText
         case .high:
-            return UIColor.Colors.PBRed
+            return Colors.PBRed
         }
     }
 
     private func getBackgroundColor(for attentionLevel: AttentionLevel) -> UIColor {
         switch attentionLevel {
         case .low:
-            return UIColor.Colors.PBGrayTransparent
+            return Colors.PBGrayTransparent
         case .informative:
-            return UIColor.Colors.PBInfoYellowBG
+            return Colors.PBInfoYellowBG
         case .medium:
-            return UIColor.Colors.PBGrayTransparent
+            return Colors.PBGrayTransparent
         case .high:
-            return UIColor.Colors.PBRed8
+            return Colors.PBRed8
         }
     }
 }

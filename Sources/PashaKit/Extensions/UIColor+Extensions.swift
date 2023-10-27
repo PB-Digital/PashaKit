@@ -177,3 +177,84 @@ extension UIColor {
         }
     }
 }
+
+public extension UIColor {
+    var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+
+        return (red, green, blue, alpha)
+    }
+
+    convenience init(rgb: UInt64, alpha: CGFloat = 1.0) {
+        self.init(red: CGFloat((rgb >> 16) & 0xff) / 255.0, green: CGFloat((rgb >> 8) & 0xff) / 255.0, blue: CGFloat(rgb & 0xff) / 255.0, alpha: alpha)
+    }
+
+    convenience init(argb: UInt64) {
+        self.init(red: CGFloat((argb >> 16) & 0xff) / 255.0, green: CGFloat((argb >> 8) & 0xff) / 255.0, blue: CGFloat(argb & 0xff) / 255.0, alpha: CGFloat((argb >> 24) & 0xff) / 255.0)
+    }
+
+    convenience init?(hexString: String) {
+        let scanner = Scanner(string: hexString)
+
+        if hexString.hasPrefix("#") {
+            scanner.currentIndex = hexString.startIndex
+        }
+
+        var value: UInt64 = 0
+
+        if scanner.scanHexInt64(&value) {
+            if hexString.count > 7 {
+                self.init(argb: value)
+            } else {
+                self.init(rgb: value)
+            }
+        } else {
+            return nil
+        }
+    }
+}
+
+public extension UIColor {
+
+    /// Method for getting the lighter version of given color.
+    ///
+    func lighter(by percentage: CGFloat = 30.0) -> UIColor? {
+        return self.adjust(by: abs(percentage))
+    }
+
+    /// Method for getting the darker version of given color.
+    /// 
+    func darker(by percentage: CGFloat = 30.0) -> UIColor? {
+        return self.adjust(by: -1 * abs(percentage))
+    }
+
+    /// Returns the lighter or darker version of given `UIColor`.
+    /// By default it will return the 30% **lighter** version of the color
+    ///
+    /// For getting **lighter** version just pass the percentage with **positive** value
+    ///
+    /// For getting **darker** version just pass the percentage with **negative** value
+    ///
+    func adjust(by percentage: CGFloat = 30.0) -> UIColor? {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        if self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
+            return UIColor(
+                red: min(red + percentage/100, 1.0),
+                green: min(green + percentage/100, 1.0),
+                blue: min(blue + percentage/100, 1.0),
+                alpha: alpha
+            )
+        } else {
+            return nil
+        }
+    }
+}

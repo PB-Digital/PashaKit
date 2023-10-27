@@ -391,8 +391,8 @@ open class PBRowView: UIView, PBSkeletonable {
         label.translatesAutoresizingMaskIntoConstraints = false
 
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        label.backgroundColor = UIColor.Colors.PBRed8
-        label.textColor = UIColor.Colors.PBRed
+        label.backgroundColor = Colors.PBRed8
+        label.textColor = Colors.PBRed
         label.textAlignment = .center
 
         return label

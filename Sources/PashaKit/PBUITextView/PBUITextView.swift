@@ -68,7 +68,7 @@ public class PBUITextView: UIView {
 
     /// Defines cursor color of textview.
     ///
-    public  var placeholderCursorColor: UIColor = UIColor.Colors.PBGreen {
+    public  var placeholderCursorColor: UIColor = UIColor(resource: .PBMeadow.main) {
         didSet {
             self.textView.tintColor = self.placeholderCursorColor
         }
@@ -90,7 +90,7 @@ public class PBUITextView: UIView {
     ///
     /// By default this property will apply proper theme color to both types of border.
     ///
-    public  var editingBorderColor: UIColor = UIColor.Colors.PBGreen {
+    public  var editingBorderColor: UIColor = UIColor(resource: .PBMeadow.main) {
         didSet {
             if self.editingBorderColor != oldValue {
                 self.updateUI()

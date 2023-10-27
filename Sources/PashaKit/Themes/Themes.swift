@@ -37,10 +37,10 @@ import UIKit
 // - retail
 //
 // Each type of users have different accessibilities to PashaBank's services. On the UI side they
-// have differnt types of themes. Premimum customers' main color is PBFauxChestnut, which
+// have differnt types of themes. Premimum customers' main color is PBAlmondMain, which
 // is similar to brown, bronze color tones.
 //
-// However retail customers' main color is  PBGreen which is unique tone of green color.
+// However retail customers' main color is  PBMeadowMain which is unique tone of green color.
 //
 // Following enums are dedicated to adapt components to application's theme
 // 
@@ -51,7 +51,7 @@ public enum PBCardInputViewTheme {
     func getPrimaryColor() -> UIColor {
         switch self {
         case .regular:
-            return UIColor.Colors.PBGreenCardInput
+            return Colors.PBGreenCardInput
         case .dark:
             return UIColor.black
         }
@@ -60,9 +60,9 @@ public enum PBCardInputViewTheme {
     func getCursorColor() -> UIColor {
         switch self {
         case .regular:
-            return UIColor.Colors.PBGreen
+            return UIColor(resource: .PBMeadow.main)
         case .dark:
-            return UIColor.Colors.PBFauxChestnut
+            return UIColor(resource: .PBAlmond.main)
         }
     }
 }
@@ -73,9 +73,9 @@ public enum PBUIButtonTheme {
     func getPrimaryColor() -> UIColor {
         switch self {
         case .regular:
-            return UIColor.Colors.PBGreen
+            return UIColor(resource: .PBMeadow.main)
         case .dark:
-            return UIColor.Colors.PBFauxChestnut
+            return UIColor(resource: .PBAlmond.main)
         case .gray:
             return UIColor.black
         }
@@ -84,11 +84,11 @@ public enum PBUIButtonTheme {
     func getSecondaryColor() -> UIColor {
         switch self {
         case .regular:
-            return UIColor.Colors.PBGreenSecondary
+            return UIColor(resource: .PBMeadow.bold)
         case .dark:
-            return UIColor.Colors.PBFauxChestnut.withAlphaComponent(0.08)
+            return UIColor(resource: .PBAlmond.bold)
         case .gray:
-            return UIColor.Colors.PBGrayTransparent
+            return .clear
         }
     }
 }
@@ -99,9 +99,9 @@ public enum PBUITextFieldTheme {
     func getPrimaryColor() -> UIColor {
         switch self {
         case .regular:
-            return UIColor.Colors.PBGreen
+            return UIColor(resource: .PBMeadow.main)
         case .dark:
-            return UIColor.Colors.PBFauxChestnut
+            return UIColor(resource: .PBAlmond.main)
         }
     }
 }
@@ -112,18 +112,18 @@ public enum PBSelectableViewTheme {
     func getPrimaryColor() -> UIColor {
         switch self {
         case .regular:
-            return UIColor.Colors.PBGreen
+            return UIColor(resource: .PBMeadow.main)
         case .dark:
-            return UIColor.Colors.PBFauxChestnut
+            return UIColor(resource: .PBAlmond.main)
         }
     }
 
     func getSecondaryColor() -> UIColor {
         switch self {
         case .regular:
-            return UIColor.Colors.PBGreenSecondary
+            return UIColor(resource: .PBMeadow.light)
         case .dark:
-            return UIColor.Colors.PBFauxChestnut.withAlphaComponent(0.08)
+            return UIColor(resource: .PBAlmond.light)
         }
     }
 }

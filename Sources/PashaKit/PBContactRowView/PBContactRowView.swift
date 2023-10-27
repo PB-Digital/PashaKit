@@ -153,7 +153,7 @@ open class PBContactRowView: UIView {
         let label = UILabel()
 
         label.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
-        label.backgroundColor = UIColor.Colors.PBGreen
+        label.backgroundColor = UIColor(resource: .PBMeadow.main)
         label.textColor = .white
         label.textAlignment = .center
         label.layer.cornerRadius = 20.0

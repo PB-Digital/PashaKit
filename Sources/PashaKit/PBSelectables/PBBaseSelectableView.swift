@@ -105,7 +105,7 @@ open class PBBaseSelectableView: UIView {
     ///
     /// If theme option is not specified, this property will be in PBGreen color.
     ///
-    var selectedBorderColor: UIColor = UIColor.Colors.PBGreen {
+    var selectedBorderColor: UIColor = UIColor(resource: .PBMeadow.main) {
         didSet {
             if self.selectedBorderColor != oldValue {
                 self.updateUI()
@@ -155,7 +155,7 @@ open class PBBaseSelectableView: UIView {
 
     func setupViews() {
         self.setupDefaults()
-        self.layer.borderColor = UIColor.Colors.PBGraySecondary.cgColor
+        self.layer.borderColor = Colors.PBGraySecondary.cgColor
         self.backgroundColor = UIColor.white
     }
 
@@ -183,7 +183,7 @@ open class PBBaseSelectableView: UIView {
                 self.backgroundColor = self.selectedStateColor
             } else {
                 self.layer.borderWidth = 1.0
-                self.layer.borderColor = UIColor.Colors.PBGraySecondary.cgColor
+                self.layer.borderColor = Colors.PBGraySecondary.cgColor
                 self.backgroundColor = UIColor.white
             }
         case .clear:
@@ -213,7 +213,7 @@ open class PBBaseSelectableView: UIView {
     /// method to enable alert state.
     ///
     public func setAlertState() {
-        self.layer.borderColor = UIColor.Colors.PBInvalidRed.cgColor
+        self.layer.borderColor = Colors.PBInvalidRed.cgColor
         self.layer.backgroundColor = UIColor.clear.cgColor
     }
 

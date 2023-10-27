@@ -65,6 +65,7 @@ open class PBCardInputView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFit
         view.isHidden = true
+        view.image = Images.icLogoWhite
 
         view.heightAnchor.constraint(equalToConstant: 32.0).isActive = true
 
@@ -77,7 +78,8 @@ open class PBCardInputView: UIView {
         self.addSubview(button)
 
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage.Images.icCardScan, for: .normal)
+
+        button.setImage(Images.icCardScan, for: .normal)
         button.addTarget(self, action: #selector(onScanButton), for: .touchUpInside)
 
         button.widthAnchor.constraint(equalToConstant: 40.0).isActive = true
@@ -93,7 +95,7 @@ open class PBCardInputView: UIView {
 
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        view.textColor = UIColor.Colors.PBGraySecondary
+        view.textColor = Colors.PBGraySecondary
 
         view.widthAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
 
@@ -112,7 +114,7 @@ open class PBCardInputView: UIView {
         view.attributedPlaceholder = NSAttributedString(
             string: "0000 0000 0000 0000",
             attributes: [
-                .foregroundColor: UIColor.Colors.PBGraySecondary
+                .foregroundColor: Colors.PBGraySecondary
             ]
         )
         view.textColor = .white
@@ -133,7 +135,7 @@ open class PBCardInputView: UIView {
 
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        view.textColor = UIColor.Colors.PBGraySecondary
+        view.textColor = Colors.PBGraySecondary
 
         view.widthAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
 
@@ -153,7 +155,7 @@ open class PBCardInputView: UIView {
         view.attributedPlaceholder = NSAttributedString(
             string: "00 / 00",
             attributes: [
-                .foregroundColor: UIColor.Colors.PBGraySecondary
+                .foregroundColor: Colors.PBGraySecondary
             ]
         )
         view.textColor = .white
@@ -174,7 +176,7 @@ open class PBCardInputView: UIView {
 
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        view.textColor = UIColor.Colors.PBGraySecondary
+        view.textColor = Colors.PBGraySecondary
 
         view.widthAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
 
@@ -190,13 +192,12 @@ open class PBCardInputView: UIView {
         view.font = UIFont.systemFont(ofSize: 24.0)
         view.keyboardType = .numberPad
         view.maskFormat = "[000]"
-        view.placeholder = "000"
         view.isSecured = true
         view.hasBottomBorder = true
         view.attributedPlaceholder = NSAttributedString(
             string: "***",
             attributes: [
-                .foregroundColor: UIColor.Colors.PBGraySecondary
+                .foregroundColor: Colors.PBGraySecondary
             ]
         )
         view.textColor = .white
@@ -251,17 +252,6 @@ open class PBCardInputView: UIView {
         
         self.setTheme()
         self.setupConstraints()
-    }
-
-    private func setTheme() {
-        self.backgroundColor = theme.getPrimaryColor()
-
-        switch self.theme {
-        case .regular:
-            self.cardScan.setImage(UIImage.Images.icCardScan, for: .normal)
-        case .dark:
-            self.cardScan.setImage(UIImage.Images.icCardScanPrivateBlack, for: .normal)
-        }
     }
 
     private func setupConstraints() {
@@ -337,17 +327,16 @@ open class PBCardInputView: UIView {
     ///  Depending on such kind of states, input fields' text colors will change to `systemRed` or `PBGraySecondary`
     ///
     public func set(validation: PBCardInputValidatable) {
-        self.updateUI(for: self.cardNumberField, with: validation.isPanValid)
-        self.updateUI(for: self.cardExpirationDateField, with: validation.isExpireDateValid)
-        self.updateUI(for: self.cardCVVField, with: validation.isCVVValid)
-    }
+        let validationMap: [(isValid: Bool, field: PBMaskableUITextField)] = [
+            (validation.isPanValid, self.cardNumberField),
+            (validation.isExpireDateValid, self.cardExpirationDateField),
+            (validation.isCVVValid, self.cardCVVField)
+        ]
 
-    private func updateUI(
-        for textField: PBMaskableUITextField,
-        with isValid: Bool
-    ) {
-        textField.textColor = isValid ? UIColor.Colors.PBGraySecondary : .systemRed
-        textField.isValid = isValid
+        for (isValid, field) in validationMap {
+            field.isValid = isValid
+            field.textColor = isValid ? Colors.PBGraySecondary : .systemRed
+        }
     }
 
     /// Puts `number` into card number input field
@@ -395,6 +384,17 @@ open class PBCardInputView: UIView {
             self.cardCVVField.isHidden = !isVisible
         case .scanner:
             self.cardScan.isHidden = !isVisible
+        }
+    }
+
+    private func setTheme() {
+        self.backgroundColor = theme.getPrimaryColor()
+
+        switch self.theme {
+        case .regular:
+            self.cardScan.setImage(Images.icCardScan, for: .normal)
+        case .dark:
+            self.cardScan.setImage(Images.icCardScanPrivateBlack, for: .normal)
         }
     }
 

@@ -155,7 +155,7 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.layer.masksToBounds = true
-        view.backgroundColor = UIColor.Colors.PBGraySecondary
+        view.backgroundColor = Colors.PBGraySecondary
         view.isSkeletonable = true
 
         view.heightAnchor.constraint(equalToConstant: 40.0).isActive = true
@@ -430,14 +430,14 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
             self.statusView.isHidden = true
         case .inProgress(let info):
             self.statusLabel.text = info
-            self.statusLabel.textColor = UIColor.Colors.PBStatusYellowFG
-            self.statusView.backgroundColor = UIColor.Colors.PBStatusYellowBG
+            self.statusLabel.textColor = Colors.PBStatusYellowFG
+            self.statusView.backgroundColor = Colors.PBStatusYellowBG
             self.statusView.isHidden = false
             self.dateLabel.isHidden = true
         case .unsuccessful(let info):
             self.statusLabel.text = info
-            self.statusLabel.textColor = UIColor.Colors.PBStatusRedFG
-            self.statusView.backgroundColor = UIColor.Colors.PBStatusRedBG
+            self.statusLabel.textColor = Colors.PBStatusRedFG
+            self.statusView.backgroundColor = Colors.PBStatusRedBG
             self.statusView.isHidden = false
             self.dateLabel.isHidden = true
         }

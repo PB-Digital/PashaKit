@@ -181,7 +181,7 @@ public class PBUITextField: UIView {
 
     /// Defines cursor color of textfield.
     ///
-    public  var placeholderCursorColor: UIColor = UIColor.Colors.PBGreen {
+    public  var placeholderCursorColor: UIColor = UIColor(resource: .PBMeadow.main) {
         didSet {
             self.customTextField.tintColor = self.placeholderCursorColor
         }
@@ -191,7 +191,7 @@ public class PBUITextField: UIView {
     ///
     /// By default this property will apply PBGraySecondary color to border.
     ///
-    public var defaultBorderColor: UIColor = UIColor.Colors.PBGraySecondary {
+    public var defaultBorderColor: UIColor = Colors.PBGraySecondary {
         didSet {
             if self.defaultBorderColor != oldValue {
                 self.updateUI()
@@ -203,7 +203,7 @@ public class PBUITextField: UIView {
     ///
     /// By default this property will apply proper theme color to both types of border.
     ///
-    public  var editingBorderColor: UIColor = UIColor.Colors.PBGreen {
+    public  var editingBorderColor: UIColor = UIColor(resource: .PBMeadow.main) {
         didSet {
             if self.editingBorderColor != oldValue {
                 self.updateUI()
@@ -215,7 +215,7 @@ public class PBUITextField: UIView {
     ///
     /// By default this property will apply proper theme color to both types of border.
     ///
-    public var textFieldBottomBorderColor: UIColor = UIColor.Colors.PBGreen {
+    public var textFieldBottomBorderColor: UIColor = UIColor(resource: .PBMeadow.main) {
         didSet {
             if self.textFieldBottomBorderColor != oldValue {
                 self.updateUI()

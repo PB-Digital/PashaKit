@@ -200,9 +200,9 @@ public class PBSelectableCardView: PBBaseSelectableView {
 
         switch self.theme {
         case .regular:
-            self.checkBoxSelected.tintColor = UIColor.Colors.PBGreen
+            self.checkBoxSelected.tintColor = UIColor(resource: .PBMeadow.main)
         case .dark:
-            self.checkBoxSelected.tintColor = UIColor.Colors.PBFauxChestnut
+            self.checkBoxSelected.tintColor = UIColor(resource: .PBAlmond.main)
         }
     }
 

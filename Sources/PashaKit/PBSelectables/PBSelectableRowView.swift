@@ -270,7 +270,7 @@ public class PBSelectableRowView: PBBaseSelectableView {
         }
     }
 
-    public var checkboxTintColor: UIColor = UIColor.Colors.PBGray40 {
+    public var checkboxTintColor: UIColor = UIColor(resource: .grey800) {
         didSet {
             if self.checkboxTintColor != oldValue {
                 self.checkBoxDefault.tintColor = self.checkboxTintColor
@@ -595,9 +595,9 @@ public class PBSelectableRowView: PBBaseSelectableView {
     public override func setAlertState() {
         super.setAlertState()
 
-        self.titleLabel.textColor = UIColor.Colors.PBInvalidRed
-        self.subtitleLabel.textColor = UIColor.Colors.PBInvalidRed
-        self.checkBoxDefault.tintColor = UIColor.Colors.PBInvalidRed
+        self.titleLabel.textColor = Colors.PBInvalidRed
+        self.subtitleLabel.textColor = Colors.PBInvalidRed
+        self.checkBoxDefault.tintColor = Colors.PBInvalidRed
     }
 
     private func setupDefaults() {
