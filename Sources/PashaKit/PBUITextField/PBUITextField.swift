@@ -47,10 +47,10 @@ import InputMask
 /// * Optional: Supply a footer label text.
 /// * Optional: Define its validity.
 ///
-/// - Note: PBUIButton is optimized for looking as expected with default adjustments at the `height` of `80.0pt`.
+/// - Note: PBUITextField is optimized for looking as expected with default adjustments at the `height` of `80.0pt`.
 ///         However feel free to customize it.
 ///
-public class PBUITextField: UIView {
+public class PBUITextField: UIStackView {
 
     /// Specifies the border style for the text field.
     ///
@@ -335,15 +335,12 @@ public class PBUITextField: UIView {
 
         self.inputMaskDelegate.put(text: text, into: self.customTextField)
 
-        self.layoutCompletionBlock = {
-            if text.isEmpty {
-                self.animatePlaceholderToInactivePosition(animated: animated)
-            } else {
-                self.animatePlaceholderToActivePosition(animated: animated)
-            }
+        self.layoutCompletionBlock = { [weak self] in
+            self?.animatePlaceholderToActivePosition(animated: animated)
         }
 
         self.onTextSetted?(text)
+
         self.layoutSubviews()
     }
 
@@ -383,7 +380,6 @@ public class PBUITextField: UIView {
 
         delegate.primaryMaskFormat = self.maskFormat
         delegate.delegate = self
-        delegate.autocomplete = false
 
         return delegate
     }()
@@ -449,7 +445,6 @@ public class PBUITextField: UIView {
         let textField = PBBaseUITextField()
 
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.delegate = self
         textField.textColor = self.textFieldTextColor
 
         return textField
@@ -486,7 +481,7 @@ public class PBUITextField: UIView {
         super.init(frame: frame)
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
@@ -737,7 +732,7 @@ public class PBUITextField: UIView {
     private func animatePlaceholderIfNeeded(animationEnabled: Bool = true) {
         switch self.textFieldState {
         case .editing:
-            self.animatePlaceholderToActivePosition()
+            self.animatePlaceholderToActivePosition(animated: animationEnabled)
         case .notEditing:
             guard let text = self.customTextField.text else { return }
 
@@ -869,6 +864,7 @@ public class PBUITextField: UIView {
     /// Makes text field become first responder.
     ///
     public func makeFirstResponder() {
+        self.animatePlaceholderIfNeeded()
         self.customTextField.becomeFirstResponder()
     }
 
@@ -889,6 +885,7 @@ public class PBUITextField: UIView {
     /// Resigns text field from being first responder.
     ///
     public func undoFirstResponder() {
+        self.layoutSubviews()
         self.customTextField.resignFirstResponder()
     }
 
