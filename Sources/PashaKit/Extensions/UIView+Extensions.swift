@@ -32,14 +32,16 @@ import UIKit
 extension UIView {
     public func setGradientBackground(gradientConfig: GradientBackgroundRepresentable) {
 
-        if let view = self.subviews.first as? GradientView {
+        if let view = self.subviews.first as? PBGradientView {
             view.removeFromSuperview()
         }
 
-        let customView = GradientView.init(frame: self.bounds,
-                                           colorPoints: gradientConfig.colorPoints,
-                                           angle: gradientConfig.angle,
-                                           isReversed: gradientConfig.isReversed)
+        let customView = PBGradientView(
+            frame: self.bounds,
+            colorPoints: gradientConfig.colorPoints,
+            angle: gradientConfig.angle,
+            isReversed: gradientConfig.isReversed
+        )
 
         self.insertSubview(customView, at: 0)
         customView.fillSuperview()
@@ -59,18 +61,44 @@ extension UIView {
             self.trailingAnchor.constraint(equalTo: parent.trailingAnchor)
         ])
     }
+
+    public func set(height: CGFloat) {
+        if self.translatesAutoresizingMaskIntoConstraints {
+            self.translatesAutoresizingMaskIntoConstraints = false
+        }
+
+        NSLayoutConstraint.activate([
+            self.heightAnchor.constraint(equalToConstant: height)
+        ])
+    }
 }
 
 extension UIView {
-    func performAnimation(transform: CGAffineTransform) {
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, animations: {
-            self.transform = transform
-            self.layoutIfNeeded()
-        }, completion: nil)
+    func performAnimation(transform: CGAffineTransform, completion: ((Bool) -> Void)? = nil) {
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            usingSpringWithDamping: 1,
+            initialSpringVelocity: 1,
+            options: [.allowUserInteraction],
+            animations: {
+                self.transform = transform
+                self.layoutIfNeeded()
+            },
+            completion: completion
+        )
     }
 
-    func performAnimation(animation: @escaping (() -> Void)) {
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, animations: animation, completion: nil)
+    func performAnimation(animation: @escaping (() -> Void), completion: ((Bool) -> Void)? = nil) {
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            usingSpringWithDamping: 1,
+            initialSpringVelocity: 1,
+            options: [.allowUserInteraction],
+            animations: animation,
+            completion: completion
+        )
     }
 }
 
@@ -197,8 +225,8 @@ public extension UIView {
         }
 
         if yTilt != 0.0 {
-            yAxisEffect.minimumRelativeValue = -xTilt
-            yAxisEffect.maximumRelativeValue = xTilt
+            yAxisEffect.minimumRelativeValue = -yTilt
+            yAxisEffect.maximumRelativeValue = yTilt
 
             self.addMotionEffect(yAxisEffect)
         }
@@ -206,9 +234,9 @@ public extension UIView {
 }
 
 public extension UIView {
-    func applySubtractionMask(to view: UIView, maskRect: CGRect, cornerRadius: CGFloat = 0) {
-        let maskPath = UIBezierPath(rect: view.bounds)
-        let translatedMaskRect = view.convert(maskRect, from: view.superview)
+    func applySubtractionMask(maskRect: CGRect, cornerRadius: CGFloat = 0) {
+        let maskPath = UIBezierPath(rect: self.bounds)
+        let translatedMaskRect = self.convert(maskRect, from: self.superview)
         let maskRectPath = UIBezierPath(roundedRect: translatedMaskRect, cornerRadius: cornerRadius)
 
         maskPath.append(maskRectPath)
@@ -219,6 +247,6 @@ public extension UIView {
         maskLayer.path = maskPath.cgPath
         maskLayer.fillRule = .evenOdd
 
-        view.layer.mask = maskLayer
+        self.layer.mask = maskLayer
     }
 }

@@ -114,7 +114,6 @@ open class PBCardRowView: UIView, PBSkeletonable {
 
         label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         label.textColor = .darkText
-        label.text = "1.00 ₼"
 
         return label
     }()
@@ -126,7 +125,6 @@ open class PBCardRowView: UIView, PBSkeletonable {
 
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         label.textColor = UIColor(red: 0.502, green: 0.502, blue: 0.514, alpha: 1)
-        label.text = "0000 • Visa debit"
 
         return label
     }()

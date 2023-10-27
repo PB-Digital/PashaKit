@@ -112,7 +112,7 @@ open class PBInfoBar: UIView {
 
         self.addSubview(view)
 
-        view.image = UIImage.Images.icInfo
+        view.image = Images.icInfoDark
         view.contentMode = .scaleAspectFit
 
         view.translatesAutoresizingMaskIntoConstraints = false

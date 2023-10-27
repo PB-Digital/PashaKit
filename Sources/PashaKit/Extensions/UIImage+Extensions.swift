@@ -65,3 +65,30 @@ extension UIImage {
         static let icEyeClosed = UIImage(named: "ic_eye_closed", in: Bundle.module, compatibleWith: nil)
     }
 }
+
+public extension UIImage {
+    func resizedImage(size sizeImage: CGSize) -> UIImage? {
+        let frame = CGRect(origin: CGPoint.zero, size: CGSize(width: sizeImage.width, height: sizeImage.height))
+
+        UIGraphicsBeginImageContextWithOptions(frame.size, false, 0)
+        self.draw(in: frame)
+        let resizedImage: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        self.withRenderingMode(.alwaysOriginal)
+
+        return resizedImage
+    }
+
+    func scale(by times: Double = 2.0) -> UIImage? {
+        let targetSize = CGSize(width: self.size.width * times,
+                                height: self.size.height * times)
+
+        UIGraphicsBeginImageContextWithOptions(targetSize, false, 0.0)
+        self.draw(in: CGRect(origin: .zero, size: targetSize))
+        let scaledImage: UIImage? = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return scaledImage
+    }
+}

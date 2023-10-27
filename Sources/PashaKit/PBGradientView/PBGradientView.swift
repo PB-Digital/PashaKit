@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  PBGradientView.swift
 //  
 //
 //  Created by Murad on 06.12.22.
@@ -30,15 +30,15 @@
 import UIKit
 
 ///
-/// `GradientView` is `UIView` class used for making gradient colored views for cards in our mobile app.
+/// `PBGradientView` is `UIView` class used for making gradient colored views for cards in our mobile app.
 ///
-/// The structure of `GradientView` is rather simple. It needs
+/// The structure of `PBGradientView` is rather simple. It needs
 /// - `colorPoints` - list of `GradientColorPoints`
 /// - `angle`- the angle for gradient
 /// - `gradient`- native `CAGradientLayer` class for view
 /// - `isReversed`- boolean value for reversing gradient
 ///
-public class GradientView: UIView {
+public class PBGradientView: UIView {
 
     /// The list of `GradientColorPoints`
     ///
@@ -66,7 +66,7 @@ public class GradientView: UIView {
         commonInit(frame)
     }
 
-    /// Creates GradientView with given configuration
+    /// Creates PBGradientView with given configuration
     ///
     /// - Parameters:
     ///    - frame: frame for created gradient view
