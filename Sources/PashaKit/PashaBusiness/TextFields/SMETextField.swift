@@ -532,7 +532,7 @@ public class SMETextField: UIView {
         let view = UILabel()
 
         view.font = UIFont.sfProText(ofSize: 12, weight: .regular)
-        view.numberOfLines = 1
+        view.numberOfLines = 0
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = self.placeholderTextColor
 

@@ -178,6 +178,16 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// Sets the color for text of `subtitleLabel`.
+    ///
+    /// By default text color of `subtitleLabel` is `black (0.6 alpha)`
+    ///
+    public var subtitleTextColor: UIColor = .black.withAlphaComponent(0.6) {
+        didSet {
+            self.subtitleLabel.textColor = self.subtitleTextColor
+        }
+    }
+
     /// The background color for `leftIconWrapperView`.
     ///
     /// By default the background color of `leftIconWrapperView` is `PBGrayTransparent`.
@@ -404,7 +414,6 @@ open class PBRowView: UIView, PBSkeletonable {
         label.translatesAutoresizingMaskIntoConstraints = false
 
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        label.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
         label.numberOfLines = 1
         label.isSkeletonable = true
 
