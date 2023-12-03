@@ -105,7 +105,12 @@ public class SMETextField: UIView {
         case date
         case password
         case select
-        case custom
+        case custom(maskFormat: String = "",
+                    keyboardType: UIKeyboardType,
+                    minChar: Int = 0,
+                    maxChar: Int = 0,
+                    regex: String = "",
+                    localizedErrorMessage: String)
     }
 
     /// Defines the view size for the icon on the right side.
@@ -656,8 +661,9 @@ public class SMETextField: UIView {
         case .iban:
             self.maskFormat = "[AZ][00] [AZAZ] [0000] [0000] [0000] [0000]"
             self.customTextField.keyboardType = .numberPad
-        case .custom: break
-            
+        case .custom(let maskFormat, let keyboardType, _, _, _, _):
+            self.maskFormat = maskFormat
+            self.customTextField.keyboardType = keyboardType
         }
         
     }
@@ -670,6 +676,9 @@ public class SMETextField: UIView {
             self.isValid = SMETextFieldValidations.validatePhone(for: self.customTextField.text?.components(separatedBy: .whitespaces).joined() ?? "") ? .valid : .invalid(localizedError)
         case .pan(let localizedError):
             self.isValid = SMETextFieldValidations.validateCardNumber(for: self.customTextField.text?.components(separatedBy: .whitespaces).joined() ?? "") ? .valid : .invalid(localizedError)
+        case .custom(_, _, let minChar, let maxChar, let regex, let localizedMessage):
+            self.isValid = SMETextFieldValidations.validateWithCustomRegex(for: self.customTextField.text ?? "", regex: regex) ? .valid : .invalid(localizedMessage)
+            self.isValid = SMETextFieldValidations.validateCountRage(for: self.customTextField.text ?? "", minChar: minChar, maxChar: maxChar) ? .valid : .invalid(localizedMessage)
         default: break
         }
     }
@@ -838,7 +847,7 @@ public class SMETextField: UIView {
         case .invalid:
             self.performAnimation { [weak self] in
                 guard let self = self else { return }
-                self.customPlaceholder.textColor = self.errorStateColor
+//                self.customPlaceholder.textColor = self.errorStateColor
                 self.customBorder.layer.borderColor = self.errorStateColor.cgColor
                 self.customBorder.layer.borderWidth = 1.0
             }

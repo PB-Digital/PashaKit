@@ -20,6 +20,15 @@ public class SMETextFieldValidations {
         return phonePred.evaluate(with: phone)
     }
     
+    static func validateWithCustomRegex(for text: String, regex: String) -> Bool {
+        let pred = NSPredicate(format: "SELF MATCHES %@", regex)
+        return pred.evaluate(with: text)
+    }
+    
+    static func validateCountRage(for text: String, minChar: Int, maxChar: Int) -> Bool {
+        return text.count < minChar && text.count > maxChar
+    }
+    
     static func validateCardNumber(for pan: String) -> Bool {
         if pan.count != 16 {
             return false
