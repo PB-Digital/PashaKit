@@ -1151,5 +1151,6 @@ extension SMETextField: MaskedTextFieldDelegateListener {
         self.textFieldState = .notEditing
         self.onDidEnd?()
         self.validationByInputType()
+        self.validateFieldEmpty()
     }
 }
