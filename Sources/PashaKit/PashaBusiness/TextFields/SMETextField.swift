@@ -199,6 +199,19 @@ public class SMETextField: UIView {
             self.updateSecureEntry()
         }
     }
+    
+    /// Decides whether entered text if confidential or not.
+    ///
+    /// Since the value of this property is false by default, you won't see any difference. However
+    /// setting this property to true, adds button to `hide` and `show` password with secured text.
+    ///
+    /// Secured text basically is traditional text field entry which replaces input info circular symbols for each letter.
+    ///
+    public var shouldNotEmpty: (Bool, localizedErrorMessage: String) = (false, "") {
+        didSet {
+            self.validateFieldEmpty()
+        }
+    }
 
     /// The theme for the text field's appearance.
     ///
@@ -852,6 +865,8 @@ public class SMETextField: UIView {
                 self.customBorder.layer.borderWidth = 1.0
             }
         }
+        
+        self.validateFieldEmpty()
     }
 
     private func updateBottomBorder() {
@@ -983,6 +998,16 @@ public class SMETextField: UIView {
             }
             else {
                 self.rightIconView.image = UIImage.Images.icRevealClosed
+            }
+        }
+    }
+    
+    private func validateFieldEmpty() {
+        if self.shouldNotEmpty.0 {
+            if self.customTextField.text?.count ?? 0 >= 1 {
+                self.isValid = .valid
+            } else {
+                self.isValid = .invalid(self.shouldNotEmpty.1)
             }
         }
     }
