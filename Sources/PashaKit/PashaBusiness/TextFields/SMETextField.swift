@@ -1136,6 +1136,7 @@ extension SMETextField: MaskedTextFieldDelegateListener {
         self.onType?(value)
         self.onTextUpdate?(cleanText)
         self.isComplete = complete
+        self.validateFieldEmpty()
     }
 
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -1145,12 +1146,12 @@ extension SMETextField: MaskedTextFieldDelegateListener {
     public func textFieldDidBeginEditing(_ textField: UITextField) {
         self.textFieldState = .editing
         self.onDidBegin?()
+        self.validateFieldEmpty()
     }
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
         self.textFieldState = .notEditing
         self.onDidEnd?()
         self.validationByInputType()
-        self.validateFieldEmpty()
     }
 }
