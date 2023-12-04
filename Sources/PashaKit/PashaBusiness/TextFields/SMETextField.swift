@@ -894,7 +894,7 @@ public class SMETextField: UIView {
         case .invalid:
             self.performAnimation { [weak self] in
                 guard let self = self else { return }
-                self.customPlaceholder.textColor = self.errorStateColor
+//                self.customPlaceholder.textColor = self.errorStateColor
                 self.customBorder.layer.borderColor = self.errorStateColor.cgColor
                 self.textFieldStack.updateExistingBottomBorderThickness(to: 1.0)
                 self.textFieldStack.updateExistingBottomBorderColor(to: self.errorStateColor)
