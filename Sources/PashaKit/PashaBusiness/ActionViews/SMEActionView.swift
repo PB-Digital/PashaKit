@@ -159,6 +159,7 @@ public class SMEActionView: UIView {
     }
     
     public var onButtonPressed: (() -> Void)?
+    public var onViewPressed: (() -> Void)?
     
     /// The theme for the button's appearance.
     ///
@@ -246,7 +247,9 @@ public class SMEActionView: UIView {
         self.addSubview(view)
 
         view.translatesAutoresizingMaskIntoConstraints = false
-
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleViewClick))
+        view.addGestureRecognizer(tap)
         return view
     }()
     
@@ -345,7 +348,7 @@ public class SMEActionView: UIView {
 
         view.contentMode = .scaleAspectFit
 
-        view.addTarget(self, action: #selector(handleClick), for: .touchUpInside)
+        view.addTarget(self, action: #selector(handleButtonClick), for: .touchUpInside)
         
 //        view.addTarget(, action: Selector, for: .touchUpInside)
 //        addClickListener {
@@ -730,8 +733,12 @@ public class SMEActionView: UIView {
         }
     }
     
-    @objc fileprivate func handleClick(sender: UITapGestureRecognizer) {
+    @objc fileprivate func handleButtonClick(sender: UITapGestureRecognizer) {
         self.onButtonPressed?()
+    }
+    
+    @objc fileprivate func handleViewClick(sender: UITapGestureRecognizer) {
+        self.onViewPressed?()
     }
     
 }
