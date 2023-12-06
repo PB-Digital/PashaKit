@@ -345,9 +345,12 @@ public class SMEActionView: UIView {
 
         view.contentMode = .scaleAspectFit
 
-        view.addClickListener {
-            self.onButtonPressed?()
-        }
+        view.addTarget(self, action: #selector(handleClick), for: .touchUpInside)
+        
+//        view.addTarget(, action: Selector, for: .touchUpInside)
+//        addClickListener {
+//            self.onButtonPressed?()
+//        }
         
         return view
     }()
@@ -725,6 +728,10 @@ public class SMEActionView: UIView {
         case .none:
             break
         }
+    }
+    
+    @objc fileprivate func handleClick(sender: UITapGestureRecognizer) {
+        self.onButtonPressed?()
     }
     
 }
