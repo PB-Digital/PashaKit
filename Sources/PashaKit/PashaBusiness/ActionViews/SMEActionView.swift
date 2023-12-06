@@ -158,6 +158,8 @@ public class SMEActionView: UIView {
         }
     }
     
+    public var onButtonPressed: (() -> Void)?
+    
     /// The theme for the button's appearance.
     ///
     /// SMEUIButton is using theme parameter for defining its color palette for components. These include button's
@@ -343,6 +345,10 @@ public class SMEActionView: UIView {
 
         view.contentMode = .scaleAspectFit
 
+        view.addClickListener {
+            self.onButtonPressed?()
+        }
+        
         return view
     }()
     

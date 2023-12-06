@@ -203,9 +203,7 @@ public class SMETextField: UIView {
     /// Decides whether entered text if confidential or not.
     ///
     /// Since the value of this property is false by default, you won't see any difference. However
-    /// setting this property to true, adds button to `hide` and `show` password with secured text.
-    ///
-    /// Secured text basically is traditional text field entry which replaces input info circular symbols for each letter.
+    /// setting this property to true, validate input to `valid` and `invalid`
     ///
     public var shouldNotEmpty: (Bool, localizedErrorMessage: String) = (false, "") {
         didSet {
@@ -662,7 +660,6 @@ public class SMETextField: UIView {
             self.customTextField.keyboardType = .default
             self.isSecured = true
             self.isRevealed = false
-            
         case .select:
             self.textFieldState = .notEditing
             self.rightIconView.image = UIImage.Images.icSMEChevronBottom
