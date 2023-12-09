@@ -66,6 +66,7 @@ public class SMEActionView: UIView {
     public enum SMEActionStyle {
         case none
         case chevron
+        case loading
         case chevronWithText(localizedText: String)
         case chevronWithStatus(localizedText: String, status: SMELabelView.SMELabelViewStatus)
         case chevronWithButton(localizedText: String)
@@ -329,7 +330,7 @@ public class SMEActionView: UIView {
         return view
     }()
     
-    private lazy var chevronIcon: UIImageView = {
+    private lazy var rightIcon: UIImageView = {
         let view = UIImageView()
         
         view.image = UIImage.Images.icSMEChevronRight
@@ -464,17 +465,17 @@ public class SMEActionView: UIView {
         self.baseView.addSubview(self.titleStackView)
         
         switch self.styleOfAction {
-        case .chevron:
-            self.baseView.addSubview(self.chevronIcon)
+        case .chevron, .loading:
+            self.baseView.addSubview(self.rightIcon)
         case .chevronWithButton:
-            self.baseView.addSubview(self.chevronIcon)
+            self.baseView.addSubview(self.rightIcon)
             self.baseView.addSubview(self.button)
         case .chevronWithStatus:
-            self.baseView.addSubview(self.chevronIcon)
+            self.baseView.addSubview(self.rightIcon)
             self.baseView.addSubview(self.statusLabelView)
         case .chevronWithText:
             self.baseView.addSubview(self.descriptionLabel)
-            self.baseView.addSubview(self.chevronIcon)
+            self.baseView.addSubview(self.rightIcon)
         case .radioButton:
             self.baseView.addSubview(self.radioButtonIcon)
         case .switchButton:
@@ -592,25 +593,25 @@ public class SMEActionView: UIView {
     
     private func setupConstraintsByStyle() {
         switch self.styleOfAction {
-        case .chevron:
+        case .chevron, .loading:
             NSLayoutConstraint.activate([
-                self.titleStackView.rightAnchor.constraint(equalTo: self.chevronIcon.leftAnchor, constant: -12),
-                self.chevronIcon.heightAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.widthAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
-                self.chevronIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
+                self.titleStackView.rightAnchor.constraint(equalTo: self.rightIcon.leftAnchor, constant: -12),
+                self.rightIcon.heightAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.widthAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
+                self.rightIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
             ])
         case .chevronWithButton:
             NSLayoutConstraint.activate([
                 self.titleStackView.rightAnchor.constraint(equalTo: self.button.leftAnchor, constant: -12),
             
-                self.chevronIcon.heightAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.widthAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
-                self.chevronIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
+                self.rightIcon.heightAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.widthAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
+                self.rightIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
                 
                 self.button.widthAnchor.constraint(equalToConstant: 54.0),
-                self.button.rightAnchor.constraint(equalTo: self.chevronIcon.leftAnchor, constant: -12),
+                self.button.rightAnchor.constraint(equalTo: self.rightIcon.leftAnchor, constant: -12),
                 self.button.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
                 
             ])
@@ -618,25 +619,25 @@ public class SMEActionView: UIView {
             NSLayoutConstraint.activate([
                 self.titleStackView.rightAnchor.constraint(equalTo: self.statusLabelView.leftAnchor, constant: -12),
                 
-                self.chevronIcon.heightAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.widthAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
-                self.chevronIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
+                self.rightIcon.heightAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.widthAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
+                self.rightIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
                 
-                self.statusLabelView.rightAnchor.constraint(equalTo: self.chevronIcon.leftAnchor, constant: -12),
+                self.statusLabelView.rightAnchor.constraint(equalTo: self.rightIcon.leftAnchor, constant: -12),
                 self.statusLabelView.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
             ])
         case .chevronWithText:
             NSLayoutConstraint.activate([
                 self.titleStackView.rightAnchor.constraint(equalTo: self.descriptionLabel.leftAnchor, constant: -12),
                 
-                self.chevronIcon.heightAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.widthAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
-                self.chevronIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
+                self.rightIcon.heightAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.widthAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
+                self.rightIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
                
                 self.descriptionLabel.widthAnchor.constraint(equalToConstant: 48.0),
-                self.descriptionLabel.rightAnchor.constraint(equalTo: self.chevronIcon.leftAnchor, constant: -12),
+                self.descriptionLabel.rightAnchor.constraint(equalTo: self.rightIcon.leftAnchor, constant: -12),
                 self.descriptionLabel.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
             ])
         case .radioButton:
@@ -730,6 +731,8 @@ public class SMEActionView: UIView {
             self.switchButtonStatus = isOn
         case .none:
             break
+        case .loading:
+            self.rightIcon.image = UIImage.Images.icSMELoading
         }
     }
     
