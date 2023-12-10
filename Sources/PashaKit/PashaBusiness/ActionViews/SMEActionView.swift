@@ -670,7 +670,9 @@ public class SMEActionView: UIView {
         case .normal:  /*TODO: Review again*/
             self.borderColor = .clear
             self.baseBackgroundColor = .white
-        case .disabled: break /*TODO: Review again*/
+        case .disabled:  /*TODO: Review again*/
+            self.tintColor = .gray
+            self.baseBackgroundColor = .white
         case .selected: /*TODO: Review again*/
             self.borderColor = self.theme.getPrimaryColor()
             self.baseBackgroundColor = self.theme.getPrimaryColor().withAlphaComponent(0.08)
