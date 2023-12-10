@@ -670,9 +670,11 @@ public class SMEActionView: UIView {
         case .normal:  /*TODO: Review again*/
             self.borderColor = .clear
             self.baseBackgroundColor = .white
-        case .disabled:  /*TODO: Review again*/
-            self.tintColor = .gray
+        case .disabled:
             self.baseBackgroundColor = .white
+            self.titleLabel.textColor = UIColor.Colors.PBGray
+            self.subTitleLabel.textColor = UIColor.Colors.SMEDisabledGray
+            self.leftIconView.image?.withTintColor(UIColor.Colors.PBGray)
         case .selected: /*TODO: Review again*/
             self.borderColor = self.theme.getPrimaryColor()
             self.baseBackgroundColor = self.theme.getPrimaryColor().withAlphaComponent(0.08)

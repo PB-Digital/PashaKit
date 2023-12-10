@@ -178,5 +178,7 @@ extension UIColor {
                 UIColor(red: 0.596, green: 0.596, blue: 0.624, alpha: 1)
             }
         }
+        
+        static let SMEDisabledGray = UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.3)
     }
 }
