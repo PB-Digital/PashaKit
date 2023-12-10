@@ -674,7 +674,10 @@ public class SMEActionView: UIView {
             self.baseBackgroundColor = .white
             self.titleLabel.textColor = UIColor.Colors.PBGray
             self.subTitleLabel.textColor = UIColor.Colors.SMEDisabledGray
+            self.radioButtonIcon.image = UIImage.Images.icSMERadio
+            
             self.leftIconView.image?.withTintColor(UIColor.Colors.PBGray)
+            self.rightIcon.image?.withTintColor(UIColor.Colors.PBGray)
         case .selected: /*TODO: Review again*/
             self.borderColor = self.theme.getPrimaryColor()
             self.baseBackgroundColor = self.theme.getPrimaryColor().withAlphaComponent(0.08)
