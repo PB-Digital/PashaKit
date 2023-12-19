@@ -853,6 +853,7 @@ public class SMETextField: UIView {
                 print("DISABLED:::---")
                 self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
                 self.customTextField.isEnabled = false
+                self.textFieldTextColor = self.placeholderTextColor.withAlphaComponent(0.3)
                 self.customTextField.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
             }
         case .invalid:
@@ -892,6 +893,7 @@ public class SMETextField: UIView {
                 self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
                 self.customTextField.isEnabled = false
                 self.customTextField.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
+                self.textFieldTextColor = self.placeholderTextColor.withAlphaComponent(0.3)
             }
         case .invalid:
             self.performAnimation { [weak self] in
@@ -940,6 +942,7 @@ public class SMETextField: UIView {
             self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
             self.customTextField.isEnabled = false
             self.customTextField.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
+            self.textFieldTextColor = self.placeholderTextColor.withAlphaComponent(0.3)
         }
     }
 
