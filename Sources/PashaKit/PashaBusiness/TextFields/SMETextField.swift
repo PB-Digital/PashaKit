@@ -202,14 +202,10 @@ public class SMETextField: UIView {
     
     /// Decides whether entered text if confidential or not.
     ///
-    /// Since the value of this property is false by default, you won't see any difference. However
+    /// Since the value of this property is valid by default, you won't see any difference. However
     /// setting this property to true, validate input to `valid` and `invalid`
     ///
-    public var shouldNotEmpty: (Bool, localizedErrorMessage: String) = (false, "") {
-        didSet {
-            self.validateFieldEmpty()
-        }
-    }
+    public var shouldNotEmpty: (Bool, localizedErrorMessage: String) = (false, "")
 
     /// The theme for the text field's appearance.
     ///
