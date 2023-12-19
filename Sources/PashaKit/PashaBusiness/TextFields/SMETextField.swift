@@ -1139,7 +1139,6 @@ extension SMETextField: MaskedTextFieldDelegateListener {
     public func textFieldDidBeginEditing(_ textField: UITextField) {
         self.textFieldState = .editing
         self.onDidBegin?()
-        self.validateFieldEmpty()
     }
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
