@@ -850,6 +850,7 @@ public class SMETextField: UIView {
                     self.customBorder.layer.borderWidth = 1.0
                 }
             case .disabled:
+                print("DISABLED:::---")
                 self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
                 self.customTextField.isEnabled = false
             }
@@ -885,7 +886,10 @@ public class SMETextField: UIView {
                     self.textFieldStack.updateExistingBottomBorderColor(to: self.textFieldBottomBorderColor)
                     self.rightIconView.tintColor = UIColor.Colors.SMETextFieldLabel
                 }
-            case .disabled: break
+            case .disabled: 
+                print("DISABLED:::---")
+                self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
+                self.customTextField.isEnabled = false
                 
             }
         case .invalid:
@@ -930,7 +934,10 @@ public class SMETextField: UIView {
             } else {
                 self.animatePlaceholderToActivePosition(animated: animationEnabled)
             }
-        case .disabled: break
+        case .disabled:
+            print("DISABLED:::---")
+            self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
+            self.customTextField.isEnabled = false
             
         }
     }
