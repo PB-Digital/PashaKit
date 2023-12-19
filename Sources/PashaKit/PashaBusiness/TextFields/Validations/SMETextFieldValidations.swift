@@ -15,7 +15,6 @@ public class SMETextFieldValidations {
     }
     
     static func validatePhone(for phone: String) -> Bool {
-//        let pattern = #"^(10|50|51|55|70|77|99)\d{7}$"#
         let phoneRegEx = "(\\+994)+(10|50|51|55|70|77|99)+[0-9]{7}"
         let phonePred = NSPredicate(format: "SELF MATCHES %@", phoneRegEx)
         return phonePred.evaluate(with: phone)
