@@ -659,7 +659,7 @@ public class SMETextField: UIView {
         case .select:
             self.textFieldState = .notEditing
             self.rightIconView.image = UIImage.Images.icSMEChevronBottom
-            self.customTextField.isUserInteractionEnabled = false
+//            self.customTextField.isUserInteractionEnabled = false
             let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onIconTap))
             self.customTextField.addGestureRecognizer(tapGestureRecognizer)
         // TODO: set bottom arrow Icon with state and dark mode
