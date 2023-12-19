@@ -849,8 +849,9 @@ public class SMETextField: UIView {
                     self.customBorder.layer.borderColor = self.defaultBorderColor.cgColor
                     self.customBorder.layer.borderWidth = 1.0
                 }
-            case .disabled: break
-                
+            case .disabled:
+                self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
+                self.customTextField.isEnabled = false
             }
         case .invalid:
             self.performAnimation { [weak self] in
