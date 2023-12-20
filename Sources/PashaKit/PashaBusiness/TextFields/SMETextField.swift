@@ -750,7 +750,7 @@ public class SMETextField: UIView {
     private func setupConstraints(for style: SMETextFieldStyle) {
         self.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.customBorder.heightAnchor.constraint(equalToConstant: 64),
+//            self.customBorder.heightAnchor.constraint(equalToConstant: 64),
             self.customBorder.topAnchor.constraint(equalTo: self.topAnchor),
             self.customBorder.leftAnchor.constraint(equalTo: self.leftAnchor),
             self.customBorder.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -24.0),
@@ -800,7 +800,7 @@ public class SMETextField: UIView {
         
         NSLayoutConstraint.activate([
             self.heightAnchor.constraint(equalToConstant: 64),
-            self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
+            self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
         ])
         
         self.footerLabelConstraints = [
@@ -876,9 +876,9 @@ public class SMETextField: UIView {
             
             NSLayoutConstraint.activate([
                 self.heightAnchor.constraint(equalToConstant: 64),
-                self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
+                self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
             ])
-            
+            self.layoutIfNeeded()
 //            self.footerLabel.textColor = self.placeholderTextColor
 //            self.footerLabel.text = self.footerLabelText
         case .invalid(let error):
@@ -886,7 +886,7 @@ public class SMETextField: UIView {
             print("inValid:::--")
             NSLayoutConstraint.deactivate([
                 self.heightAnchor.constraint(equalToConstant: 64),
-                self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
+                self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
             ])
             NSLayoutConstraint.activate([
                 self.heightAnchor.constraint(equalToConstant: 84),
@@ -895,6 +895,8 @@ public class SMETextField: UIView {
             
             self.errorLabel.textColor = self.errorStateColor
             self.errorLabel.text = error
+            
+            self.layoutIfNeeded()
         }
     }
 
