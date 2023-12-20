@@ -869,35 +869,37 @@ public class SMETextField: UIView {
         case .valid:
             self.errorLabel.isHidden = true
             print("Valid:::--")
-            NSLayoutConstraint.deactivate([
-                self.heightAnchor.constraint(equalToConstant: 84),
-                self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
-            ])
-            
-            NSLayoutConstraint.activate([
-                self.heightAnchor.constraint(equalToConstant: 64),
-                self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
-            ])
+//            NSLayoutConstraint.deactivate([
+//                self.heightAnchor.constraint(equalToConstant: 84),
+//                self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
+//            ])
+//            
+//            NSLayoutConstraint.activate([
+//                self.heightAnchor.constraint(equalToConstant: 64),
+//                self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
+//            ])
             self.layoutIfNeeded()
 //            self.footerLabel.textColor = self.placeholderTextColor
 //            self.footerLabel.text = self.footerLabelText
         case .invalid(let error):
             self.errorLabel.isHidden = false
             print("inValid:::--")
-            NSLayoutConstraint.deactivate([
-                self.heightAnchor.constraint(equalToConstant: 64),
-                self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
-            ])
-            NSLayoutConstraint.activate([
-                self.heightAnchor.constraint(equalToConstant: 84),
-                self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
-            ])
+//            NSLayoutConstraint.deactivate([
+//                self.heightAnchor.constraint(equalToConstant: 64),
+//                self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
+//            ])
+//            NSLayoutConstraint.activate([
+//                self.heightAnchor.constraint(equalToConstant: 84),
+//                self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
+//            ])
             
             self.errorLabel.textColor = self.errorStateColor
             self.errorLabel.text = error
             
             self.layoutIfNeeded()
         }
+        
+        NSLayoutConstraint.activate(self.calculateValidationConstraints())
     }
 
     private func updateInputBorder() {
@@ -976,6 +978,22 @@ public class SMETextField: UIView {
         }
     }
 
+    private func calculateValidationConstraints() -> [NSLayoutConstraint] {
+
+        switch self.isValid {
+        case .valid:
+            return [
+                self.heightAnchor.constraint(equalToConstant: 64),
+                self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
+            ]
+        case .invalid:
+            return [
+                self.heightAnchor.constraint(equalToConstant: 84),
+                self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
+            ]
+        }
+    }
+    
     private func calculateEditingConstraints() -> [NSLayoutConstraint] {
         let originalWidth = customPlaceholder.bounds.width
         let xOffset = (originalWidth - (originalWidth * placeholderSizeFactor)) / 2
