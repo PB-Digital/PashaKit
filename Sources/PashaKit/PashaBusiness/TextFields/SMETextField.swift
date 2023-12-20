@@ -175,6 +175,17 @@ public class SMETextField: UIView {
             self.footerLabel.text = self.footerLabelText
         }
     }
+    
+    /// The text which is displayed under the text field.
+    ///
+    /// By default text field doesn't create footer label text. If you specify it, text field will be
+    /// created with the `UILabel` under it.
+    ///
+    public var errorLabelText: String? = nil {
+        didSet {
+            self.errorLabel.text = self.errorLabelText
+        }
+    }
 
     /// Sets the icon for displaying at the right end of text field.
     ///
@@ -550,6 +561,17 @@ public class SMETextField: UIView {
 
         return view
     }()
+    
+    private lazy var errorLabel: UILabel = {
+        let view = UILabel()
+
+        view.font = UIFont.sfProText(ofSize: 12, weight: .regular)
+        view.numberOfLines = 0
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textColor = self.errorStateColor
+
+        return view
+    }()
 
     /// Creates a new text field of specified style.
     ///
@@ -742,7 +764,10 @@ public class SMETextField: UIView {
             ])
 
             NSLayoutConstraint.activate([
-                self.footerLabel.topAnchor.constraint(equalTo: self.customBorder.bottomAnchor, constant: 6),
+                self.errorLabel.topAnchor.constraint(equalTo: self.customBorder.bottomAnchor, constant: 4),
+                self.errorLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: self.leftPadding),
+                self.errorLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -self.leftPadding),
+                self.footerLabel.topAnchor.constraint(equalTo: self.errorLabel.bottomAnchor, constant: 4),
                 self.footerLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: self.leftPadding),
                 self.footerLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -self.leftPadding)
             ])
@@ -755,7 +780,12 @@ public class SMETextField: UIView {
             ])
 
             NSLayoutConstraint.activate([
-                self.footerLabel.topAnchor.constraint(equalTo: self.customBorder.bottomAnchor),
+                self.errorLabel.topAnchor.constraint(equalTo: self.customBorder.bottomAnchor, constant: 4),
+                self.errorLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: self.leftPadding),
+                self.errorLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -self.leftPadding),
+//                self.errorLabel.bottomAnchor.constraint(equalTo: self.footerLabel.topAnchor),
+                
+                self.footerLabel.topAnchor.constraint(equalTo: self.errorLabel.bottomAnchor, constant: 4),
                 self.footerLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
                 self.footerLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
                 self.footerLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
@@ -825,11 +855,13 @@ public class SMETextField: UIView {
 
         switch self.isValid {
         case .valid:
-            self.footerLabel.textColor = self.placeholderTextColor
-            self.footerLabel.text = self.footerLabelText
+            self.errorLabel.isHidden = true
+//            self.footerLabel.textColor = self.placeholderTextColor
+//            self.footerLabel.text = self.footerLabelText
         case .invalid(let error):
-            self.footerLabel.textColor = self.errorStateColor
-            self.footerLabel.text = error
+            self.errorLabel.isHidden = false
+            self.errorLabel.textColor = self.errorStateColor
+            self.errorLabel.text = error
         }
     }
 
