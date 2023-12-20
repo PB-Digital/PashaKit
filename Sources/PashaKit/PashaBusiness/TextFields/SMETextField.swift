@@ -868,7 +868,7 @@ public class SMETextField: UIView {
         switch self.isValid {
         case .valid:
             self.errorLabel.isHidden = true
-            
+            print("Valid:::--")
             NSLayoutConstraint.deactivate([
                 self.heightAnchor.constraint(equalToConstant: 84),
                 self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
@@ -882,6 +882,7 @@ public class SMETextField: UIView {
 //            self.footerLabel.textColor = self.placeholderTextColor
 //            self.footerLabel.text = self.footerLabelText
         case .invalid(let error):
+            print("inValid:::--")
             NSLayoutConstraint.deactivate([
                 self.heightAnchor.constraint(equalToConstant: 64),
                 self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
