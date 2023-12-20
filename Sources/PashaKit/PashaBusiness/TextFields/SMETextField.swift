@@ -753,7 +753,7 @@ public class SMETextField: UIView {
             self.customBorder.heightAnchor.constraint(equalToConstant: 64),
             self.customBorder.topAnchor.constraint(equalTo: self.topAnchor),
             self.customBorder.leftAnchor.constraint(equalTo: self.leftAnchor),
-//            self.customBorder.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -24.0),
+            self.customBorder.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -24.0),
             self.customBorder.rightAnchor.constraint(equalTo: self.rightAnchor)
         ])
 
@@ -793,7 +793,7 @@ public class SMETextField: UIView {
 //                self.footerLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
             ])
         }
-
+        print("ERROR STP:::---")
         NSLayoutConstraint.activate([
             self.customPlaceholder.widthAnchor.constraint(equalTo: self.customTextField.widthAnchor)
         ])
@@ -882,6 +882,7 @@ public class SMETextField: UIView {
 //            self.footerLabel.textColor = self.placeholderTextColor
 //            self.footerLabel.text = self.footerLabelText
         case .invalid(let error):
+            self.errorLabel.isHidden = false
             print("inValid:::--")
             NSLayoutConstraint.deactivate([
                 self.heightAnchor.constraint(equalToConstant: 64),
@@ -892,7 +893,6 @@ public class SMETextField: UIView {
                 self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
             ])
             
-            self.errorLabel.isHidden = false
             self.errorLabel.textColor = self.errorStateColor
             self.errorLabel.text = error
         }
