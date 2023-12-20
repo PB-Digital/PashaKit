@@ -472,7 +472,9 @@ public class SMETextField: UIView {
     private var activeConstraints: [NSLayoutConstraint] = []
     private var activeRightIconConstraints: [NSLayoutConstraint] = []
     private var footerLabelConstraints: [NSLayoutConstraint] = []
-    private var validationLabelConstraints: [NSLayoutConstraint] = []
+    private var activeValidationLabelConstraints: [NSLayoutConstraint] = []
+    private var validConstraints: [NSLayoutConstraint] = []
+    private var invalidConstraints: [NSLayoutConstraint] = []
     
     private var textFieldStyle: SMETextFieldStyle = .underlined {
         didSet {
@@ -794,25 +796,34 @@ public class SMETextField: UIView {
             ])
         }
         print("ERROR STP:::---")
+        
         NSLayoutConstraint.activate([
             self.customPlaceholder.widthAnchor.constraint(equalTo: self.customTextField.widthAnchor)
         ])
         
-        NSLayoutConstraint.activate([
+//        NSLayoutConstraint.activate([
+//            self.heightAnchor.constraint(equalToConstant: 64),
+//            self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
+//        ])
+        
+        self.validConstraints = [
             self.heightAnchor.constraint(equalToConstant: 64),
             self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
-        ])
-        
-        self.footerLabelConstraints = [
-//            self.customPlaceholder.leftAnchor.constraint(equalTo: self.customTextField.leftAnchor),
-//            self.customPlaceholder.centerYAnchor.constraint(equalTo: self.customTextField.centerYAnchor)
         ]
-
+        
+        self.invalidConstraints = [
+            self.heightAnchor.constraint(equalToConstant: 84),
+            self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
+        ]
+        
+        self.activeValidationLabelConstraints = self.validConstraints
+        NSLayoutConstraint.activate(self.activeValidationLabelConstraints)
+        
         self.notEditingConstraints = [
             self.customPlaceholder.leftAnchor.constraint(equalTo: self.customTextField.leftAnchor),
             self.customPlaceholder.centerYAnchor.constraint(equalTo: self.customTextField.centerYAnchor)
         ]
-
+        
         self.activeConstraints = self.notEditingConstraints
         NSLayoutConstraint.activate(self.activeConstraints)
         
@@ -864,42 +875,27 @@ public class SMETextField: UIView {
         case .underlined:
             self.updateBottomBorder()
         }
+        
+        NSLayoutConstraint.deactivate(self.activeValidationLabelConstraints)
 
         switch self.isValid {
         case .valid:
             self.errorLabel.isHidden = true
-            print("Valid:::--")
-//            NSLayoutConstraint.deactivate([
-//                self.heightAnchor.constraint(equalToConstant: 84),
-//                self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
-//            ])
-//            
-//            NSLayoutConstraint.activate([
-//                self.heightAnchor.constraint(equalToConstant: 64),
-//                self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
-//            ])
+            
+            self.activeValidationLabelConstraints = self.validConstraints
+            
             self.layoutIfNeeded()
-//            self.footerLabel.textColor = self.placeholderTextColor
-//            self.footerLabel.text = self.footerLabelText
         case .invalid(let error):
             self.errorLabel.isHidden = false
-            print("inValid:::--")
-//            NSLayoutConstraint.deactivate([
-//                self.heightAnchor.constraint(equalToConstant: 64),
-//                self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
-//            ])
-//            NSLayoutConstraint.activate([
-//                self.heightAnchor.constraint(equalToConstant: 84),
-//                self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
-//            ])
-            
             self.errorLabel.textColor = self.errorStateColor
             self.errorLabel.text = error
+            
+            self.activeValidationLabelConstraints = self.invalidConstraints
             
             self.layoutIfNeeded()
         }
         
-        NSLayoutConstraint.activate(self.calculateValidationConstraints())
+        NSLayoutConstraint.activate(self.activeValidationLabelConstraints)
     }
 
     private func updateInputBorder() {
