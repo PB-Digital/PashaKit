@@ -471,7 +471,9 @@ public class SMETextField: UIView {
     private var notEditingConstraints: [NSLayoutConstraint] = []
     private var activeConstraints: [NSLayoutConstraint] = []
     private var activeRightIconConstraints: [NSLayoutConstraint] = []
-
+    private var footerLabelConstraints: [NSLayoutConstraint] = []
+    private var validationLabelConstraints: [NSLayoutConstraint] = []
+    
     private var textFieldStyle: SMETextFieldStyle = .underlined {
         didSet {
             self.prepareTextFieldByStyle(for: textFieldStyle)
@@ -795,6 +797,11 @@ public class SMETextField: UIView {
         NSLayoutConstraint.activate([
             self.customPlaceholder.widthAnchor.constraint(equalTo: self.customTextField.widthAnchor)
         ])
+        
+        self.footerLabelConstraints = [
+//            self.customPlaceholder.leftAnchor.constraint(equalTo: self.customTextField.leftAnchor),
+//            self.customPlaceholder.centerYAnchor.constraint(equalTo: self.customTextField.centerYAnchor)
+        ]
 
         self.notEditingConstraints = [
             self.customPlaceholder.leftAnchor.constraint(equalTo: self.customTextField.leftAnchor),
@@ -856,9 +863,21 @@ public class SMETextField: UIView {
         switch self.isValid {
         case .valid:
             self.errorLabel.isHidden = true
+            
+            NSLayoutConstraint.activate([
+                self.heightAnchor.constraint(equalToConstant: 64),
+                self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
+            ])
+            
 //            self.footerLabel.textColor = self.placeholderTextColor
 //            self.footerLabel.text = self.footerLabelText
         case .invalid(let error):
+            
+            NSLayoutConstraint.activate([
+                self.heightAnchor.constraint(equalToConstant: 84),
+                self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
+            ])
+            
             self.errorLabel.isHidden = false
             self.errorLabel.textColor = self.errorStateColor
             self.errorLabel.text = error
