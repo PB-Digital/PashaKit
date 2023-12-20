@@ -798,6 +798,11 @@ public class SMETextField: UIView {
             self.customPlaceholder.widthAnchor.constraint(equalTo: self.customTextField.widthAnchor)
         ])
         
+        NSLayoutConstraint.activate([
+            self.heightAnchor.constraint(equalToConstant: 64),
+            self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
+        ])
+        
         self.footerLabelConstraints = [
 //            self.customPlaceholder.leftAnchor.constraint(equalTo: self.customTextField.leftAnchor),
 //            self.customPlaceholder.centerYAnchor.constraint(equalTo: self.customTextField.centerYAnchor)
