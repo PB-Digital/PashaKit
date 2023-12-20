@@ -729,7 +729,8 @@ public class SMETextField: UIView {
         self.textFieldStack.addArrangedSubview(self.rightIconWrapperView)
 
         self.customBorder.addSubview(self.customPlaceholder)
-
+        
+        self.addSubview(self.errorLabel)
         self.addSubview(self.footerLabel)
     }
 
