@@ -800,7 +800,7 @@ public class SMETextField: UIView {
         
         NSLayoutConstraint.activate([
             self.heightAnchor.constraint(equalToConstant: 64),
-            self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
+            self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
         ])
         
         self.footerLabelConstraints = [
@@ -876,7 +876,7 @@ public class SMETextField: UIView {
             
             NSLayoutConstraint.activate([
                 self.heightAnchor.constraint(equalToConstant: 64),
-                self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
+                self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
             ])
             
 //            self.footerLabel.textColor = self.placeholderTextColor
@@ -886,7 +886,7 @@ public class SMETextField: UIView {
             print("inValid:::--")
             NSLayoutConstraint.deactivate([
                 self.heightAnchor.constraint(equalToConstant: 64),
-                self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
+                self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
             ])
             NSLayoutConstraint.activate([
                 self.heightAnchor.constraint(equalToConstant: 84),
