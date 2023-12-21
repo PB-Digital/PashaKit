@@ -755,7 +755,7 @@ public class SMETextField: UIView {
 //            self.customBorder.heightAnchor.constraint(equalToConstant: 64),
             self.customBorder.topAnchor.constraint(equalTo: self.topAnchor),
             self.customBorder.leftAnchor.constraint(equalTo: self.leftAnchor),
-            self.customBorder.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -24.0),
+            self.customBorder.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             self.customBorder.rightAnchor.constraint(equalTo: self.rightAnchor)
         ])
 
