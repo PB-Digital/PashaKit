@@ -752,8 +752,8 @@ public class SMETextField: UIView {
     private func setupConstraints(for style: SMETextFieldStyle) {
         self.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(equalToConstant: 64),
-//            self.customBorder.heightAnchor.constraint(equalToConstant: 50),
+//            self.heightAnchor.constraint(equalToConstant: 64),
+            self.customBorder.heightAnchor.constraint(equalToConstant: 50),
             self.customBorder.topAnchor.constraint(equalTo: self.topAnchor),
             self.customBorder.leftAnchor.constraint(equalTo: self.leftAnchor),
 //            self.customBorder.bottomAnchor.constraint(equalTo: self.bottomAnchor),
