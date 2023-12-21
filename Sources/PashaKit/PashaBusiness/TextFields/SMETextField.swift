@@ -475,6 +475,8 @@ public class SMETextField: UIView {
     private var activeValidationLabelConstraints: [NSLayoutConstraint] = []
     private var validConstraints: [NSLayoutConstraint] = []
     private var invalidConstraints: [NSLayoutConstraint] = []
+    private var validWithLabelConstraints: [NSLayoutConstraint] = []
+    private var invalidWithLabelConstraints: [NSLayoutConstraint] = []
     
     private var textFieldStyle: SMETextFieldStyle = .underlined {
         didSet {
@@ -817,6 +819,16 @@ public class SMETextField: UIView {
             self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
         ]
         
+        self.validWithLabelConstraints = [
+            self.heightAnchor.constraint(equalToConstant: 100),
+            self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
+        ]
+        
+        self.invalidWithLabelConstraints = [
+            self.heightAnchor.constraint(equalToConstant: 120),
+            self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
+        ]
+        
         self.activeValidationLabelConstraints = self.validConstraints
         NSLayoutConstraint.activate(self.activeValidationLabelConstraints)
         
@@ -883,15 +895,22 @@ public class SMETextField: UIView {
         case .valid:
             self.errorLabel.isHidden = true
             
-            self.activeValidationLabelConstraints = self.validConstraints
-            
+            if let footerLabelText = self.footerLabelText {
+                self.activeValidationLabelConstraints = self.validWithLabelConstraints
+            } else {
+                self.activeValidationLabelConstraints = self.validConstraints
+            }
 //            self.layoutIfNeeded()
         case .invalid(let error):
             self.errorLabel.isHidden = false
             self.errorLabel.textColor = self.errorStateColor
             self.errorLabel.text = error
             
-            self.activeValidationLabelConstraints = self.invalidConstraints
+            if let footerLabelText = self.footerLabelText {
+                self.activeValidationLabelConstraints = self.invalidWithLabelConstraints
+            } else {
+                self.activeValidationLabelConstraints = self.invalidConstraints
+            }
             
 //            self.layoutIfNeeded()
         }
