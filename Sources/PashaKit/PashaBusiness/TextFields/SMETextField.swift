@@ -821,7 +821,7 @@ public class SMETextField: UIView {
         
         self.validWithLabelConstraints = [
             self.heightAnchor.constraint(equalToConstant: 100),
-            self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
+            self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
         ]
         
         self.invalidWithLabelConstraints = [
