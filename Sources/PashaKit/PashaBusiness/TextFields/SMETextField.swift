@@ -752,7 +752,7 @@ public class SMETextField: UIView {
     private func setupConstraints(for style: SMETextFieldStyle) {
         self.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.customBorder.heightAnchor.constraint(equalToConstant: 50),
+//            self.customBorder.heightAnchor.constraint(equalToConstant: 50),
             self.customBorder.topAnchor.constraint(equalTo: self.topAnchor),
             self.customBorder.leftAnchor.constraint(equalTo: self.leftAnchor),
 //            self.customBorder.bottomAnchor.constraint(equalTo: self.bottomAnchor),
@@ -807,12 +807,12 @@ public class SMETextField: UIView {
 //        ])
         
         self.validConstraints = [
-            self.heightAnchor.constraint(equalToConstant: 64),
+            self.heightAnchor.constraint(equalToConstant: self.customTextField.frame.height + self.customPlaceholder.frame.height + self.topPadding),
             self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
         ]
         
         self.invalidConstraints = [
-            self.heightAnchor.constraint(equalToConstant: 84),
+            self.heightAnchor.constraint(equalToConstant: self.customTextField.frame.height + self.customPlaceholder.frame.height + self.topPadding + errorLabel.frame.height + self.topPadding),
             self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
         ]
         
@@ -884,7 +884,7 @@ public class SMETextField: UIView {
             
             self.activeValidationLabelConstraints = self.validConstraints
             
-            self.layoutIfNeeded()
+//            self.layoutIfNeeded()
         case .invalid(let error):
             self.errorLabel.isHidden = false
             self.errorLabel.textColor = self.errorStateColor
@@ -892,7 +892,7 @@ public class SMETextField: UIView {
             
             self.activeValidationLabelConstraints = self.invalidConstraints
             
-            self.layoutIfNeeded()
+//            self.layoutIfNeeded()
         }
         
         NSLayoutConstraint.activate(self.activeValidationLabelConstraints)
