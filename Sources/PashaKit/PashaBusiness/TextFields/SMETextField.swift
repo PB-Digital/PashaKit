@@ -808,12 +808,12 @@ public class SMETextField: UIView {
 //        ])
         
         self.validConstraints = [
-            self.heightAnchor.constraint(equalToConstant: self.customTextField.frame.height + self.customPlaceholder.frame.height + self.topPadding),
+            self.heightAnchor.constraint(equalToConstant: 64),
             self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
         ]
         
         self.invalidConstraints = [
-            self.heightAnchor.constraint(equalToConstant: self.customTextField.frame.height + self.customPlaceholder.frame.height + self.topPadding + errorLabel.frame.height + self.topPadding),
+            self.heightAnchor.constraint(equalToConstant: 84),
             self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
         ]
         
