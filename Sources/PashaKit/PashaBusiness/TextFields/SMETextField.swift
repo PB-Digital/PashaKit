@@ -994,22 +994,6 @@ public class SMETextField: UIView {
         }
     }
 
-    private func calculateValidationConstraints() -> [NSLayoutConstraint] {
-
-        switch self.isValid {
-        case .valid:
-            return [
-                self.heightAnchor.constraint(equalToConstant: 64),
-                self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
-            ]
-        case .invalid:
-            return [
-                self.heightAnchor.constraint(equalToConstant: 84),
-                self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
-            ]
-        }
-    }
-    
     private func calculateEditingConstraints() -> [NSLayoutConstraint] {
         let originalWidth = customPlaceholder.bounds.width
         let xOffset = (originalWidth - (originalWidth * placeholderSizeFactor)) / 2
