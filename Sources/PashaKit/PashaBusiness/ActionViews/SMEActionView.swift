@@ -419,7 +419,7 @@ public class SMEActionView: UIView {
                             styleOfAction: SMEActionStyle = .none  ) {
         self.init()
         
-        UIFont.registerCustomFonts()
+//        UIFont.registerCustomFonts()
         
         self.typeOfAction = typeOfAction
         self.styleOfAction = styleOfAction
@@ -434,7 +434,7 @@ public class SMEActionView: UIView {
                             stateOfAction: SMEActionState = .normal) {
         self.init()
         
-        UIFont.registerCustomFonts()
+//        UIFont.registerCustomFonts()
         
         self.typeOfAction = typeOfAction
         self.prepareActionViewByType()
@@ -449,7 +449,7 @@ public class SMEActionView: UIView {
                             stateOfAction: SMEActionState = .normal) {
         self.init()
         
-        UIFont.registerCustomFonts()
+//        UIFont.registerCustomFonts()
         
         self.typeOfAction = typeOfAction
         self.styleOfAction = styleOfAction
