@@ -1101,8 +1101,13 @@ public class SMETextField: UIView {
     private func validateField() {
         if self.validationCredentials.regex != "" {
             print("PBKIT: \(self.customTextField.text)")
+            
             self.isValid = SMETextFieldValidations.validateWithCustomRegex(for: self.customTextField.text ?? "", regex: self.validationCredentials.regex) ? .valid : .invalid(self.validationCredentials.localizedErrorMessage)
+            
+            print("PBKIT isValid: \(self.isValid)")
+            
             if self.customTextField.text == "" {
+                print(":PBKIT EMPTY:")
                 self.isValid = .invalid(self.validationCredentials.localizedErrorMessage)
             }
         }
