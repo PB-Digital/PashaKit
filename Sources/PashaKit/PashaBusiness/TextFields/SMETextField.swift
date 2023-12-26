@@ -532,7 +532,9 @@ public class SMETextField: UIView {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
         textField.textColor = self.textFieldTextColor
-
+        textField.onDeleteBackward = {
+            self.validateField()
+        }
         return textField
     }()
 
