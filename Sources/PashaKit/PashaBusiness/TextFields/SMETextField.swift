@@ -952,8 +952,6 @@ public class SMETextField: UIView {
                 self.customBorder.layer.borderWidth = 1.0
             }
         }
-        
-        self.validateFieldEmpty()
     }
 
     private func updateBottomBorder() {
@@ -1232,7 +1230,6 @@ extension SMETextField: MaskedTextFieldDelegateListener {
         self.onType?(value)
         self.onTextUpdate?(cleanText)
         self.isComplete = complete
-        self.validateFieldEmpty()
     }
 
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -1248,5 +1245,6 @@ extension SMETextField: MaskedTextFieldDelegateListener {
         self.textFieldState = .notEditing
         self.onDidEnd?()
         self.validationByInputType()
+        self.validateFieldEmpty()
     }
 }
