@@ -1098,7 +1098,11 @@ public class SMETextField: UIView {
     
     private func validateField() {
         if self.validationCredentials.regex != "" {
+            print("PBKIT: \(self.customTextField.text)")
             self.isValid = SMETextFieldValidations.validateWithCustomRegex(for: self.customTextField.text ?? "", regex: self.validationCredentials.regex) ? .valid : .invalid(self.validationCredentials.localizedErrorMessage)
+            if self.customTextField.text == "" {
+                self.isValid = .invalid(self.validationCredentials.localizedErrorMessage)
+            }
         }
     }
 
@@ -1226,7 +1230,7 @@ extension SMETextField: MaskedTextFieldDelegateListener {
         self.onType?(value)
         self.onTextUpdate?(cleanText)
 //        if cleanText.count > 1 {
-            self.validateField()
+//            self.validateField()
 //        }
         self.isComplete = complete
     }
@@ -1238,7 +1242,7 @@ extension SMETextField: MaskedTextFieldDelegateListener {
     public func textFieldDidBeginEditing(_ textField: UITextField) {
         self.textFieldState = .editing
         self.onDidBegin?()
-        self.validateField()
+//        self.validateField()
     }
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
