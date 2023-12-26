@@ -1225,6 +1225,9 @@ extension SMETextField: MaskedTextFieldDelegateListener {
             .trimmingCharacters(in: .whitespacesAndNewlines)
         self.onType?(value)
         self.onTextUpdate?(cleanText)
+        if cleanText.count > 1 {
+            self.validateField()
+        }
         self.isComplete = complete
     }
 
