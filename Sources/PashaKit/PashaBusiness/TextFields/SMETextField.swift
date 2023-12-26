@@ -255,7 +255,7 @@ public class SMETextField: UIView {
     ///
     public var isValid: PBTextFieldValidity = .valid {
         didSet {
-            self.updateUI()
+//            self.updateUI()
         }
     }
 
@@ -1234,6 +1234,7 @@ extension SMETextField: MaskedTextFieldDelegateListener {
         let cleanText = value
             .replacingOccurrences(of: " ", with: "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
+        self.validationByInputType()
         self.validateField()
         self.onType?(value)
         self.onTextUpdate?(cleanText)
@@ -1251,12 +1252,14 @@ extension SMETextField: MaskedTextFieldDelegateListener {
         self.textFieldState = .editing
         self.onDidBegin?()
 //        self.validateField()
+        self.updateUI()
     }
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
         self.textFieldState = .notEditing
         self.onDidEnd?()
-        self.validationByInputType()
-        self.validateField()
+        
+//        self.validateField()
+        self.updateUI()
     }
 }
