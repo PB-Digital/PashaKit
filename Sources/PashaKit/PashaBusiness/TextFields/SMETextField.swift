@@ -900,7 +900,7 @@ public class SMETextField: UIView {
             } else {
                 self.activeValidationLabelConstraints = self.validConstraints
             }
-//            self.layoutIfNeeded()
+            
         case .invalid(let error):
             self.errorLabel.isHidden = false
             self.errorLabel.textColor = self.errorStateColor
@@ -912,10 +912,10 @@ public class SMETextField: UIView {
                 self.activeValidationLabelConstraints = self.invalidConstraints
             }
             
-//            self.layoutIfNeeded()
         }
         
         NSLayoutConstraint.activate(self.activeValidationLabelConstraints)
+        self.layoutIfNeeded()
     }
 
     private func updateInputBorder() {
@@ -1238,6 +1238,7 @@ extension SMETextField: MaskedTextFieldDelegateListener {
     public func textFieldDidBeginEditing(_ textField: UITextField) {
         self.textFieldState = .editing
         self.onDidBegin?()
+        self.validateField()
     }
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
