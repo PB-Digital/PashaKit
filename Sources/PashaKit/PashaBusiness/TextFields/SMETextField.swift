@@ -216,7 +216,7 @@ public class SMETextField: UIView {
     /// Since the value of this property is valid by default, you won't see any difference. However
     /// setting this property to true, validate input to `valid` and `invalid`
     ///
-    public var shouldNotEmpty: (Bool, localizedErrorMessage: String) = (false, "")
+    public var validationCredentials: (shouldntEmpty: Bool, minChar: Int, maxChar: Int, regex: String?, localizedErrorMessage: String) = (false, 0, 48, "", "")
 
     /// The theme for the text field's appearance.
     ///
@@ -1096,12 +1096,18 @@ public class SMETextField: UIView {
         }
     }
     
-    private func validateFieldEmpty() {
-        if self.shouldNotEmpty.0 {
-            if self.customTextField.text?.count ?? 0 >= 1 {
-                self.isValid = .valid
+    private func validateField() {
+        let count = self.customTextField.text?.count ?? 0
+        if self.validationCredentials.shouldntEmpty {
+            if count >= self.validationCredentials.minChar && count <= self.validationCredentials.maxChar {
+                if let regex = validationCredentials.regex {
+                    self.isValid = SMETextFieldValidations.validateWithCustomRegex(for: self.customTextField.text ?? "", regex: regex) ? .valid : .invalid(self.validationCredentials.localizedErrorMessage)
+                } else {
+                    self.isValid = .valid
+                }
+                
             } else {
-                self.isValid = .invalid(self.shouldNotEmpty.1)
+                self.isValid = .invalid(self.validationCredentials.localizedErrorMessage)
             }
         }
     }
@@ -1245,6 +1251,6 @@ extension SMETextField: MaskedTextFieldDelegateListener {
         self.textFieldState = .notEditing
         self.onDidEnd?()
         self.validationByInputType()
-        self.validateFieldEmpty()
+        self.validateField()
     }
 }
