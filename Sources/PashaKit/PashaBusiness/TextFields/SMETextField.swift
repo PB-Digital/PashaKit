@@ -1234,6 +1234,7 @@ extension SMETextField: MaskedTextFieldDelegateListener {
         let cleanText = value
             .replacingOccurrences(of: " ", with: "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
+        self.validateField()
         self.onType?(value)
         self.onTextUpdate?(cleanText)
 //        if cleanText.count > 1 {
