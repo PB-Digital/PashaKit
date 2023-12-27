@@ -1235,12 +1235,12 @@ extension SMETextField: MaskedTextFieldDelegateListener {
             .replacingOccurrences(of: " ", with: "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
         self.validationByInputType()
-        self.validateField()
+//        self.validateField()
+        if cleanText.count > 0 {
+            self.validateField()
+        }
         self.onType?(value)
         self.onTextUpdate?(cleanText)
-//        if cleanText.count > 1 {
-//            self.validateField()
-//        }
         self.isComplete = complete
     }
 
@@ -1260,6 +1260,6 @@ extension SMETextField: MaskedTextFieldDelegateListener {
         self.onDidEnd?()
         
 //        self.validateField()
-        self.updateUI()
+//        self.updateUI()
     }
 }
