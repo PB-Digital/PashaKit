@@ -374,6 +374,9 @@ public class SMETextField: UIView {
     public var disableManualInput: Bool = false {
         didSet {
             self.customTextField.isUserInteractionEnabled = false
+            self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
+            self.customTextField.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
+            self.textFieldTextColor = self.placeholderTextColor.withAlphaComponent(0.3)
         }
     }
 
