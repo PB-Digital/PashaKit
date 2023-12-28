@@ -1237,11 +1237,12 @@ extension SMETextField: MaskedTextFieldDelegateListener {
         let cleanText = value
             .replacingOccurrences(of: " ", with: "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
-        self.validationByInputType()
-//        self.validateField()
+       
         if cleanText.count > 0 {
             self.validateField()
+            self.validationByInputType()
         }
+        
         self.onType?(value)
         self.onTextUpdate?(cleanText)
         self.isComplete = complete
@@ -1254,15 +1255,10 @@ extension SMETextField: MaskedTextFieldDelegateListener {
     public func textFieldDidBeginEditing(_ textField: UITextField) {
         self.textFieldState = .editing
         self.onDidBegin?()
-//        self.validateField()
-//        self.updateUI()
     }
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
         self.textFieldState = .notEditing
         self.onDidEnd?()
-        
-//        self.validateField()
-//        self.updateUI()
     }
 }
