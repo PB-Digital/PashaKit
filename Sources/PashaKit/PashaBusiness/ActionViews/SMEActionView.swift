@@ -247,7 +247,7 @@ public class SMEActionView: UIView {
 
         self.addSubview(view)
 
-        view.translatesAutoresizingMaskIntoConstraints = true
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.sizeToFit()
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleViewClick))
         view.addGestureRecognizer(tap)
@@ -257,7 +257,7 @@ public class SMEActionView: UIView {
     private lazy var titleStackView: UIStackView = {
         let view = UIStackView()
 
-        view.translatesAutoresizingMaskIntoConstraints = true
+        view.translatesAutoresizingMaskIntoConstraints = false
 
         view.alignment = .leading
         view.axis = .vertical
@@ -273,7 +273,7 @@ public class SMEActionView: UIView {
         label.text = self.title
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
-        label.translatesAutoresizingMaskIntoConstraints = true
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -284,7 +284,7 @@ public class SMEActionView: UIView {
         label.text = self.subTitle
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
-        label.translatesAutoresizingMaskIntoConstraints = true
+        label.translatesAutoresizingMaskIntoConstraints = false
 
         return label
     }()
