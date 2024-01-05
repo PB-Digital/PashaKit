@@ -521,9 +521,9 @@ public class SMEActionView: UIView {
             self.baseView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0.0),
             self.baseView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0.0),
             self.baseView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0.0),
-            self.titleStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8.0),
-            self.titleStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8.0),
-//            self.titleStackView.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
+//            self.titleStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8.0),
+//            self.titleStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8.0),
+            self.titleStackView.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
 //            self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
         ])
         
