@@ -248,7 +248,7 @@ public class SMEActionView: UIView {
         self.addSubview(view)
 
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.sizeToFit()
+
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleViewClick))
         view.addGestureRecognizer(tap)
         return view
@@ -258,7 +258,7 @@ public class SMEActionView: UIView {
         let view = UIStackView()
 
         view.translatesAutoresizingMaskIntoConstraints = false
-
+        view.sizeToFit()
         view.alignment = .leading
         view.axis = .vertical
         view.spacing = 2.0
