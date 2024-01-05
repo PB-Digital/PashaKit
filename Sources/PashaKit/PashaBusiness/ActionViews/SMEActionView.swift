@@ -247,7 +247,7 @@ public class SMEActionView: UIView {
 
         self.addSubview(view)
 
-        view.translatesAutoresizingMaskIntoConstraints = true
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.sizeToFit()
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleViewClick))
         view.addGestureRecognizer(tap)
