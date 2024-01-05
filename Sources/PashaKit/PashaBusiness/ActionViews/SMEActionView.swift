@@ -579,8 +579,8 @@ public class SMEActionView: UIView {
             ])
         case .hasIcon:
             NSLayoutConstraint.activate([//TODO: Check again
-                self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 36),
-                self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor),
+//                self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 36),
+//                self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor),
                 self.leftIconView.centerXAnchor.constraint(equalTo: self.leftIconWrapperView.centerXAnchor),
                 self.leftIconView.centerYAnchor.constraint(equalTo: self.leftIconWrapperView.centerYAnchor),
                 self.leftIconWrapperView.heightAnchor.constraint(equalToConstant: 40.0),
