@@ -520,12 +520,12 @@ public class SMEActionView: UIView {
             self.baseView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0.0),
             self.baseView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0.0),
             self.baseView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0.0),
-            self.titleStackView.topAnchor.constraint(greaterThanOrEqualTo: self.baseView.topAnchor, constant: 8.0),
-            self.titleStackView.bottomAnchor.constraint(lessThanOrEqualTo: self.baseView.bottomAnchor, constant: -8.0),
-//            self.titleStackView.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
-            self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 36),
-            self.heightAnchor.constraint(equalToConstant: 72.0),
-//            self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
+//            self.titleStackView.topAnchor.constraint(greaterThanOrEqualTo: self.baseView.topAnchor, constant: 8.0),
+//            self.titleStackView.bottomAnchor.constraint(lessThanOrEqualTo: self.baseView.bottomAnchor, constant: -8.0),
+            self.titleStackView.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
+//            self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 36),
+//            self.heightAnchor.constraint(equalToConstant: 72.0),
+            self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
         ])
         
         switch type {
@@ -578,6 +578,7 @@ public class SMEActionView: UIView {
             ])
         case .hasIcon:
             NSLayoutConstraint.activate([//TODO: Check again
+                self.baseView.heightAnchor.constraint(equalToConstant: 72.0),
 //                self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 36),
 //                self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor),
                 self.leftIconView.centerXAnchor.constraint(equalTo: self.leftIconWrapperView.centerXAnchor),
