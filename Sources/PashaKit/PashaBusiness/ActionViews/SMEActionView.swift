@@ -259,7 +259,7 @@ public class SMEActionView: UIView {
 
         view.translatesAutoresizingMaskIntoConstraints = false
         view.sizeToFit()
-        view.alignment = .leading
+        view.alignment = .fill
         view.axis = .vertical
         view.spacing = 2.0
         view.distribution = .fillProportionally
