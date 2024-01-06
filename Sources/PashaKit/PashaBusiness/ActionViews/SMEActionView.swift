@@ -514,13 +514,15 @@ public class SMEActionView: UIView {
             self.titleStackView.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
 //            self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 32.0),
 //            self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
+            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
+            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
             self.titleStackView.heightAnchor.constraint(equalToConstant: 56),
-                self.baseView.heightAnchor.constraint(equalToConstant: 72),
+            self.baseView.heightAnchor.constraint(equalToConstant: 72),
             self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
         ])
         
-        self.titleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
-        self.subTitleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
+//        self.titleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
+//        self.subTitleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
         
         switch type {
         case .normal(let icon, _):
