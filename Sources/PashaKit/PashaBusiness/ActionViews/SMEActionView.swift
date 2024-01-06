@@ -283,7 +283,7 @@ public class SMEActionView: UIView {
         label.textAlignment = .left
         label.text = self.subTitle
         label.numberOfLines = 0
-        label.lineBreakMode = .byWordWrapping
+        label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
 
         return label
@@ -418,8 +418,6 @@ public class SMEActionView: UIView {
                             styleOfAction: SMEActionStyle = .none) {
         self.init()
         
-//        UIFont.registerCustomFonts()
-        
         self.typeOfAction = typeOfAction
         self.styleOfAction = styleOfAction
         
@@ -433,8 +431,6 @@ public class SMEActionView: UIView {
                             stateOfAction: SMEActionState = .normal) {
         self.init()
         
-//        UIFont.registerCustomFonts()
-        
         self.typeOfAction = typeOfAction
         self.prepareActionViewByType()
         self.stateOfAction = stateOfAction
@@ -447,8 +443,6 @@ public class SMEActionView: UIView {
                             styleOfAction: SMEActionStyle = .none,
                             stateOfAction: SMEActionState = .normal) {
         self.init()
-        
-//        UIFont.registerCustomFonts()
         
         self.typeOfAction = typeOfAction
         self.styleOfAction = styleOfAction
@@ -517,14 +511,10 @@ public class SMEActionView: UIView {
         self.titleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
         
         NSLayoutConstraint.activate([
-            self.baseView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0.0),
+            self.baseView.topAnchor.constraint(equalTo: self.topAnchor, constant: 2.0),
             self.baseView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0.0),
             self.baseView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0.0),
-//            self.titleStackView.topAnchor.constraint(greaterThanOrEqualTo: self.baseView.topAnchor, constant: 8.0),
-//            self.titleStackView.bottomAnchor.constraint(lessThanOrEqualTo: self.baseView.bottomAnchor, constant: -8.0),
             self.titleStackView.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
-//            self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 36),
-//            self.heightAnchor.constraint(equalToConstant: 72.0),
             self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
         ])
         
@@ -577,10 +567,8 @@ public class SMEActionView: UIView {
                 self.titleStackView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16),
             ])
         case .hasIcon:
-            NSLayoutConstraint.activate([//TODO: Check again
+            NSLayoutConstraint.activate([
                 self.baseView.heightAnchor.constraint(equalToConstant: 72.0),
-//                self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 36),
-//                self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor),
                 self.leftIconView.centerXAnchor.constraint(equalTo: self.leftIconWrapperView.centerXAnchor),
                 self.leftIconView.centerYAnchor.constraint(equalTo: self.leftIconWrapperView.centerYAnchor),
                 self.leftIconWrapperView.heightAnchor.constraint(equalToConstant: 40.0),
@@ -671,7 +659,7 @@ public class SMEActionView: UIView {
 
     private func prepareActionViewByState() {
         switch self.stateOfAction {
-        case .normal:  /*TODO: Review again*/
+        case .normal:
             self.borderColor = .clear
             self.baseBackgroundColor = .white
         case .disabled:
@@ -682,7 +670,7 @@ public class SMEActionView: UIView {
             
             self.leftIconView.image?.withTintColor(UIColor.Colors.PBGray)
             self.rightIcon.image?.withTintColor(UIColor.Colors.PBGray)
-        case .selected: /*TODO: Review again*/
+        case .selected:
             self.borderColor = self.theme.getPrimaryColor()
             self.baseBackgroundColor = self.theme.getPrimaryColor().withAlphaComponent(0.08)
         }
