@@ -421,10 +421,10 @@ public class SMEActionView: UIView {
         self.typeOfAction = typeOfAction
         self.styleOfAction = styleOfAction
         
-        self.prepareActionViewByType()
         self.prepareActionViewByState()
         
         self.setupViews(for: typeOfAction)
+        self.prepareActionViewByType()
     }
 
     public convenience init(typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: ""),
@@ -432,11 +432,11 @@ public class SMEActionView: UIView {
         self.init()
         
         self.typeOfAction = typeOfAction
-        self.prepareActionViewByType()
         self.stateOfAction = stateOfAction
         self.prepareActionViewByState()
        
         self.setupViews(for: typeOfAction)
+        self.prepareActionViewByType()
     }
     
     public convenience init(typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: ""),
@@ -447,10 +447,10 @@ public class SMEActionView: UIView {
         self.typeOfAction = typeOfAction
         self.styleOfAction = styleOfAction
         self.stateOfAction = stateOfAction
-        self.prepareActionViewByType()
         self.prepareActionViewByState()
        
         self.setupViews(for: typeOfAction)
+        self.prepareActionViewByType()
     }
     
     private func setupViews(for type: SMEActionType) {
