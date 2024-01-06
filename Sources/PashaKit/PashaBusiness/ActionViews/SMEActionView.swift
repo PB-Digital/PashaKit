@@ -691,8 +691,8 @@ public class SMEActionView: UIView {
             self.subTitleLabel.textColor = UIColor.Colors.SMEGray
             self.prepareActionViewByIcon(icon: icon)
             NSLayoutConstraint.activate([
-                self.titleStackView.heightAnchor.constraint(equalTo: self.leftIconWrapperView.heightAnchor),
-                self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 8.0),
+                self.titleStackView.heightAnchor.constraint(equalTo: self.leftIconWrapperView.heightAnchor, constant: 8),
+//                self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 8.0),
                 self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
             ])
         case .footerLabel(let icon, let localizedTitleText, let localizedSubTitleText, let localizedDescriptionText):
