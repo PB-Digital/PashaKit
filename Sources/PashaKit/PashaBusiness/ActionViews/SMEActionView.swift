@@ -569,7 +569,7 @@ public class SMEActionView: UIView {
             ])
         case .hasIcon:
             NSLayoutConstraint.activate([
-                self.baseView.heightAnchor.constraint(equalToConstant: 72.0),
+//                self.baseView.heightAnchor.constraint(equalToConstant: 72.0),
                 self.leftIconView.centerXAnchor.constraint(equalTo: self.leftIconWrapperView.centerXAnchor),
                 self.leftIconView.centerYAnchor.constraint(equalTo: self.leftIconWrapperView.centerYAnchor),
                 self.leftIconWrapperView.heightAnchor.constraint(equalToConstant: 40.0),
