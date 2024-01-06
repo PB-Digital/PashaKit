@@ -586,6 +586,11 @@ public class SMEActionView: UIView {
                 self.titleStackView.leftAnchor.constraint(equalTo: self.leftIconWrapperView.rightAnchor, constant: 12),
             ])
         }
+        
+        NSLayoutConstraint.activate([
+            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
+            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
+        ])
     }
     
     private func setupConstraintsByStyle() {
