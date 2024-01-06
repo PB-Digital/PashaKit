@@ -511,9 +511,10 @@ public class SMEActionView: UIView {
         self.titleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
         
         NSLayoutConstraint.activate([
-            self.baseView.topAnchor.constraint(equalTo: self.topAnchor, constant: 2.0),
+            self.baseView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0.0),
             self.baseView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0.0),
             self.baseView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0.0),
+            self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 32.0),
             self.titleStackView.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
             self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
         ])
@@ -689,6 +690,10 @@ public class SMEActionView: UIView {
             self.subTitleLabel.font = UIFont.sfProText(ofSize: 13, weight: .regular) //TODO: Add as parameter
             self.subTitleLabel.textColor = UIColor.Colors.SMEGray
             self.prepareActionViewByIcon(icon: icon)
+            NSLayoutConstraint.activate([
+                self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 32.0),
+                self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
+            ])
         case .footerLabel(let icon, let localizedTitleText, let localizedSubTitleText, let localizedDescriptionText):
             self.title = localizedTitleText
             self.subTitle = localizedSubTitleText
