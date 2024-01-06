@@ -268,7 +268,7 @@ public class SMEActionView: UIView {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-
+        label.setContentHuggingPriority(.required, for: .vertical)
         label.textAlignment = .left
         label.text = self.title
         label.numberOfLines = 0
@@ -279,7 +279,7 @@ public class SMEActionView: UIView {
     
     private lazy var subTitleLabel: UILabel = {
         let label = UILabel()
-
+        label.setContentHuggingPriority(.required, for: .vertical)
         label.textAlignment = .left
         label.text = self.subTitle
         label.numberOfLines = 0
@@ -664,10 +664,10 @@ public class SMEActionView: UIView {
             ])
         }
         
-        NSLayoutConstraint.activate([
-            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
-            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
-        ])
+//        NSLayoutConstraint.activate([
+//            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
+//            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
+//        ])
         
         self.prepareActionViewByStyle()
     }
