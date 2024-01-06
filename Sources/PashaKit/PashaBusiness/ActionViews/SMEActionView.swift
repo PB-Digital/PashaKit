@@ -262,7 +262,7 @@ public class SMEActionView: UIView {
         view.alignment = .leading
         view.axis = .vertical
         view.spacing = 2.0
-        view.distribution = .fill
+        view.distribution = .fillEqually
         return view
     }()
     
