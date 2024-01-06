@@ -514,9 +514,8 @@ public class SMEActionView: UIView {
             self.titleStackView.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
 //            self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 32.0),
 //            self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
-            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
-            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
             self.titleStackView.heightAnchor.constraint(equalToConstant: 56),
+            
             self.baseView.heightAnchor.constraint(equalToConstant: 72),
             self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
         ])
@@ -659,6 +658,11 @@ public class SMEActionView: UIView {
                 self.titleStackView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -12),
             ])
         }
+        
+        NSLayoutConstraint.activate([
+            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
+            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
+        ])
         
         self.prepareActionViewByStyle()
     }
