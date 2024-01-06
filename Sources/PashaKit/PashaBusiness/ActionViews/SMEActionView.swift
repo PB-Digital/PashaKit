@@ -520,8 +520,8 @@ public class SMEActionView: UIView {
             self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
         ])
         
-        self.titleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
-        self.subTitleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
+//        self.titleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
+//        self.subTitleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
         
         switch type {
         case .normal(let icon, _):
@@ -664,10 +664,10 @@ public class SMEActionView: UIView {
             ])
         }
         
-//        NSLayoutConstraint.activate([
-//            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
-//            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
-//        ])
+        NSLayoutConstraint.activate([
+            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
+            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
+        ])
         
         self.prepareActionViewByStyle()
     }
