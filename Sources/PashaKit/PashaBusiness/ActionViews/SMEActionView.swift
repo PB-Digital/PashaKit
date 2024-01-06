@@ -587,10 +587,10 @@ public class SMEActionView: UIView {
             ])
         }
         
-        NSLayoutConstraint.activate([
-            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
-            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
-        ])
+//        NSLayoutConstraint.activate([
+//            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
+//            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
+//        ])
     }
     
     private func setupConstraintsByStyle() {
@@ -664,10 +664,10 @@ public class SMEActionView: UIView {
             ])
         }
         
-        NSLayoutConstraint.activate([
-            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
-            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
-        ])
+//        NSLayoutConstraint.activate([
+//            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
+//            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
+//        ])
         
         self.prepareActionViewByStyle()
     }
