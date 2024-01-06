@@ -420,11 +420,10 @@ public class SMEActionView: UIView {
         
         self.typeOfAction = typeOfAction
         self.styleOfAction = styleOfAction
-        
+        self.prepareActionViewByType()
         self.prepareActionViewByState()
         
         self.setupViews(for: typeOfAction)
-        self.prepareActionViewByType()
     }
 
     public convenience init(typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: ""),
@@ -433,10 +432,10 @@ public class SMEActionView: UIView {
         
         self.typeOfAction = typeOfAction
         self.stateOfAction = stateOfAction
+        self.prepareActionViewByType()
         self.prepareActionViewByState()
        
         self.setupViews(for: typeOfAction)
-        self.prepareActionViewByType()
     }
     
     public convenience init(typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: ""),
@@ -447,10 +446,10 @@ public class SMEActionView: UIView {
         self.typeOfAction = typeOfAction
         self.styleOfAction = styleOfAction
         self.stateOfAction = stateOfAction
+        self.prepareActionViewByType()
         self.prepareActionViewByState()
        
         self.setupViews(for: typeOfAction)
-        self.prepareActionViewByType()
     }
     
     private func setupViews(for type: SMEActionType) {
@@ -508,8 +507,6 @@ public class SMEActionView: UIView {
     
     private func setupConstraints(for type: SMEActionType) {
         
-        self.titleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
-        
         NSLayoutConstraint.activate([
             self.baseView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0.0),
             self.baseView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0.0),
@@ -517,7 +514,13 @@ public class SMEActionView: UIView {
             self.titleStackView.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
 //            self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 32.0),
 //            self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
+            self.titleStackView.heightAnchor.constraint(equalTo: self.leftIconWrapperView.heightAnchor, constant: 8),
+                self.baseView.heightAnchor.constraint(equalToConstant: 72),
+            self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
         ])
+        
+        self.titleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
+        self.subTitleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
         
         switch type {
         case .normal(let icon, _):
@@ -690,11 +693,6 @@ public class SMEActionView: UIView {
             self.subTitleLabel.font = UIFont.sfProText(ofSize: 13, weight: .regular) //TODO: Add as parameter
             self.subTitleLabel.textColor = UIColor.Colors.SMEGray
             self.prepareActionViewByIcon(icon: icon)
-            NSLayoutConstraint.activate([
-                self.titleStackView.heightAnchor.constraint(equalTo: self.leftIconWrapperView.heightAnchor, constant: 8),
-//                self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 8.0),
-                self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
-            ])
         case .footerLabel(let icon, let localizedTitleText, let localizedSubTitleText, let localizedDescriptionText):
             self.title = localizedTitleText
             self.subTitle = localizedSubTitleText
