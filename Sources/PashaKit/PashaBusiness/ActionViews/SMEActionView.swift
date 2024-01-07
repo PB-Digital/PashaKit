@@ -191,7 +191,7 @@ public class SMEActionView: UIView {
             self.prepareActionViewByState()
         }
     }
-    
+
     public var statusTypeOfAction: SMELabelView.SMELabelViewStatus = .new {
         didSet {
             /*TODO: Review again*/
