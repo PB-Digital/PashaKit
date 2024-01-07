@@ -350,11 +350,6 @@ public class SMEActionView: UIView {
 
         view.addTarget(self, action: #selector(handleButtonClick), for: .touchUpInside)
         
-//        view.addTarget(, action: Selector, for: .touchUpInside)
-//        addClickListener {
-//            self.onButtonPressed?()
-//        }
-        
         return view
     }()
     
