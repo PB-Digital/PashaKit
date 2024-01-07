@@ -507,8 +507,6 @@ public class SMEActionView: UIView {
             self.baseView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0.0),
             self.baseView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0.0),
             self.titleStackView.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
-//            self.baseView.heightAnchor.constraint(equalTo: self.titleStackView.heightAnchor, constant: 32.0),
-//            self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
             self.titleStackView.heightAnchor.constraint(equalToConstant: 56),
             
             self.baseView.heightAnchor.constraint(equalToConstant: 72),
@@ -568,7 +566,7 @@ public class SMEActionView: UIView {
             ])
         case .hasIcon:
             NSLayoutConstraint.activate([
-//                self.baseView.heightAnchor.constraint(equalToConstant: 72.0),
+                
                 self.leftIconView.centerXAnchor.constraint(equalTo: self.leftIconWrapperView.centerXAnchor),
                 self.leftIconView.centerYAnchor.constraint(equalTo: self.leftIconWrapperView.centerYAnchor),
                 self.leftIconWrapperView.heightAnchor.constraint(equalToConstant: 40.0),
@@ -581,11 +579,6 @@ public class SMEActionView: UIView {
                 self.titleStackView.leftAnchor.constraint(equalTo: self.leftIconWrapperView.rightAnchor, constant: 12),
             ])
         }
-        
-//        NSLayoutConstraint.activate([
-//            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
-//            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
-//        ])
     }
     
     private func setupConstraintsByStyle() {
@@ -658,11 +651,6 @@ public class SMEActionView: UIView {
                 self.titleStackView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -12),
             ])
         }
-        
-//        NSLayoutConstraint.activate([
-//            self.titleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
-//            self.subTitleLabel.widthAnchor.constraint(equalTo: self.titleStackView.widthAnchor),
-//        ])
         
         self.prepareActionViewByStyle()
     }
