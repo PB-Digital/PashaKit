@@ -255,7 +255,7 @@ public class SMETextField: UIView {
     ///
     public var isValid: PBTextFieldValidity = .valid {
         didSet {
-//            self.updateUI()
+            self.updateUI()
         }
     }
 
