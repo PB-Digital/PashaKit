@@ -661,7 +661,7 @@ public class SMEActionView: UIView {
             self.borderColor = .clear
             self.baseBackgroundColor = UIColor.Colors.SMEActionBackground
         case .disabled:
-            self.baseBackgroundColor = .white //TODO: Color for on Disabled
+            self.baseBackgroundColor = UIColor.Colors.SMEActionDisabledBackground
             self.titleLabel.textColor = UIColor.Colors.PBGray
             self.subTitleLabel.textColor = UIColor.Colors.SMEDisabledGray
             self.radioButtonIcon.image = UIImage.Images.icSMERadio
