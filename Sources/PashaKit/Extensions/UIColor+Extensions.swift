@@ -80,6 +80,14 @@ extension UIColor {
             }
         }
         
+        static var SMEActionBackground: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.110, green: 0.110, blue: 0.118, alpha: 1) :
+                UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+            }
+        }
+        
         static var SMEBackgroundGray: UIColor {
             return UIColor { (traits) -> UIColor in
                 return traits.userInterfaceStyle == .dark ?
