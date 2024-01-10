@@ -66,5 +66,6 @@ extension UIImage {
         static let icSMEChevronBottom = UIImage(named: "ic_sme_chevron_bottom", in: Bundle.module, compatibleWith: nil)
         static let icSMELoading = UIImage(named: "ic_sme_loading", in: Bundle.module, compatibleWith: nil)
         static let icSMERadio = UIImage(named: "ic_sme_radio", in: Bundle.module, compatibleWith: nil)
+        static let icSMERadioDisabled = UIImage(named: "ic_sme_radio_disabled", in: Bundle.module, compatibleWith: nil)
     }
 }

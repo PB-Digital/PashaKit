@@ -660,13 +660,16 @@ public class SMEActionView: UIView {
         case .normal:
             self.borderColor = .clear
             self.baseBackgroundColor = UIColor.Colors.SMEActionBackground
-        case .disabled:
-            self.baseBackgroundColor = UIColor.Colors.SMEActionDisabledBackground
-            self.titleLabel.textColor = UIColor.Colors.SMEDisabledGray //TODO: Disabled color change
-            self.subTitleLabel.textColor = UIColor.Colors.SMEDisabledGray
+            self.titleLabel.textColor = UIColor.Colors.SMEActionTitle
+            self.subTitleLabel.textColor = UIColor.Colors.SMEActionSubTitle
             self.radioButtonIcon.image = UIImage.Images.icSMERadio
+        case .disabled:
+            self.baseBackgroundColor = UIColor.Colors.SMEActionBackground
+            self.titleLabel.textColor = UIColor.Colors.SMEActionDisabledTitle
+            self.subTitleLabel.textColor = UIColor.Colors.SMEActionDisabledSubTitle
+            self.radioButtonIcon.image = UIImage.Images.icSMERadioDisabled
             
-            self.leftIconView.image?.withTintColor(UIColor.Colors.PBGray)
+            self.leftIconView.image?.withTintColor(UIColor.Colors.PBGray) //TODO: Icon tint
             self.rightIcon.image?.withTintColor(UIColor.Colors.PBGray)
         case .selected:
             self.borderColor = self.theme.getPrimaryColor()
