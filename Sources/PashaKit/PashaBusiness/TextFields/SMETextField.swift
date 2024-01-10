@@ -332,7 +332,7 @@ public class SMETextField: UIView {
     ///
     /// By defualt this property will apply native darkText color.
     ///
-    public var textFieldTextColor: UIColor = UIColor.darkText {
+    public var textFieldTextColor: UIColor = UIColor.Colors.SMETextFieldText {
         didSet {
             if self.textFieldTextColor != oldValue {
                 self.customTextField.textColor = self.textFieldTextColor
@@ -632,7 +632,6 @@ public class SMETextField: UIView {
         self.placeholderTextColor = UIColor.Colors.SMETextFieldLabel
         
         self.textFieldInputType = type
-//        self.textFieldStyle = style
         
         self.placeholderText = localizedPlaceholder
         
@@ -694,7 +693,6 @@ public class SMETextField: UIView {
         case .select:
             self.textFieldState = .notEditing
             self.rightIconView.image = UIImage.Images.icSMEChevronBottom
-//            self.customTextField.isUserInteractionEnabled = false
             let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onIconTap))
             self.customTextField.addGestureRecognizer(tapGestureRecognizer)
         // TODO: set bottom arrow Icon with state and dark mode
@@ -759,11 +757,9 @@ public class SMETextField: UIView {
     private func setupConstraints(for style: SMETextFieldStyle) {
         self.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-//            self.heightAnchor.constraint(equalToConstant: 64),
             self.customBorder.heightAnchor.constraint(equalToConstant: 50),
             self.customBorder.topAnchor.constraint(equalTo: self.topAnchor),
             self.customBorder.leftAnchor.constraint(equalTo: self.leftAnchor),
-//            self.customBorder.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             self.customBorder.rightAnchor.constraint(equalTo: self.rightAnchor)
         ])
 
@@ -795,24 +791,15 @@ public class SMETextField: UIView {
                 self.errorLabel.topAnchor.constraint(equalTo: self.customBorder.bottomAnchor, constant: 4),
                 self.errorLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
                 self.errorLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
-//                self.errorLabel.bottomAnchor.constraint(equalTo: self.footerLabel.topAnchor),
-                
                 self.footerLabel.topAnchor.constraint(equalTo: self.errorLabel.bottomAnchor, constant: 4),
                 self.footerLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
                 self.footerLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
-//                self.footerLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
             ])
         }
-        print("ERROR STP:::---")
         
         NSLayoutConstraint.activate([
             self.customPlaceholder.widthAnchor.constraint(equalTo: self.customTextField.widthAnchor)
         ])
-        
-//        NSLayoutConstraint.activate([
-//            self.heightAnchor.constraint(equalToConstant: 64),
-//            self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
-//        ])
         
         self.validConstraints = [
             self.heightAnchor.constraint(equalToConstant: 64),
@@ -942,7 +929,6 @@ public class SMETextField: UIView {
                     self.customBorder.layer.borderWidth = 1.0
                 }
             case .disabled:
-                print("DISABLED:::---")
                 self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
                 self.textFieldTextColor = self.placeholderTextColor.withAlphaComponent(0.3)
                 self.customTextField.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
@@ -951,7 +937,6 @@ public class SMETextField: UIView {
         case .invalid:
             self.performAnimation { [weak self] in
                 guard let self = self else { return }
-//                self.customPlaceholder.textColor = self.errorStateColor
                 self.customPlaceholder.textColor = self.placeholderTextColor
                 self.customBorder.layer.borderColor = self.errorStateColor.cgColor
                 self.customBorder.layer.borderWidth = 1.0
@@ -978,8 +963,7 @@ public class SMETextField: UIView {
                     self.textFieldStack.updateExistingBottomBorderColor(to: self.textFieldBottomBorderColor)
                     self.rightIconView.tintColor = UIColor.Colors.SMETextFieldLabel
                 }
-            case .disabled: 
-                print("DISABLED:::---")
+            case .disabled:
                 self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
                 self.customTextField.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
                 self.textFieldTextColor = self.placeholderTextColor.withAlphaComponent(0.3)
@@ -988,7 +972,6 @@ public class SMETextField: UIView {
         case .invalid:
             self.performAnimation { [weak self] in
                 guard let self = self else { return }
-//                self.customPlaceholder.textColor = self.errorStateColor
                 self.customPlaceholder.textColor = self.placeholderTextColor
                 self.customBorder.layer.borderColor = self.errorStateColor.cgColor
                 self.textFieldStack.updateExistingBottomBorderThickness(to: 1.0)
@@ -1028,7 +1011,6 @@ public class SMETextField: UIView {
                 self.animatePlaceholderToActivePosition(animated: animationEnabled)
             }
         case .disabled:
-            print("DISABLED:::---")
             self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
             self.customTextField.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
             self.textFieldTextColor = self.placeholderTextColor.withAlphaComponent(0.3)
@@ -1103,14 +1085,8 @@ public class SMETextField: UIView {
     
     private func validateField() {
         if self.validationCredentials.regex != "" {
-            print("PBKIT: \(self.customTextField.text)")
-            
             self.isValid = SMETextFieldValidations.validateWithCustomRegex(for: self.customTextField.text ?? "", regex: self.validationCredentials.regex) ? .valid : .invalid(self.validationCredentials.localizedErrorMessage)
-            
-            print("PBKIT isValid: \(self.isValid)")
-            
             if self.customTextField.text == "" {
-                print(":PBKIT EMPTY:")
                 self.isValid = .invalid(self.validationCredentials.localizedErrorMessage)
             }
         }
