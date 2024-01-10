@@ -203,6 +203,13 @@ extension UIColor {
             }
         }
         
-        static let SMEDisabledGray = UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.3)
+        static var SMEDisabledGray: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.949, green: 0.949, blue: 0.965, alpha: 1):
+                UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.3)
+            }
+        }
+        
     }
 }
