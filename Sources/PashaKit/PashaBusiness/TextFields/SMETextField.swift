@@ -319,7 +319,7 @@ public class SMETextField: UIView {
     ///
     /// By default this property will apply black color with alpha value of `0.6`.
     ///
-    public var placeholderTextColor: UIColor = UIColor.black.withAlphaComponent(0.6) {
+    public var placeholderTextColor: UIColor = UIColor.Colors.SMETextFieldLabel {
         didSet {
             if self.placeholderTextColor != oldValue {
                 self.customPlaceholder.textColor = self.placeholderTextColor
@@ -374,9 +374,8 @@ public class SMETextField: UIView {
     public var disableManualInput: Bool = false {
         didSet {
             self.customTextField.isUserInteractionEnabled = false
-            self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
-            self.customTextField.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
-            self.textFieldTextColor = self.placeholderTextColor.withAlphaComponent(0.3)
+            self.placeholderTextColor = UIColor.Colors.SMETextFieldLabelDisabled
+            self.textFieldTextColor = self.placeholderTextColor
         }
     }
 
