@@ -258,7 +258,7 @@ public class SMEActionView: UIView {
         let view = UIStackView()
 
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.sizeToFit()
+        // view.sizeToFit()
         view.alignment = .fill
         view.axis = .vertical
         view.spacing = 2.0
