@@ -290,8 +290,7 @@ public class SMEUIButton: UIButton {
             self.isUserInteractionEnabled = false
             self.isEnabled = false
             self.borderColor = .clear
-//            self.baseBackgroundColor = UIColor.Colors.SMEGreen.withAlphaComponent(0.3)
-//            self.setTitleColor(UIColor.white.withAlphaComponent(0.3), for: .disabled)
+            self.baseBackgroundColor = UIColor.Colors.SMEGreen.withAlphaComponent(0.3)
         } else {
             self.isUserInteractionEnabled = true
             self.isEnabled = true
