@@ -374,7 +374,7 @@ public class SMEActionView: UIView {
         
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        view.contentMode = .scaleAspectFit
+        view.contentMode = .scaleAspectFill
 
         return view
     }()
@@ -599,7 +599,6 @@ public class SMEActionView: UIView {
                 self.rightIcon.widthAnchor.constraint(equalToConstant: 24.0),
                 self.rightIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
                 self.rightIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
-                
                 self.button.widthAnchor.constraint(equalToConstant: 54.0),
                 self.button.rightAnchor.constraint(equalTo: self.rightIcon.leftAnchor, constant: -12),
                 self.button.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
