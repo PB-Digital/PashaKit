@@ -310,7 +310,6 @@ open class PBRowView: UIView, PBSkeletonable {
     ///
     /// Changing its value to `false` removes it from row view.
     ///
-    @available(*, deprecated, renamed: "isRightIconVisible")
     public var isRightIconVisible: Bool = true {
         didSet {
             if self.isRightIconVisible {
