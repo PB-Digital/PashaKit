@@ -230,7 +230,6 @@ open class SMEAttentionView: UIView {
             ])
         case .detailed:
             NSLayoutConstraint.activate([
-//                self.heightAnchor.constraint(equalToConstant: 66.0),
                 self.infoIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16.0),
                 self.infoIcon.topAnchor.constraint(equalTo: self.topAnchor, constant: 12),
             ])

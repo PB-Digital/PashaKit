@@ -170,13 +170,10 @@ public class SMEActionView: UIView {
     /// * Title color
     /// * Tint color
     ///
-    public var theme: SMEUIButtonTheme = .regular {
-        didSet {/*TODO: Review again*/}
-    }
+    public var theme: SMEUIButtonTheme = .regular
     
     private var typeOfAction: SMEActionType = .normal(localizedTitleText: "") {
         didSet {
-            /*TODO: Review again*/
             self.prepareActionViewByType()
         }
     }
@@ -187,16 +184,11 @@ public class SMEActionView: UIView {
     ///
     public var stateOfAction: SMEActionState = .normal {
         didSet {
-            /*TODO: Review again*/
             self.prepareActionViewByState()
         }
     }
 
-    public var statusTypeOfAction: SMELabelView.SMELabelViewStatus = .new {
-        didSet {
-            /*TODO: Review again*/
-        }
-    }
+    public var statusTypeOfAction: SMELabelView.SMELabelViewStatus = .new
     
     public var styleOfAction: SMEActionStyle = .none {
         didSet {
@@ -693,9 +685,8 @@ public class SMEActionView: UIView {
             self.titleLabel.font = UIFont.sfProText(ofSize: 17, weight: .medium) //TODO: Add as parameter
             self.subTitleLabel.font = UIFont.sfProText(ofSize: 13, weight: .regular) //TODO: Add as parameter
             self.infoDescriptionLabel.font = UIFont.sfProText(ofSize: 12, weight: .regular) //TODO: Add as parameter
-            
-            self.subTitleLabel.textColor = UIColor.Colors.SMEGray // TODO: Color oposity should be 60%
-            self.infoDescriptionLabel.textColor = UIColor.Colors.SMEGray // TODO: Color oposity should be 60%
+            self.subTitleLabel.textColor = UIColor.Colors.SMEGray
+            self.infoDescriptionLabel.textColor = UIColor.Colors.SMEGray
             self.prepareActionViewByIcon(icon: icon)
         }
     }

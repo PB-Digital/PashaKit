@@ -253,11 +253,7 @@ public class SMETextField: UIView {
     /// - email
     /// - password
     ///
-    public var isValid: PBTextFieldValidity = .valid {
-        didSet {
-//            self.updateUI()
-        }
-    }
+    public var isValid: PBTextFieldValidity = .valid
 
     /// Defines cursor color of textfield.
     ///
@@ -694,7 +690,6 @@ public class SMETextField: UIView {
             self.rightIconView.image = UIImage.Images.icSMEChevronBottom
             let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onIconTap))
             self.customTextField.addGestureRecognizer(tapGestureRecognizer)
-        // TODO: set bottom arrow Icon with state and dark mode
         case .pan:
             self.maskFormat = "[0000] [0000] [0000] [0000]"
             self.customTextField.keyboardType = .numberPad
