@@ -513,9 +513,6 @@ public class SMEActionView: UIView {
             self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
         ])
         
-//        self.titleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
-//        self.subTitleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
-        
         switch type {
         case .normal(let icon, _):
             self.setupConstraintsByIcon(icon: icon)
