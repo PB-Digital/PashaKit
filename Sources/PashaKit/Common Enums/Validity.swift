@@ -31,7 +31,7 @@ import Foundation
 
 /// Sets the validity for for text fields.
 ///
-public enum PBTextFieldValidity {
+public enum PBTextFieldValidity: Equatable {
     case valid
     case invalid(String)
 }
