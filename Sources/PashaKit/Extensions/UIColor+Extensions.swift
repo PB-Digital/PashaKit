@@ -178,5 +178,62 @@ extension UIColor {
                 UIColor(red: 0.596, green: 0.596, blue: 0.624, alpha: 1)
             }
         }
+        
+        static var SMETextFieldLabelDisabled: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.922, green: 0.922, blue: 0.961, alpha: 0.6) :
+                UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.3)
+            }
+        }
+        
+        static var SMETextFieldText: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1):
+                UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1)
+            }
+        }
+        
+        static var SMEActionBackground: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.173, green: 0.173, blue: 0.180, alpha: 1) :
+                UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+            }
+        }
+        
+        static var SMEActionTitle: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1):
+                UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1)
+            }
+        }
+        
+        static var SMEActionSubTitle: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.922, green: 0.922, blue: 0.961, alpha: 0.6):
+                UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.6)
+            }
+        }
+        
+        static var SMEActionDisabledTitle: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.922, green: 0.922, blue: 0.961, alpha: 0.6):
+                UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.6)
+            }
+        }
+        
+        static var SMEActionDisabledSubTitle: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.922, green: 0.922, blue: 0.961, alpha: 0.3):
+                UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.3)
+            }
+        }
+        
     }
 }

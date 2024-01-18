@@ -225,5 +225,12 @@ class PBBaseUITextField: UITextField {
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: self.contentInsets)
     }
+    
+    override func deleteBackward() {
+        self.onDeleteBackward?()
+        super.deleteBackward()
+    }
+    
+    public var onDeleteBackward: (() -> Void)?
 }
 

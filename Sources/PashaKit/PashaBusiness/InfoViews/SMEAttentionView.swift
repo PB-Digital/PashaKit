@@ -224,20 +224,22 @@ open class SMEAttentionView: UIView {
         switch self.attentionType {
         case .normal:
             NSLayoutConstraint.activate([
-                self.heightAnchor.constraint(equalToConstant: 48.0)
+                self.heightAnchor.constraint(equalToConstant: 48.0),
+                self.infoIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16.0),
+                self.infoIcon.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             ])
         case .detailed:
             NSLayoutConstraint.activate([
-                self.heightAnchor.constraint(equalToConstant: 66.0)
+                self.infoIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16.0),
+                self.infoIcon.topAnchor.constraint(equalTo: self.topAnchor, constant: 12),
             ])
         }
         
         NSLayoutConstraint.activate([
-            self.infoIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16.0),
-            self.infoIcon.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            self.textStackView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            self.textStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 12),
             self.textStackView.leftAnchor.constraint(equalTo: self.infoIcon.rightAnchor, constant: 12),
             self.textStackView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16),
+            self.textStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -12),
         ])
     }
 
