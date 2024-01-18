@@ -273,7 +273,7 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
-    /// A boolean value for deciding wheter chevron icon should be visible.
+    /// A boolean value for deciding whether chevron icon should be visible.
     ///
     /// By default the value of this property is `true`. Since in our mobile app we have
     /// a lot row views with visible chevron icon, we kept this property value at `true`
@@ -300,6 +300,24 @@ open class PBRowView: UIView, PBSkeletonable {
     public var showsDivider: Bool = false {
         didSet {
             self.divider.isHidden = !showsDivider
+        }
+    }
+    
+    /// A boolean value for deciding whether right icon should be visible.
+    ///
+    /// By default the value of this property is `true`. Since in our mobile app we have
+    /// a lot row views with visible chevron icon, we kept this property value at `true`
+    /// for ease of access.
+    ///
+    /// Changing its value to `false` removes it from row view.
+    ///
+    public var isRightIconVisible: Bool = true {
+        didSet {
+            if self.isRightIconVisible {
+                self.rightIconWrapperView.isHidden = false
+            } else {
+                self.rightIconWrapperView.isHidden = true
+            }
         }
     }
 

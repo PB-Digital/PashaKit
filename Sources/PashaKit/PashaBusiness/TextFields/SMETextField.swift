@@ -530,8 +530,8 @@ public class SMETextField: UIView {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
         textField.textColor = self.textFieldTextColor
-        textField.onDeleteBackward = {
-            self.validateField()
+        textField.onDeleteBackward = { [weak self] in
+            self?.validateField()
         }
         return textField
     }()
@@ -1079,7 +1079,11 @@ public class SMETextField: UIView {
     
     private func validateField() {
         if self.validationCredentials.regex != "" {
-            self.isValid = SMETextFieldValidations.validateWithCustomRegex(for: self.customTextField.text ?? "", regex: self.validationCredentials.regex) ? .valid : .invalid(self.validationCredentials.localizedErrorMessage)
+            if SMETextFieldValidations.validateWithCustomRegex(for: self.customTextField.text ?? "", regex: self.validationCredentials.regex) {
+                self.isValid = .valid
+            } else {
+                self.isValid = .invalid(self.validationCredentials.localizedErrorMessage)
+            }
             if self.customTextField.text == "" {
                 self.isValid = .invalid(self.validationCredentials.localizedErrorMessage)
             }
