@@ -66,6 +66,7 @@ public class SMEActionView: UIView {
     public enum SMEActionStyle {
         case none
         case chevron
+        case loading
         case chevronWithText(localizedText: String)
         case chevronWithStatus(localizedText: String, status: SMELabelView.SMELabelViewStatus)
         case chevronWithButton(localizedText: String)
@@ -158,6 +159,9 @@ public class SMEActionView: UIView {
         }
     }
     
+    public var onButtonPressed: (() -> Void)?
+    public var onViewPressed: (() -> Void)?
+    
     /// The theme for the button's appearance.
     ///
     /// SMEUIButton is using theme parameter for defining its color palette for components. These include button's
@@ -166,13 +170,10 @@ public class SMEActionView: UIView {
     /// * Title color
     /// * Tint color
     ///
-    public var theme: SMEUIButtonTheme = .regular {
-        didSet {/*TODO: Review again*/}
-    }
+    public var theme: SMEUIButtonTheme = .regular
     
     private var typeOfAction: SMEActionType = .normal(localizedTitleText: "") {
         didSet {
-            /*TODO: Review again*/
             self.prepareActionViewByType()
         }
     }
@@ -183,16 +184,11 @@ public class SMEActionView: UIView {
     ///
     public var stateOfAction: SMEActionState = .normal {
         didSet {
-            /*TODO: Review again*/
             self.prepareActionViewByState()
         }
     }
-    
-    public var statusTypeOfAction: SMELabelView.SMELabelViewStatus = .new {
-        didSet {
-            /*TODO: Review again*/
-        }
-    }
+
+    public var statusTypeOfAction: SMELabelView.SMELabelViewStatus = .new
     
     public var styleOfAction: SMEActionStyle = .none {
         didSet {
@@ -245,7 +241,8 @@ public class SMEActionView: UIView {
 
         view.translatesAutoresizingMaskIntoConstraints = false
 
-
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleViewClick))
+        view.addGestureRecognizer(tap)
         return view
     }()
     
@@ -253,8 +250,8 @@ public class SMEActionView: UIView {
         let view = UIStackView()
 
         view.translatesAutoresizingMaskIntoConstraints = false
-
-        view.alignment = .leading
+        // view.sizeToFit()
+        view.alignment = .fill
         view.axis = .vertical
         view.spacing = 2.0
         view.distribution = .fill
@@ -263,23 +260,22 @@ public class SMEActionView: UIView {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-
+        label.setContentHuggingPriority(.required, for: .vertical)
         label.textAlignment = .left
         label.text = self.title
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
-
         return label
     }()
     
     private lazy var subTitleLabel: UILabel = {
         let label = UILabel()
-
+        label.setContentHuggingPriority(.required, for: .vertical)
         label.textAlignment = .left
         label.text = self.subTitle
         label.numberOfLines = 0
-        label.lineBreakMode = .byWordWrapping
+        label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
 
         return label
@@ -325,7 +321,7 @@ public class SMEActionView: UIView {
         return view
     }()
     
-    private lazy var chevronIcon: UIImageView = {
+    private lazy var rightIcon: UIImageView = {
         let view = UIImageView()
         
         view.image = UIImage.Images.icSMEChevronRight
@@ -344,6 +340,8 @@ public class SMEActionView: UIView {
 
         view.contentMode = .scaleAspectFit
 
+        view.addTarget(self, action: #selector(handleButtonClick), for: .touchUpInside)
+        
         return view
     }()
     
@@ -368,7 +366,7 @@ public class SMEActionView: UIView {
         
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        view.contentMode = .scaleAspectFit
+        view.contentMode = .scaleAspectFill
 
         return view
     }()
@@ -404,14 +402,11 @@ public class SMEActionView: UIView {
     }
     
     public convenience init(typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: ""),
-                            styleOfAction: SMEActionStyle = .none  ) {
+                            styleOfAction: SMEActionStyle = .none) {
         self.init()
-        
-        UIFont.registerCustomFonts()
         
         self.typeOfAction = typeOfAction
         self.styleOfAction = styleOfAction
-        
         self.prepareActionViewByType()
         self.prepareActionViewByState()
         
@@ -422,11 +417,23 @@ public class SMEActionView: UIView {
                             stateOfAction: SMEActionState = .normal) {
         self.init()
         
-        UIFont.registerCustomFonts()
+        self.typeOfAction = typeOfAction
+        self.stateOfAction = stateOfAction
+        self.prepareActionViewByType()
+        self.prepareActionViewByState()
+       
+        self.setupViews(for: typeOfAction)
+    }
+    
+    public convenience init(typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: ""),
+                            styleOfAction: SMEActionStyle = .none,
+                            stateOfAction: SMEActionState = .normal) {
+        self.init()
         
         self.typeOfAction = typeOfAction
-        self.prepareActionViewByType()
+        self.styleOfAction = styleOfAction
         self.stateOfAction = stateOfAction
+        self.prepareActionViewByType()
         self.prepareActionViewByState()
        
         self.setupViews(for: typeOfAction)
@@ -437,17 +444,17 @@ public class SMEActionView: UIView {
         self.baseView.addSubview(self.titleStackView)
         
         switch self.styleOfAction {
-        case .chevron:
-            self.baseView.addSubview(self.chevronIcon)
+        case .chevron, .loading:
+            self.baseView.addSubview(self.rightIcon)
         case .chevronWithButton:
-            self.baseView.addSubview(self.chevronIcon)
+            self.baseView.addSubview(self.rightIcon)
             self.baseView.addSubview(self.button)
         case .chevronWithStatus:
-            self.baseView.addSubview(self.chevronIcon)
+            self.baseView.addSubview(self.rightIcon)
             self.baseView.addSubview(self.statusLabelView)
         case .chevronWithText:
             self.baseView.addSubview(self.descriptionLabel)
-            self.baseView.addSubview(self.chevronIcon)
+            self.baseView.addSubview(self.rightIcon)
         case .radioButton:
             self.baseView.addSubview(self.radioButtonIcon)
         case .switchButton:
@@ -487,14 +494,14 @@ public class SMEActionView: UIView {
     
     private func setupConstraints(for type: SMEActionType) {
         
-        self.titleLabel.preferredMaxLayoutWidth = self.titleStackView.frame.size.width
-        
         NSLayoutConstraint.activate([
-            
             self.baseView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0.0),
             self.baseView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0.0),
             self.baseView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0.0),
             self.titleStackView.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
+            self.titleStackView.heightAnchor.constraint(lessThanOrEqualToConstant: 56),
+            
+            self.baseView.heightAnchor.constraint(equalToConstant: 72),
             self.heightAnchor.constraint(equalTo: self.baseView.heightAnchor)
         ])
         
@@ -548,7 +555,7 @@ public class SMEActionView: UIView {
             ])
         case .hasIcon:
             NSLayoutConstraint.activate([
-                self.baseView.heightAnchor.constraint(equalToConstant: 72.0),
+                
                 self.leftIconView.centerXAnchor.constraint(equalTo: self.leftIconWrapperView.centerXAnchor),
                 self.leftIconView.centerYAnchor.constraint(equalTo: self.leftIconWrapperView.centerYAnchor),
                 self.leftIconWrapperView.heightAnchor.constraint(equalToConstant: 40.0),
@@ -565,25 +572,24 @@ public class SMEActionView: UIView {
     
     private func setupConstraintsByStyle() {
         switch self.styleOfAction {
-        case .chevron:
+        case .chevron, .loading:
             NSLayoutConstraint.activate([
-                self.titleStackView.rightAnchor.constraint(equalTo: self.chevronIcon.leftAnchor, constant: -12),
-                self.chevronIcon.heightAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.widthAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
-                self.chevronIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
+                self.titleStackView.rightAnchor.constraint(equalTo: self.rightIcon.leftAnchor, constant: -12),
+                self.rightIcon.heightAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.widthAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
+                self.rightIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
             ])
         case .chevronWithButton:
             NSLayoutConstraint.activate([
                 self.titleStackView.rightAnchor.constraint(equalTo: self.button.leftAnchor, constant: -12),
             
-                self.chevronIcon.heightAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.widthAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
-                self.chevronIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
-                
+                self.rightIcon.heightAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.widthAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
+                self.rightIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
                 self.button.widthAnchor.constraint(equalToConstant: 54.0),
-                self.button.rightAnchor.constraint(equalTo: self.chevronIcon.leftAnchor, constant: -12),
+                self.button.rightAnchor.constraint(equalTo: self.rightIcon.leftAnchor, constant: -12),
                 self.button.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
                 
             ])
@@ -591,25 +597,25 @@ public class SMEActionView: UIView {
             NSLayoutConstraint.activate([
                 self.titleStackView.rightAnchor.constraint(equalTo: self.statusLabelView.leftAnchor, constant: -12),
                 
-                self.chevronIcon.heightAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.widthAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
-                self.chevronIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
+                self.rightIcon.heightAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.widthAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
+                self.rightIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
                 
-                self.statusLabelView.rightAnchor.constraint(equalTo: self.chevronIcon.leftAnchor, constant: -12),
+                self.statusLabelView.rightAnchor.constraint(equalTo: self.rightIcon.leftAnchor, constant: -12),
                 self.statusLabelView.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
             ])
         case .chevronWithText:
             NSLayoutConstraint.activate([
                 self.titleStackView.rightAnchor.constraint(equalTo: self.descriptionLabel.leftAnchor, constant: -12),
                 
-                self.chevronIcon.heightAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.widthAnchor.constraint(equalToConstant: 24.0),
-                self.chevronIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
-                self.chevronIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
+                self.rightIcon.heightAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.widthAnchor.constraint(equalToConstant: 24.0),
+                self.rightIcon.rightAnchor.constraint(equalTo: self.baseView.rightAnchor, constant: -12),
+                self.rightIcon.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
                
                 self.descriptionLabel.widthAnchor.constraint(equalToConstant: 48.0),
-                self.descriptionLabel.rightAnchor.constraint(equalTo: self.chevronIcon.leftAnchor, constant: -12),
+                self.descriptionLabel.rightAnchor.constraint(equalTo: self.rightIcon.leftAnchor, constant: -12),
                 self.descriptionLabel.centerYAnchor.constraint(equalTo: self.baseView.centerYAnchor),
             ])
         case .radioButton:
@@ -639,18 +645,23 @@ public class SMEActionView: UIView {
 
     private func prepareActionViewByState() {
         switch self.stateOfAction {
-        case .normal: break /*TODO: Review again*/
+        case .normal:
+            self.borderColor = .clear
+            self.baseBackgroundColor = UIColor.Colors.SMEActionBackground
+            self.titleLabel.textColor = UIColor.Colors.SMEActionTitle
+            self.subTitleLabel.textColor = UIColor.Colors.SMEActionSubTitle
+            self.radioButtonIcon.image = UIImage.Images.icSMERadio
+        case .disabled:
+            self.baseBackgroundColor = UIColor.Colors.SMEActionBackground
+            self.titleLabel.textColor = UIColor.Colors.SMEActionDisabledTitle
+            self.subTitleLabel.textColor = UIColor.Colors.SMEActionDisabledSubTitle
+            self.radioButtonIcon.image = UIImage.Images.icSMERadioDisabled
             
-//            self.titleLabel.font = UIFont.sfProText(ofSize: 13, weight: self.buttonTitleWeight)
-//            self.iconBackgroundColor = self.theme.getPrimaryColor()
-//            self.iconWrapperView.backgroundColor = self.theme.getPrimaryColor()
-        case .disabled: break /*TODO: Review again*/
-//            self.titleLabel.font = UIFont.sfProText(ofSize: 13, weight: .semibold)
-//            self.titleLabel.textColor = UIColor.Colors.SMEGray
-//            self.disableTitleLabel.font = UIFont.sfProText(ofSize: 11, weight: .medium)
-//            self.disableTitleLabel.textColor = .white
-//            self.iconBackgroundColor = UIColor.Colors.SMEBackgroundGray
-        case .selected: break /*TODO: Review again*/
+            self.leftIconView.image?.withTintColor(UIColor.Colors.PBGray) //TODO: Icon tint
+            self.rightIcon.image?.withTintColor(UIColor.Colors.PBGray)
+        case .selected:
+            self.borderColor = self.theme.getPrimaryColor()
+            self.baseBackgroundColor = self.theme.getPrimaryColor().withAlphaComponent(0.08)
         }
     }
 
@@ -674,9 +685,8 @@ public class SMEActionView: UIView {
             self.titleLabel.font = UIFont.sfProText(ofSize: 17, weight: .medium) //TODO: Add as parameter
             self.subTitleLabel.font = UIFont.sfProText(ofSize: 13, weight: .regular) //TODO: Add as parameter
             self.infoDescriptionLabel.font = UIFont.sfProText(ofSize: 12, weight: .regular) //TODO: Add as parameter
-            
-            self.subTitleLabel.textColor = UIColor.Colors.SMEGray // TODO: Color oposity should be 60%
-            self.infoDescriptionLabel.textColor = UIColor.Colors.SMEGray // TODO: Color oposity should be 60%
+            self.subTitleLabel.textColor = UIColor.Colors.SMEGray
+            self.infoDescriptionLabel.textColor = UIColor.Colors.SMEGray
             self.prepareActionViewByIcon(icon: icon)
         }
     }
@@ -708,7 +718,17 @@ public class SMEActionView: UIView {
             self.switchButtonStatus = isOn
         case .none:
             break
+        case .loading:
+            self.rightIcon.image = UIImage.Images.icSMELoading
         }
+    }
+    
+    @objc fileprivate func handleButtonClick(sender: UITapGestureRecognizer) {
+        self.onButtonPressed?()
+    }
+    
+    @objc fileprivate func handleViewClick(sender: UITapGestureRecognizer) {
+        self.onViewPressed?()
     }
     
 }

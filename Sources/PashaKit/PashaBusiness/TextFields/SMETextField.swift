@@ -105,7 +105,12 @@ public class SMETextField: UIView {
         case date
         case password
         case select
-        case custom
+        case custom(maskFormat: String = "",
+                    keyboardType: UIKeyboardType,
+                    minChar: Int = 0,
+                    maxChar: Int = 0,
+                    regex: String = "",
+                    localizedErrorMessage: String)
     }
 
     /// Defines the view size for the icon on the right side.
@@ -170,6 +175,17 @@ public class SMETextField: UIView {
             self.footerLabel.text = self.footerLabelText
         }
     }
+    
+    /// The text which is displayed under the text field.
+    ///
+    /// By default text field doesn't create footer label text. If you specify it, text field will be
+    /// created with the `UILabel` under it.
+    ///
+    public var errorLabelText: String? = nil {
+        didSet {
+            self.errorLabel.text = self.errorLabelText
+        }
+    }
 
     /// Sets the icon for displaying at the right end of text field.
     ///
@@ -194,6 +210,13 @@ public class SMETextField: UIView {
             self.updateSecureEntry()
         }
     }
+    
+    /// Decides whether entered text if confidential or not.
+    ///
+    /// Since the value of this property is valid by default, you won't see any difference. However
+    /// setting this property to true, validate input to `valid` and `invalid`
+    ///
+    public var validationCredentials: (regex: String, localizedErrorMessage: String) = ("", "")
 
     /// The theme for the text field's appearance.
     ///
@@ -230,11 +253,7 @@ public class SMETextField: UIView {
     /// - email
     /// - password
     ///
-    public var isValid: PBTextFieldValidity = .valid {
-        didSet {
-            self.updateUI()
-        }
-    }
+    public var isValid: PBTextFieldValidity = .valid
 
     /// Defines cursor color of textfield.
     ///
@@ -296,7 +315,7 @@ public class SMETextField: UIView {
     ///
     /// By default this property will apply black color with alpha value of `0.6`.
     ///
-    public var placeholderTextColor: UIColor = UIColor.black.withAlphaComponent(0.6) {
+    public var placeholderTextColor: UIColor = UIColor.Colors.SMETextFieldLabel {
         didSet {
             if self.placeholderTextColor != oldValue {
                 self.customPlaceholder.textColor = self.placeholderTextColor
@@ -309,7 +328,7 @@ public class SMETextField: UIView {
     ///
     /// By defualt this property will apply native darkText color.
     ///
-    public var textFieldTextColor: UIColor = UIColor.darkText {
+    public var textFieldTextColor: UIColor = UIColor.Colors.SMETextFieldText {
         didSet {
             if self.textFieldTextColor != oldValue {
                 self.customTextField.textColor = self.textFieldTextColor
@@ -351,6 +370,8 @@ public class SMETextField: UIView {
     public var disableManualInput: Bool = false {
         didSet {
             self.customTextField.isUserInteractionEnabled = false
+            self.placeholderTextColor = UIColor.Colors.SMETextFieldLabelDisabled
+            self.textFieldTextColor = self.placeholderTextColor
         }
     }
 
@@ -448,7 +469,13 @@ public class SMETextField: UIView {
     private var notEditingConstraints: [NSLayoutConstraint] = []
     private var activeConstraints: [NSLayoutConstraint] = []
     private var activeRightIconConstraints: [NSLayoutConstraint] = []
-
+    private var footerLabelConstraints: [NSLayoutConstraint] = []
+    private var activeValidationLabelConstraints: [NSLayoutConstraint] = []
+    private var validConstraints: [NSLayoutConstraint] = []
+    private var invalidConstraints: [NSLayoutConstraint] = []
+    private var validWithLabelConstraints: [NSLayoutConstraint] = []
+    private var invalidWithLabelConstraints: [NSLayoutConstraint] = []
+    
     private var textFieldStyle: SMETextFieldStyle = .underlined {
         didSet {
             self.prepareTextFieldByStyle(for: textFieldStyle)
@@ -503,7 +530,9 @@ public class SMETextField: UIView {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
         textField.textColor = self.textFieldTextColor
-
+        textField.onDeleteBackward = { [weak self] in
+            self?.validateField()
+        }
         return textField
     }()
 
@@ -535,6 +564,17 @@ public class SMETextField: UIView {
         view.numberOfLines = 0
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = self.placeholderTextColor
+
+        return view
+    }()
+    
+    private lazy var errorLabel: UILabel = {
+        let view = UILabel()
+
+        view.font = UIFont.sfProText(ofSize: 12, weight: .regular)
+        view.numberOfLines = 0
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textColor = self.errorStateColor
 
         return view
     }()
@@ -586,9 +626,8 @@ public class SMETextField: UIView {
         
         self.placeholderTextColor = UIColor.Colors.SMETextFieldLabel
         
-        self.textFieldState = state
-        self.textFieldStyle = style
         self.textFieldInputType = type
+        
         self.placeholderText = localizedPlaceholder
         
         self.inputMaskDelegate.customNotations = [
@@ -614,6 +653,8 @@ public class SMETextField: UIView {
 
         self.customTextField.tintColor = self.placeholderCursorColor
         self.customTextField.textColor = self.textFieldTextColor
+        
+        self.textFieldState = state
     }
 
     public convenience init() {
@@ -644,18 +685,20 @@ public class SMETextField: UIView {
             self.customTextField.keyboardType = .default
             self.isSecured = true
             self.isRevealed = false
-            
         case .select:
             self.textFieldState = .notEditing
-        // TODO: set bottom arrow Icon with state and dark mode
+            self.rightIconView.image = UIImage.Images.icSMEChevronBottom
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onIconTap))
+            self.customTextField.addGestureRecognizer(tapGestureRecognizer)
         case .pan:
             self.maskFormat = "[0000] [0000] [0000] [0000]"
             self.customTextField.keyboardType = .numberPad
         case .iban:
             self.maskFormat = "[AZ][00] [AZAZ] [0000] [0000] [0000] [0000]"
             self.customTextField.keyboardType = .numberPad
-        case .custom: break
-            
+        case .custom(let maskFormat, let keyboardType, _, _, _, _):
+            self.maskFormat = maskFormat
+            self.customTextField.keyboardType = keyboardType
         }
         
     }
@@ -668,6 +711,9 @@ public class SMETextField: UIView {
             self.isValid = SMETextFieldValidations.validatePhone(for: self.customTextField.text?.components(separatedBy: .whitespaces).joined() ?? "") ? .valid : .invalid(localizedError)
         case .pan(let localizedError):
             self.isValid = SMETextFieldValidations.validateCardNumber(for: self.customTextField.text?.components(separatedBy: .whitespaces).joined() ?? "") ? .valid : .invalid(localizedError)
+        case .custom(_, _, let minChar, let maxChar, let regex, let localizedMessage):
+            self.isValid = SMETextFieldValidations.validateWithCustomRegex(for: self.customTextField.text ?? "", regex: regex) ? .valid : .invalid(localizedMessage)
+            self.isValid = SMETextFieldValidations.validateCountRage(for: self.customTextField.text ?? "", minChar: minChar, maxChar: maxChar) ? .valid : .invalid(localizedMessage)
         default: break
         }
     }
@@ -686,7 +732,8 @@ public class SMETextField: UIView {
         self.textFieldStack.addArrangedSubview(self.rightIconWrapperView)
 
         self.customBorder.addSubview(self.customPlaceholder)
-
+        
+        self.addSubview(self.errorLabel)
         self.addSubview(self.footerLabel)
     }
 
@@ -703,12 +750,10 @@ public class SMETextField: UIView {
 
     private func setupConstraints(for style: SMETextFieldStyle) {
         self.translatesAutoresizingMaskIntoConstraints = false
-
         NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(equalToConstant: 64),
+            self.customBorder.heightAnchor.constraint(equalToConstant: 50),
             self.customBorder.topAnchor.constraint(equalTo: self.topAnchor),
             self.customBorder.leftAnchor.constraint(equalTo: self.leftAnchor),
-            self.customBorder.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -24.0),
             self.customBorder.rightAnchor.constraint(equalTo: self.rightAnchor)
         ])
 
@@ -721,7 +766,10 @@ public class SMETextField: UIView {
             ])
 
             NSLayoutConstraint.activate([
-                self.footerLabel.topAnchor.constraint(equalTo: self.customBorder.bottomAnchor, constant: 6),
+                self.errorLabel.topAnchor.constraint(equalTo: self.customBorder.bottomAnchor, constant: 4),
+                self.errorLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: self.leftPadding),
+                self.errorLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -self.leftPadding),
+                self.footerLabel.topAnchor.constraint(equalTo: self.errorLabel.bottomAnchor, constant: 4),
                 self.footerLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: self.leftPadding),
                 self.footerLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -self.leftPadding)
             ])
@@ -734,22 +782,47 @@ public class SMETextField: UIView {
             ])
 
             NSLayoutConstraint.activate([
-                self.footerLabel.topAnchor.constraint(equalTo: self.customBorder.bottomAnchor),
+                self.errorLabel.topAnchor.constraint(equalTo: self.customBorder.bottomAnchor, constant: 4),
+                self.errorLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
+                self.errorLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
+                self.footerLabel.topAnchor.constraint(equalTo: self.errorLabel.bottomAnchor, constant: 4),
                 self.footerLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
                 self.footerLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
-                self.footerLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
             ])
         }
-
+        
         NSLayoutConstraint.activate([
             self.customPlaceholder.widthAnchor.constraint(equalTo: self.customTextField.widthAnchor)
         ])
-
+        
+        self.validConstraints = [
+            self.heightAnchor.constraint(equalToConstant: 64),
+            self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
+        ]
+        
+        self.invalidConstraints = [
+            self.heightAnchor.constraint(equalToConstant: 84),
+            self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
+        ]
+        
+        self.validWithLabelConstraints = [
+            self.heightAnchor.constraint(equalToConstant: 100),
+            self.errorLabel.heightAnchor.constraint(equalToConstant: 0)
+        ]
+        
+        self.invalidWithLabelConstraints = [
+            self.heightAnchor.constraint(equalToConstant: 120),
+            self.errorLabel.heightAnchor.constraint(equalToConstant: 16)
+        ]
+        
+        self.activeValidationLabelConstraints = self.validConstraints
+        NSLayoutConstraint.activate(self.activeValidationLabelConstraints)
+        
         self.notEditingConstraints = [
             self.customPlaceholder.leftAnchor.constraint(equalTo: self.customTextField.leftAnchor),
             self.customPlaceholder.centerYAnchor.constraint(equalTo: self.customTextField.centerYAnchor)
         ]
-
+        
         self.activeConstraints = self.notEditingConstraints
         NSLayoutConstraint.activate(self.activeConstraints)
         
@@ -801,15 +874,34 @@ public class SMETextField: UIView {
         case .underlined:
             self.updateBottomBorder()
         }
+        
+        NSLayoutConstraint.deactivate(self.activeValidationLabelConstraints)
 
         switch self.isValid {
         case .valid:
-            self.footerLabel.textColor = self.placeholderTextColor
-            self.footerLabel.text = self.footerLabelText
+            self.errorLabel.isHidden = true
+            
+            if let footerLabelText = self.footerLabelText {
+                self.activeValidationLabelConstraints = self.validWithLabelConstraints
+            } else {
+                self.activeValidationLabelConstraints = self.validConstraints
+            }
+            
         case .invalid(let error):
-            self.footerLabel.textColor = self.errorStateColor
-            self.footerLabel.text = error
+            self.errorLabel.isHidden = false
+            self.errorLabel.textColor = self.errorStateColor
+            self.errorLabel.text = error
+            
+            if let footerLabelText = self.footerLabelText {
+                self.activeValidationLabelConstraints = self.invalidWithLabelConstraints
+            } else {
+                self.activeValidationLabelConstraints = self.invalidConstraints
+            }
+            
         }
+        
+        NSLayoutConstraint.activate(self.activeValidationLabelConstraints)
+        self.layoutIfNeeded()
     }
 
     private func updateInputBorder() {
@@ -830,13 +922,16 @@ public class SMETextField: UIView {
                     self.customBorder.layer.borderColor = self.defaultBorderColor.cgColor
                     self.customBorder.layer.borderWidth = 1.0
                 }
-            case .disabled: break
-                
+            case .disabled:
+                self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
+                self.textFieldTextColor = self.placeholderTextColor.withAlphaComponent(0.3)
+                self.customTextField.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
+                self.customTextField.isUserInteractionEnabled = false
             }
         case .invalid:
             self.performAnimation { [weak self] in
                 guard let self = self else { return }
-                self.customPlaceholder.textColor = self.errorStateColor
+                self.customPlaceholder.textColor = self.placeholderTextColor
                 self.customBorder.layer.borderColor = self.errorStateColor.cgColor
                 self.customBorder.layer.borderWidth = 1.0
             }
@@ -862,13 +957,16 @@ public class SMETextField: UIView {
                     self.textFieldStack.updateExistingBottomBorderColor(to: self.textFieldBottomBorderColor)
                     self.rightIconView.tintColor = UIColor.Colors.SMETextFieldLabel
                 }
-            case .disabled: break
-                
+            case .disabled:
+                self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
+                self.customTextField.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
+                self.textFieldTextColor = self.placeholderTextColor.withAlphaComponent(0.3)
+                self.customTextField.isUserInteractionEnabled = false
             }
         case .invalid:
             self.performAnimation { [weak self] in
                 guard let self = self else { return }
-                self.customPlaceholder.textColor = self.errorStateColor
+                self.customPlaceholder.textColor = self.placeholderTextColor
                 self.customBorder.layer.borderColor = self.errorStateColor.cgColor
                 self.textFieldStack.updateExistingBottomBorderThickness(to: 1.0)
                 self.textFieldStack.updateExistingBottomBorderColor(to: self.errorStateColor)
@@ -906,8 +1004,11 @@ public class SMETextField: UIView {
             } else {
                 self.animatePlaceholderToActivePosition(animated: animationEnabled)
             }
-        case .disabled: break
-            
+        case .disabled:
+            self.customPlaceholder.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
+            self.customTextField.textColor = self.placeholderTextColor.withAlphaComponent(0.3)
+            self.textFieldTextColor = self.placeholderTextColor.withAlphaComponent(0.3)
+            self.customTextField.isUserInteractionEnabled = false
         }
     }
 
@@ -975,10 +1076,29 @@ public class SMETextField: UIView {
             }
         }
     }
+    
+    private func validateField() {
+        if self.validationCredentials.regex != "" {
+            if SMETextFieldValidations.validateWithCustomRegex(for: self.customTextField.text ?? "", regex: self.validationCredentials.regex) {
+                self.isValid = .valid
+            } else {
+                self.isValid = .invalid(self.validationCredentials.localizedErrorMessage)
+            }
+            if self.customTextField.text == "" {
+                self.isValid = .invalid(self.validationCredentials.localizedErrorMessage)
+            }
+        }
+    }
 
     @objc private func onIconTap() {
         self.onActionIcon?()
-        self.isRevealed = !self.isRevealed
+        
+        switch self.textFieldInputType {
+        case .password:
+            self.isRevealed = !self.isRevealed
+        default:
+            break
+        }
     }
 
     /// Changes input accessory view with given view
@@ -1091,6 +1211,12 @@ extension SMETextField: MaskedTextFieldDelegateListener {
         let cleanText = value
             .replacingOccurrences(of: " ", with: "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
+       
+        if cleanText.count > 0 {
+            self.validateField()
+            self.validationByInputType()
+        }
+        
         self.onType?(value)
         self.onTextUpdate?(cleanText)
         self.isComplete = complete
@@ -1108,6 +1234,5 @@ extension SMETextField: MaskedTextFieldDelegateListener {
     public func textFieldDidEndEditing(_ textField: UITextField) {
         self.textFieldState = .notEditing
         self.onDidEnd?()
-        self.validationByInputType()
     }
 }
