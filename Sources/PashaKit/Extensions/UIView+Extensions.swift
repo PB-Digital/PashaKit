@@ -62,15 +62,36 @@ extension UIView {
 }
 
 extension UIView {
-    func performAnimation(transform: CGAffineTransform) {
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, animations: {
-            self.transform = transform
-            self.layoutIfNeeded()
-        }, completion: nil)
+    func performAnimation(
+        transform: CGAffineTransform,
+        completion: ((Bool) -> Void)? = nil
+    ) {
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            usingSpringWithDamping: 1,
+            initialSpringVelocity: 1,
+            animations: {
+                self.transform = transform
+                self.layoutIfNeeded()
+            },
+            completion: completion
+        )
     }
 
-    func performAnimation(animation: @escaping (() -> Void)) {
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, animations: animation, completion: nil)
+    func performAnimation(
+        animation: @escaping (() -> Void),
+        completion: ((Bool) -> Void)? = nil
+    ) {
+        UIView.animate(
+            withDuration: 0.35,
+            delay: 0,
+            usingSpringWithDamping: 1,
+            initialSpringVelocity: 1,
+            options: .allowUserInteraction,
+            animations: animation,
+            completion: completion
+        )
     }
 }
 
@@ -220,5 +241,15 @@ public extension UIView {
         maskLayer.fillRule = .evenOdd
 
         view.layer.mask = maskLayer
+    }
+
+    static func transform(from source: CGRect, to destination: CGRect) -> CGAffineTransform {
+        let scaleX = destination.width / source.width
+        let scaleY = destination.height / source.height
+
+        let translationX = destination.origin.x - source.origin.x - (source.width * (1.0 - scaleX) / 2)
+        let translationY = destination.origin.y - source.origin.y - (source.height * (1.0 - scaleY) / 2)
+
+        return CGAffineTransform(translationX: translationX, y: translationY).scaledBy(x: scaleX, y: scaleY)
     }
 }
