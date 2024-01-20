@@ -168,6 +168,16 @@ open class PBRowView: UIView, PBSkeletonable {
         }
     }
 
+    /// Sets the color for the text of `subtitleLabel`.
+    ///
+    /// By default text color of `subtitleLabel` is `.black` with alpha of `0.6`
+    ///
+    public var subtitleTextColor: UIColor = .black.withAlphaComponent(0.6) {
+        didSet {
+            self.subtitleLabel.textColor = self.subtitleTextColor
+        }
+    }
+
     /// Sets the font for `subtitleLabel`.
     ///
     /// By default its font size is `15.0`.
@@ -281,6 +291,7 @@ open class PBRowView: UIView, PBSkeletonable {
     ///
     /// Changing its value to `false` removes it from row view.
     ///
+    @available(*, deprecated, renamed: "isRightIconVisible")
     public var isChevronIconVisible: Bool = true {
         didSet {
             if self.isChevronIconVisible {
@@ -288,18 +299,6 @@ open class PBRowView: UIView, PBSkeletonable {
             } else {
                 self.rightIconWrapperView.isHidden = true
             }
-        }
-    }
-
-    /// The visual state of divider.
-    ///
-    /// By default row view will be created with divider is hidden.
-    ///
-    /// If you need a divider change it to `true`. It will show a divider with the thickness of `0.5 pt`.
-    ///
-    public var showsDivider: Bool = false {
-        didSet {
-            self.divider.isHidden = !showsDivider
         }
     }
     
@@ -318,6 +317,18 @@ open class PBRowView: UIView, PBSkeletonable {
             } else {
                 self.rightIconWrapperView.isHidden = true
             }
+        }
+    }
+
+    /// The visual state of divider.
+    ///
+    /// By default row view will be created with divider is hidden.
+    ///
+    /// If you need a divider change it to `true`. It will show a divider with the thickness of `0.5 pt`.
+    ///
+    public var showsDivider: Bool = false {
+        didSet {
+            self.divider.isHidden = !showsDivider
         }
     }
 
@@ -422,7 +433,7 @@ open class PBRowView: UIView, PBSkeletonable {
         label.translatesAutoresizingMaskIntoConstraints = false
 
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        label.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
+        label.textColor = self.subtitleTextColor
         label.numberOfLines = 1
         label.isSkeletonable = true
 
@@ -507,7 +518,7 @@ open class PBRowView: UIView, PBSkeletonable {
 
         self.titleLabel.text = titleText
         self.subtitleLabel.text = subtitleText
-        self.isChevronIconVisible = isChevronIconVisible
+        self.isRightIconVisible = isChevronIconVisible
 
         self.layoutMargins = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         self.setupViews()
@@ -545,7 +556,7 @@ open class PBRowView: UIView, PBSkeletonable {
     public func setData(titleText: String? = nil, subtitleText: String? = nil, isChevronIconVisible: Bool = false) {
         self.titleText = titleText
         self.subtitleText = subtitleText
-        self.isChevronIconVisible = isChevronIconVisible
+        self.isRightIconVisible = isChevronIconVisible
 
         self.setupViews()
     }
