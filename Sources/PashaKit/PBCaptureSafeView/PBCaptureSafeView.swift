@@ -81,22 +81,27 @@ public class PBCaptureSafeView: UIView {
         }
     }
 
-    public init(contentView: UIView) {
+    public init(contentView: UIView, placeholderView: UIView? = nil) {
         super.init(frame: .zero)
-        self.setupUI(with: contentView)
+        self.setupUI(with: contentView, placeholder: placeholderView)
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
 
-    private func setupUI(with contentView: UIView) {
+    private func setupUI(with contentView: UIView, placeholder: UIView?) {
         guard let container else { return }
 
         self.addSubview(container)
         container.fillSuperview()
-
         container.addSubview(contentView)
         contentView.fillSuperview()
+
+        guard let placeholder else { return }
+
+        self.addSubview(placeholder)
+        placeholder.fillSuperview()
+        self.sendSubviewToBack(placeholder)
     }
 }

@@ -627,6 +627,8 @@ open class PBRowView: UIView, PBSkeletonable {
     public func add(bagde paddingLabel: PBPaddingLabel) {
         self.rightSideContentStack.addArrangedSubview(paddingLabel)
 
+        paddingLabel.removeConstraints(paddingLabel.constraints)
+
         NSLayoutConstraint.activate([
             paddingLabel.widthAnchor.constraint(equalToConstant: paddingLabel.intrinsicContentSize.width),
             paddingLabel.heightAnchor.constraint(equalToConstant: paddingLabel.intrinsicContentSize.height),
