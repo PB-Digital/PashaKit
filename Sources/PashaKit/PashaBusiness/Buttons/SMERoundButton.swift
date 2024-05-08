@@ -138,9 +138,9 @@ public class SMERoundButton: UIView {
     ///
     /// By default button will be created with the tint color for selected button style.
     ///
-    public var buttonTitleWeight: CustomFontWeight = .semibold {
+    public var buttonTitleWeight: UIFont.Weight = .semibold {
         didSet {
-            self.titleLabel.font = UIFont.sfProText(ofSize: 13, weight: buttonTitleWeight)
+            self.titleLabel.font = .systemFont(ofSize: 13, weight: buttonTitleWeight)
         }
     }
     
@@ -279,8 +279,7 @@ public class SMERoundButton: UIView {
     
     public convenience init(typeOfButton: SMERoundButtonType = .plain) {
         self.init()
-        
-        UIFont.registerCustomFonts()
+
         self.typeOfButton = typeOfButton
         self.stateOfButton = .normal
         
@@ -294,9 +293,7 @@ public class SMERoundButton: UIView {
     public convenience init(typeOfButton: SMERoundButtonType = .plain,
                             stateOfButton: SMERoundButtonState) {
         self.init()
-        
-        UIFont.registerCustomFonts()
-        
+
         self.typeOfButton = typeOfButton
         self.prepareButtonByType()
         self.stateOfButton = stateOfButton
@@ -417,13 +414,13 @@ public class SMERoundButton: UIView {
     private func prepareButtonByState() {
         switch self.stateOfButton {
         case .normal:
-            self.titleLabel.font = UIFont.sfProText(ofSize: 13, weight: self.buttonTitleWeight)
+            self.titleLabel.font = .systemFont(ofSize: 13, weight: self.buttonTitleWeight)
             self.iconBackgroundColor = self.theme.getPrimaryColor()
             self.iconWrapperView.backgroundColor = self.theme.getPrimaryColor()
         case .disabled:
-            self.titleLabel.font = UIFont.sfProText(ofSize: 13, weight: .semibold)
+            self.titleLabel.font = .systemFont(ofSize: 13, weight: .semibold)
             self.titleLabel.textColor = UIColor.Colors.SMEGray
-            self.disableTitleLabel.font = UIFont.sfProText(ofSize: 11, weight: .medium)
+            self.disableTitleLabel.font = .systemFont(ofSize: 11, weight: .medium)
             self.disableTitleLabel.textColor = .white
             self.iconBackgroundColor = UIColor.Colors.SMEBackgroundGray
         }
