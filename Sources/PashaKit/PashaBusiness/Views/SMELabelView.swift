@@ -150,9 +150,7 @@ public class SMELabelView: UIView {
     
     public convenience init(statusOfLabel: SMELabelViewStatus = .draft) {
         self.init()
-        
-        UIFont.registerCustomFonts()
-        
+
         self.statusOfLabel = statusOfLabel
         
         self.prepareLabelViewByType()
@@ -164,9 +162,7 @@ public class SMELabelView: UIView {
     
     public convenience init(statusOfLabel: SMELabelViewStatus = .draft, typeOfLabel: SMELabelViewType = .plain(localizedText: "")) {
         self.init()
-        
-        UIFont.registerCustomFonts()
-        
+
         self.statusOfLabel = statusOfLabel
         self.typeOfLabel = typeOfLabel
         
@@ -235,16 +231,16 @@ public class SMELabelView: UIView {
         switch self.typeOfLabel {
         case .plain(let localizedText):
             self.title = localizedText
-            self.titleLabel.font = UIFont.sfProText(ofSize: 12, weight: .regular)
+            self.titleLabel.font = .systemFont(ofSize: 12, weight: .regular)
             self.cornerRadius = 2
         case .small(let localizedText):
             self.title = localizedText
-            self.titleLabel.font = UIFont.sfProText(ofSize: 12, weight: .regular)
+            self.titleLabel.font = .systemFont(ofSize: 12, weight: .regular)
             self.cornerRadius = 2
         case .withIcon(let localizedText, let icon):
             self.title = localizedText
             self.leftIcon = icon
-            self.titleLabel.font = UIFont.sfProText(ofSize: 13, weight: .medium)
+            self.titleLabel.font = .systemFont(ofSize: 13, weight: .medium)
             self.cornerRadius = 4
         }
     }

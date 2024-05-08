@@ -503,7 +503,7 @@ public class SMETextField: UIView {
     private lazy var customPlaceholder: UILabel = {
         let placeholder = UILabel()
 
-        placeholder.font = UIFont.sfProText(ofSize: 17, weight: .regular)
+        placeholder.font = .systemFont(ofSize: 17, weight: .regular)
         placeholder.translatesAutoresizingMaskIntoConstraints = false
         placeholder.textAlignment = .left
         placeholder.font = self.placeholderFont
@@ -560,7 +560,7 @@ public class SMETextField: UIView {
     private lazy var footerLabel: UILabel = {
         let view = UILabel()
 
-        view.font = UIFont.sfProText(ofSize: 12, weight: .regular)
+        view.font = .systemFont(ofSize: 12, weight: .regular)
         view.numberOfLines = 0
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = self.placeholderTextColor
@@ -571,7 +571,7 @@ public class SMETextField: UIView {
     private lazy var errorLabel: UILabel = {
         let view = UILabel()
 
-        view.font = UIFont.sfProText(ofSize: 12, weight: .regular)
+        view.font = .systemFont(ofSize: 12, weight: .regular)
         view.numberOfLines = 0
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = self.errorStateColor
@@ -881,7 +881,7 @@ public class SMETextField: UIView {
         case .valid:
             self.errorLabel.isHidden = true
             
-            if let footerLabelText = self.footerLabelText {
+            if self.footerLabelText != nil {
                 self.activeValidationLabelConstraints = self.validWithLabelConstraints
             } else {
                 self.activeValidationLabelConstraints = self.validConstraints
@@ -892,7 +892,7 @@ public class SMETextField: UIView {
             self.errorLabel.textColor = self.errorStateColor
             self.errorLabel.text = error
             
-            if let footerLabelText = self.footerLabelText {
+            if self.footerLabelText != nil {
                 self.activeValidationLabelConstraints = self.invalidWithLabelConstraints
             } else {
                 self.activeValidationLabelConstraints = self.invalidConstraints

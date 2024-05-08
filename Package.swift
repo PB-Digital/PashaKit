@@ -18,20 +18,7 @@ public let package = Package(
         
         .target(name: "PashaKit", dependencies: [
             .product(name: "InputMask", package: "input-mask-ios")
-        ],
-            resources: [
-                .process("Fonts/SFProDisplayBold.otf"),
-                .process("Fonts/SFProDisplayLight.otf"),
-                .process("Fonts/SFProDisplayRegular.otf"),
-                .process("Fonts/SFProDisplayMedium.otf"),
-                .process("Fonts/SFProDisplaySemibold.otf"),
-                .process("Fonts/SFProTextBold.otf"),
-                .process("Fonts/SFProTextLight.otf"),
-                .process("Fonts/SFProTextRegular.otf"),
-                .process("Fonts/SFProTextMedium.otf"),
-                .process("Fonts/SFProTextSemibold.otf"),
-            ]
-        ),
+        ]),
         .testTarget(name: "PashaKitTests", dependencies: ["PashaKit"]),
     ],
     swiftLanguageVersions: [

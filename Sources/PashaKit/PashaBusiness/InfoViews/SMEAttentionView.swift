@@ -141,7 +141,7 @@ open class SMEAttentionView: UIView {
     private lazy var infoTitle: UILabel = {
         let label = UILabel()
 
-        label.font = UIFont.sfProText(ofSize: 15, weight: .medium)
+        label.font = .systemFont(ofSize: 15, weight: .medium)
         label.textColor = .darkText
         label.numberOfLines = 0
         label.text = self.title
@@ -154,7 +154,7 @@ open class SMEAttentionView: UIView {
     private lazy var infoBody: UILabel = {
         let label = UILabel()
 
-        label.font = UIFont.sfProText(ofSize: 13, weight: .regular)
+        label.font = .systemFont(ofSize: 13, weight: .regular)
         label.textColor = .darkText
         label.numberOfLines = 0
         label.text = self.detail
@@ -178,9 +178,7 @@ open class SMEAttentionView: UIView {
 
     public convenience init(typeOfAttention: AttentionType = .normal(localizedTitle: "")) {
         self.init()
-        
-        UIFont.registerCustomFonts()
-        
+
         self.attentionType = typeOfAttention
         self.attentionStyle = .info
         
@@ -195,9 +193,7 @@ open class SMEAttentionView: UIView {
     public convenience init(typeOfAttention: AttentionType = .normal(localizedTitle: ""),
                             styleOfAttention: AttentionStyle = .info) {
         self.init()
-        
-        UIFont.registerCustomFonts()
-        
+
         self.attentionStyle = styleOfAttention
         self.attentionType = typeOfAttention
         
@@ -266,9 +262,9 @@ open class SMEAttentionView: UIView {
     
     func prepareAttentionByStyle(style: AttentionStyle) {
         self.layer.cornerRadius = 12.0
-        self.infoTitle.font = UIFont.sfProText(ofSize: 15, weight: .medium)
+        self.infoTitle.font = .systemFont(ofSize: 15, weight: .medium)
         self.infoTitle.textColor = UIColor.Colors.SMEInfoTitle
-        self.infoBody.font = UIFont.sfProText(ofSize: 13, weight: .regular)
+        self.infoBody.font = .systemFont(ofSize: 13, weight: .regular)
         self.infoBody.textColor = UIColor.Colors.SMEInfoDescription
         switch style {
         case .info:
