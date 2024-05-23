@@ -1,4 +1,4 @@
 {
-    "version": "1.5.2",
-    "release_notes": "Imported `SpreadsheetView` library into codebase"
+    "version": "1.5.3",
+    "release_notes": "Added attributedText and tapGesture to footerLabel in SMETextField and added onDoneButtonClicked callback to Keyboard "
 }
