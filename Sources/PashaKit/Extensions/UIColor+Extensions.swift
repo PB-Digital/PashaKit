@@ -179,6 +179,14 @@ extension UIColor {
             }
         }
         
+        static var SMETextFieldPlaceholder: UIColor {
+            return UIColor { (traits) -> UIColor in
+                return traits.userInterfaceStyle == .dark ?
+                UIColor(red: 0.922, green: 0.922, blue: 0.961, alpha: 0.6) :
+                UIColor(red: 0.235, green: 0.235, blue: 0.263, alpha: 0.6)
+            }
+        }
+        
         static var SMETextFieldLabelDisabled: UIColor {
             return UIColor { (traits) -> UIColor in
                 return traits.userInterfaceStyle == .dark ?

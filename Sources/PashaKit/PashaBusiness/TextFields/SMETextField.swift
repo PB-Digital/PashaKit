@@ -176,6 +176,18 @@ public class SMETextField: UIView {
         }
     }
     
+    /// The attributed text which is displayed under the text field.
+    ///
+    /// By default text field doesn't create footer label attributed text. If you specify it, text field will be
+    /// created with the `UILabel` under it.
+    ///
+    
+    public var footerLabelAttributedText: NSAttributedString? = nil {
+        didSet {
+            self.footerLabel.attributedText = self.footerLabelAttributedText
+        }
+    }
+    
     /// The text which is displayed under the text field.
     ///
     /// By default text field doesn't create footer label text. If you specify it, text field will be
@@ -315,7 +327,7 @@ public class SMETextField: UIView {
     ///
     /// By default this property will apply black color with alpha value of `0.6`.
     ///
-    public var placeholderTextColor: UIColor = UIColor.Colors.SMETextFieldLabel {
+    public var placeholderTextColor: UIColor = UIColor.Colors.SMETextFieldPlaceholder {
         didSet {
             if self.placeholderTextColor != oldValue {
                 self.customPlaceholder.textColor = self.placeholderTextColor
@@ -369,9 +381,15 @@ public class SMETextField: UIView {
     ///
     public var disableManualInput: Bool = false {
         didSet {
-            self.customTextField.isUserInteractionEnabled = false
-            self.placeholderTextColor = UIColor.Colors.SMETextFieldLabelDisabled
-            self.textFieldTextColor = self.placeholderTextColor
+            if disableManualInput {
+                self.customTextField.isUserInteractionEnabled = false
+                self.placeholderTextColor = UIColor.Colors.SMETextFieldLabelDisabled
+                self.textFieldTextColor = self.placeholderTextColor
+            } else {
+                self.customTextField.isUserInteractionEnabled = true
+                self.placeholderTextColor = UIColor.Colors.SMETextFieldLabel
+                self.textFieldTextColor = UIColor.Colors.SMETextFieldText
+            }
         }
     }
 
@@ -459,7 +477,7 @@ public class SMETextField: UIView {
         return delegate
     }()
 
-    private let topPadding: CGFloat = 8.0
+    private let topPadding: CGFloat = 14.0
     private let placeholderFont = UIFont.systemFont(ofSize: 17, weight: .regular)
     private let placeholderSizeFactor: CGFloat = 0.73
     private let leftPadding: CGFloat = 16
@@ -564,7 +582,8 @@ public class SMETextField: UIView {
         view.numberOfLines = 0
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textColor = self.placeholderTextColor
-
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onFooterLabelTap))
+        view.addGestureRecognizer(tapGestureRecognizer)
         return view
     }()
     
@@ -1100,6 +1119,15 @@ public class SMETextField: UIView {
             break
         }
     }
+                                  
+    @objc private func onFooterLabelTap() {
+        self.onFooterLabelPressed?()
+    }
+    
+    @objc private func onKeyboardDoneButtonTapped() {
+        self.customTextField.resignFirstResponder()
+        self.onDoneButtonClicked?()
+    }
 
     /// Changes input accessory view with given view
     ///
@@ -1164,7 +1192,18 @@ public class SMETextField: UIView {
     }
 
     public func addDoneButtonOnKeyboard(title: String) {
-        self.customTextField.addDoneButtonOnKeyboard(title: title)
+        
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        doneToolbar.barStyle = .default
+
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: title, style: .done, target: self, action: #selector(self.onKeyboardDoneButtonTapped))
+        done.tintColor = UIColor.Colors.SMEGreen
+        let items = [flexSpace, done]
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+
+        self.customTextField.inputAccessoryView = doneToolbar
     }
 
     /// Resigns text field from being first responder.
@@ -1178,10 +1217,18 @@ public class SMETextField: UIView {
     }
 
     // MARK: - INPUT DELEGATES
-
+    
     /// Get called when entered text updates.
     ///
     public var onTextUpdate: ((String) -> Void)?
+
+    /// Get called when done button clicked on keyboard.
+    ///
+    public var onDoneButtonClicked: (() -> Void)?
+    
+    /// Get called when tapped footer label.
+    ///
+    public var onFooterLabelPressed: (() -> Void)?
 
     /// Gets called when text is setted to field.
     ///
