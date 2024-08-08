@@ -205,7 +205,6 @@ public class SMEUIButton: UIButton {
     ///
     public convenience init(localizableTitle: String, styleOfButton: SMEUIButtonStyle = .filled) {
         self.init(type: .system)
-        UIFont.registerCustomFonts()
         self.setupDefaults()
         self.setTitle(localizableTitle, for: .normal)
         self.styleOfButton = styleOfButton
@@ -214,7 +213,6 @@ public class SMEUIButton: UIButton {
 
     public convenience init(localizableTitle: String, typeOfButton: SMEUIButtonType) {
         self.init(type: .system)
-        UIFont.registerCustomFonts()
         self.setupDefaults()
         self.setTitle(localizableTitle, for: .normal)
         self.buttonTitle = localizableTitle
@@ -223,29 +221,28 @@ public class SMEUIButton: UIButton {
     }
 
     public convenience init() {
-        UIFont.registerCustomFonts()
         self.init(localizableTitle: "")
     }
 
     private func prepareButtonByStyle() {
         switch self.styleOfButton {
         case .plain:
-            self.titleLabel?.font = UIFont.sfProText(ofSize: 17, weight: .semibold)
+            self.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
             self.baseBackgroundColor = .clear
             self.buttonTintColor = self.theme.getPrimaryColor()
             self.borderColor = UIColor.clear
         case .tinted:
-            self.titleLabel?.font = UIFont.sfProText(ofSize: 17, weight: .semibold)
+            self.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
             self.baseBackgroundColor = self.theme.getPrimaryColor().withAlphaComponent(0.1)
             self.buttonTintColor = self.theme.getPrimaryColor()
             self.borderColor = self.theme.getPrimaryColor().withAlphaComponent(0.1)
         case .filled:
-            self.titleLabel?.font = UIFont.sfProText(ofSize: 17, weight: .semibold)
+            self.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
             self.baseBackgroundColor = self.theme.getPrimaryColor()
             self.buttonTintColor = UIColor.white
             self.borderColor = self.theme.getPrimaryColor()
         case .outlined:
-            self.titleLabel?.font = UIFont.sfProText(ofSize: 17, weight: .semibold)
+            self.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
             self.baseBackgroundColor = .clear
             self.borderColor = self.theme.getPrimaryColor()
             self.buttonTintColor = self.theme.getPrimaryColor()
@@ -303,7 +300,7 @@ public class SMEUIButton: UIButton {
         self.layer.masksToBounds = true
         self.layer.borderWidth = 1.0
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.titleLabel?.font = UIFont.sfProText(ofSize: 17, weight: .bold)
+        self.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
         self.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
         NSLayoutConstraint.activate([
             self.heightAnchor.constraint(equalToConstant: 56)

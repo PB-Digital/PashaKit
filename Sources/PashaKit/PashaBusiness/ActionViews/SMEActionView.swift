@@ -390,9 +390,7 @@ public class SMEActionView: UIView {
     
     public convenience init(typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: "")) {
         self.init()
-        
-        UIFont.registerCustomFonts()
-        
+
         self.typeOfAction = typeOfAction
         
         self.prepareActionViewByType()
@@ -404,7 +402,6 @@ public class SMEActionView: UIView {
     public convenience init(typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: ""),
                             styleOfAction: SMEActionStyle = .none) {
         self.init()
-        
         self.typeOfAction = typeOfAction
         self.styleOfAction = styleOfAction
         self.prepareActionViewByType()
@@ -413,8 +410,10 @@ public class SMEActionView: UIView {
         self.setupViews(for: typeOfAction)
     }
 
-    public convenience init(typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: ""),
-                            stateOfAction: SMEActionState = .normal) {
+    public convenience init(
+        typeOfAction: SMEActionType = .normal(icon: .none, localizedTitleText: ""),
+        stateOfAction: SMEActionState = .normal
+    ) {
         self.init()
         
         self.typeOfAction = typeOfAction
@@ -669,24 +668,25 @@ public class SMEActionView: UIView {
         switch self.typeOfAction {
         case .normal(let icon, let localizedTitleText):
             self.title = localizedTitleText
-            self.titleLabel.font = UIFont.sfProText(ofSize: 17, weight: .medium) //TODO: Add as parameter
+            self.titleLabel.font = .systemFont(ofSize: 17, weight: .medium) //TODO: Add as parameter
             self.prepareActionViewByIcon(icon: icon)
         case .detailed(let icon, let localizedTitleText, let localizedSubTitleText):
             self.title = localizedTitleText
             self.subTitle = localizedSubTitleText
-            self.titleLabel.font = UIFont.sfProText(ofSize: 17, weight: .medium) //TODO: Add as parameter
-            self.subTitleLabel.font = UIFont.sfProText(ofSize: 13, weight: .regular) //TODO: Add as parameter
+            self.titleLabel.font = .systemFont(ofSize: 17, weight: .medium) //TODO: Add as parameter
+            self.subTitleLabel.font = .systemFont(ofSize: 13, weight: .regular) //TODO: Add as parameter
             self.subTitleLabel.textColor = UIColor.Colors.SMEGray
             self.prepareActionViewByIcon(icon: icon)
         case .footerLabel(let icon, let localizedTitleText, let localizedSubTitleText, let localizedDescriptionText):
             self.title = localizedTitleText
             self.subTitle = localizedSubTitleText
             self.infoDescriptionText = localizedDescriptionText
-            self.titleLabel.font = UIFont.sfProText(ofSize: 17, weight: .medium) //TODO: Add as parameter
-            self.subTitleLabel.font = UIFont.sfProText(ofSize: 13, weight: .regular) //TODO: Add as parameter
-            self.infoDescriptionLabel.font = UIFont.sfProText(ofSize: 12, weight: .regular) //TODO: Add as parameter
-            self.subTitleLabel.textColor = UIColor.Colors.SMEGray
-            self.infoDescriptionLabel.textColor = UIColor.Colors.SMEGray
+            self.titleLabel.font = .systemFont(ofSize: 17, weight: .medium) //TODO: Add as parameter
+            self.subTitleLabel.font = .systemFont(ofSize: 13, weight: .regular) //TODO: Add as parameter
+            self.infoDescriptionLabel.font = .systemFont(ofSize: 12, weight: .regular) //TODO: Add as parameter
+
+            self.subTitleLabel.textColor = UIColor.Colors.SMEGray // TODO: Color oposity should be 60%
+            self.infoDescriptionLabel.textColor = UIColor.Colors.SMEGray // TODO: Color oposity should be 60%
             self.prepareActionViewByIcon(icon: icon)
         }
     }
@@ -704,13 +704,13 @@ public class SMEActionView: UIView {
         case .chevron: break
         case .chevronWithButton(let localizedText):
             self.button.buttonTitle = localizedText
-            self.button.titleLabel?.font = UIFont.sfProText(ofSize: 17, weight: .regular)
+            self.button.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         case .chevronWithStatus(let localizedText, let status):
             self.statusLabelView.typeOfLabel = .small(localizedText: localizedText)
             self.statusLabelView.statusOfLabel = status
         case .chevronWithText(let localizedText):
             self.descriptionLabel.text = localizedText
-            self.descriptionLabel.font = UIFont.sfProText(ofSize: 17, weight: .regular)
+            self.descriptionLabel.font = .systemFont(ofSize: 17, weight: .regular)
             self.descriptionLabel.textColor = UIColor.Colors.SMEGray
         case .radioButton(let isSelected):
             self.radioButtonStatus = isSelected
