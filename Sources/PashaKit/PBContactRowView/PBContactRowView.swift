@@ -156,7 +156,7 @@ open class PBContactRowView: UIView {
         label.backgroundColor = UIColor.Colors.PBGreen
         label.textColor = .white
         label.textAlignment = .center
-        label.layer.cornerRadius = 20.0
+        label.set(cornerRadius: 20.0)
         label.layer.masksToBounds = true
 
         label.widthAnchor.constraint(equalToConstant: 40.0).isActive = true
@@ -265,7 +265,7 @@ open class PBContactRowView: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = UIColor(red: 0.969, green: 0.969, blue: 0.969, alpha: 1)
         self.layer.masksToBounds = true
-        self.layer.cornerRadius = 10.0
+        self.set(cornerRadius: 10.0)
 
         self.primaryStackView.addArrangedSubview(self.letterLabel)
         self.primaryStackView.addArrangedSubview(self.contactInfoStackView)

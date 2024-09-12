@@ -155,7 +155,7 @@ open class PBBaseSelectableView: UIView {
 
     func setupViews() {
         self.setupDefaults()
-        self.layer.borderColor = UIColor.Colors.PBGraySecondary.cgColor
+        self.set(borderColor: UIColor.Colors.PBGraySecondary)
         self.backgroundColor = UIColor.white
     }
 
@@ -178,17 +178,17 @@ open class PBBaseSelectableView: UIView {
         switch self.selectionStyle {
         case .highlighted:
             if self.isSelected {
-                self.layer.borderWidth = 2.0
-                self.layer.borderColor = self.selectedBorderColor.cgColor
+                self.set(borderWidth: 1.0)
+                self.set(borderColor: self.selectedBorderColor)
                 self.backgroundColor = self.selectedStateColor
             } else {
-                self.layer.borderWidth = 1.0
-                self.layer.borderColor = UIColor.Colors.PBGraySecondary.cgColor
+                self.set(borderWidth: 1.0)
+                self.set(borderColor: UIColor.Colors.PBGraySecondary)
                 self.backgroundColor = UIColor.white
             }
         case .clear:
-            self.layer.borderWidth = 0.0
-            self.layer.borderColor = UIColor.clear.cgColor
+            self.set(borderWidth: 0.0)
+            self.set(borderColor: UIColor.clear)
             self.backgroundColor = UIColor.clear
         }
     }
@@ -213,7 +213,7 @@ open class PBBaseSelectableView: UIView {
     /// method to enable alert state.
     ///
     public func setAlertState() {
-        self.layer.borderColor = UIColor.Colors.PBInvalidRed.cgColor
+        self.set(borderColor: UIColor.Colors.PBInvalidRed)
         self.layer.backgroundColor = UIColor.clear.cgColor
     }
 
@@ -222,8 +222,8 @@ open class PBBaseSelectableView: UIView {
     }
 
     private func setupDefaults() {
-        self.layer.cornerRadius = 8.0
-        self.layer.borderWidth = 1.0
+        self.set(cornerRadius: 12.0)
+        self.set(borderWidth: 1.0)
     }
 }
 

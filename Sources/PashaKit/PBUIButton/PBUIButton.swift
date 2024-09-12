@@ -117,7 +117,7 @@ public class PBUIButton: UIButton {
     ///
     public var cornerRadius: CGFloat = 16.0 {
         didSet {
-            self.layer.cornerRadius = self.cornerRadius
+            self.set(cornerRadius: self.cornerRadius)
         }
     }
 
@@ -149,13 +149,13 @@ public class PBUIButton: UIButton {
         didSet {
             switch self.styleOfButton {
             case .plain:
-                self.layer.borderColor = UIColor.clear.cgColor
+                self.set(borderColor: UIColor.clear)
             case .tinted:
-                self.layer.borderColor = UIColor.clear.cgColor
+                self.set(borderColor: UIColor.clear)
             case .filled:
-                self.layer.borderColor = self.borderColor.cgColor
+                self.set(borderColor: self.borderColor)
             case .outlined:
-                self.layer.borderColor = self.borderColor.cgColor
+                self.set(borderColor: self.borderColor)
             }
         }
     }
@@ -254,7 +254,7 @@ public class PBUIButton: UIButton {
             self.baseBackgroundColor = .clear
             self.borderColor = self.theme.getPrimaryColor()
             self.buttonTintColor = self.theme.getPrimaryColor()
-            self.layer.borderWidth = 1.5
+            self.set(borderWidth: 1.5)
         }
     }
 
@@ -294,9 +294,9 @@ public class PBUIButton: UIButton {
     }
 
     private func setupDefaults() {
-        self.layer.cornerRadius = self.cornerRadius
+        self.set(cornerRadius: self.cornerRadius)
         self.layer.masksToBounds = true
-        self.layer.borderWidth = 1.0
+        self.set(borderWidth: 1.0)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         self.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)

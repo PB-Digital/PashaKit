@@ -54,15 +54,14 @@ public class PBSnappingLayout: UICollectionViewFlowLayout {
         }
 
         var offsetAdjusment = CGFloat.greatestFiniteMagnitude
-        let horizontalPosition: CGFloat
 
-        switch snapPosition {
+        let horizontalPosition = switch snapPosition {
         case .left:
-            horizontalPosition = proposedContentOffset.x + collectionView.contentInset.left + sectionInset.left
+            proposedContentOffset.x + collectionView.contentInset.left + sectionInset.left
         case .center:
-            horizontalPosition = proposedContentOffset.x + (collectionView.bounds.width * 0.5)
+            proposedContentOffset.x + (collectionView.bounds.width * 0.5)
         case .right:
-            horizontalPosition = proposedContentOffset.x + collectionView.bounds.width - sectionInset.right
+            proposedContentOffset.x + collectionView.bounds.width - sectionInset.right
         }
 
         let targetRect = CGRect(
@@ -75,29 +74,22 @@ public class PBSnappingLayout: UICollectionViewFlowLayout {
         let layoutAttributesArray = super.layoutAttributesForElements(in: targetRect)
 
         layoutAttributesArray?.forEach { layoutAttributes in
-            let itemHorizontalPosition: CGFloat
-
-            switch snapPosition {
+            let itemHorizontalPosition = switch snapPosition {
             case .left:
-                itemHorizontalPosition = layoutAttributes.frame.minX - collectionView.contentInset.left
+                layoutAttributes.frame.minX
             case .center:
-                itemHorizontalPosition = layoutAttributes.center.x
+                layoutAttributes.center.x
             case .right:
-                itemHorizontalPosition = layoutAttributes.frame.maxX + collectionView.contentInset.right
+                layoutAttributes.frame.maxX
             }
 
             if abs(itemHorizontalPosition - horizontalPosition) < abs(offsetAdjusment) {
-
                 if abs(velocity.x) < self.minimumSnapVelocity {
                     offsetAdjusment = itemHorizontalPosition - horizontalPosition
-                }
-
-                else if velocity.x > 0 {
-                    offsetAdjusment = itemHorizontalPosition - horizontalPosition + (layoutAttributes.bounds.width + self.minimumLineSpacing)
-                }
-
-                else {
-                    offsetAdjusment = itemHorizontalPosition - horizontalPosition - (layoutAttributes.bounds.width + self.minimumLineSpacing)
+                } else if velocity.x > 0 {
+                    offsetAdjusment = itemHorizontalPosition - horizontalPosition + (layoutAttributes.bounds.width + minimumLineSpacing)
+                } else {
+                    offsetAdjusment = itemHorizontalPosition - horizontalPosition - (layoutAttributes.bounds.width + minimumLineSpacing)
                 }
             }
         }

@@ -84,9 +84,9 @@ public class PBTemplateView: UIView {
         didSet {
             switch self.viewType {
             case .payment:
-                self.iconView.layer.cornerRadius = 24.0
+                self.iconView.set(cornerRadius: 24.0)
             case .template:
-                self.iconView.layer.cornerRadius = 8.0
+                self.iconView.set(cornerRadius: 8.0)
             }
         }
     }
@@ -160,7 +160,7 @@ public class PBTemplateView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         view.backgroundColor = UIColor(red: 0.604, green: 0.608, blue: 0.612, alpha: 0.08)
-        view.layer.cornerRadius = 24.0
+        view.set(cornerRadius: 24.0)
 
         view.widthAnchor.constraint(equalToConstant: 48.0).isActive = true
         view.heightAnchor.constraint(equalToConstant: 48.0).isActive = true
@@ -237,7 +237,7 @@ public class PBTemplateView: UIView {
 
     private func setupViews(for type: ViewType) {
         self.backgroundColor = .clear
-        self.layer.cornerRadius = 16.0
+        self.set(cornerRadius: 16.0)
         self.layer.masksToBounds = true
         self.contentStackView.addArrangedSubview(self.titleLabel)
         self.contentStackView.addArrangedSubview(self.subtitleLabel)
@@ -245,9 +245,9 @@ public class PBTemplateView: UIView {
 
         switch type {
         case .payment:
-            self.iconWrapperView.layer.cornerRadius = 24.0
+            self.iconWrapperView.set(cornerRadius: 24.0)
         case .template:
-            self.iconWrapperView.layer.cornerRadius = 8.0
+            self.iconWrapperView.set(cornerRadius: 8.0)
         }
     }
 

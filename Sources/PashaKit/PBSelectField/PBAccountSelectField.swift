@@ -121,9 +121,9 @@ open class PBAccountSelectField: UIView {
         self.addSubview(view)
 
         view.frame = CGRect()
-        view.layer.cornerRadius = 8
-        view.layer.borderColor = UIColor.Colors.PBGraySecondary.cgColor
-        view.layer.borderWidth = 1.0
+        view.set(cornerRadius: 12.0)
+        view.set(borderColor: UIColor.Colors.PBGraySecondary)
+        view.set(borderWidth: 1.0)
         view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -270,12 +270,12 @@ open class PBAccountSelectField: UIView {
     private func updateUI() {
         switch self.isValid {
         case .valid:
-            self.customBorder.layer.borderColor = UIColor.Colors.PBGraySecondary.cgColor
+            self.customBorder.set(borderColor: UIColor.Colors.PBGraySecondary)
             self.footerLabel.textColor = UIColor.black.withAlphaComponent(0.6)
             self.placeholderLabel.textColor = UIColor.black.withAlphaComponent(0.6)
             self.footerLabel.text = self.footerLabelText
         case .invalid(let error):
-            self.customBorder.layer.borderColor = UIColor.systemRed.cgColor
+            self.customBorder.set(borderColor: UIColor.systemRed)
             self.footerLabel.textColor = .systemRed
             self.placeholderLabel.textColor = .systemRed
             self.footerLabel.text = error

@@ -42,7 +42,7 @@ open class PBPaddingLabel: UILabel {
         self.edgeInsets = edgeInsets
         super.init(frame: CGRect.zero)
         self.clipsToBounds = true
-        self.layer.cornerRadius = cornerRadius
+        self.set(cornerRadius: cornerRadius)
         self.layer.masksToBounds = true
     }
 

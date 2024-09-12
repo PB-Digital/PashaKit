@@ -102,9 +102,9 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         didSet {
             switch self.leftIconStyle {
             case .roundedRect(cornerRadius: let cornerRadius):
-                self.categoryImage.layer.cornerRadius = cornerRadius
+                self.categoryImage.set(cornerRadius: cornerRadius)
             case .circle:
-                self.categoryImage.layer.cornerRadius = 20.0
+                self.categoryImage.set(cornerRadius: 20.0)
             }
         }
     }
@@ -231,7 +231,7 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
         self.transactionInfoContainerView.addSubview(view)
         
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 10
+        view.set(cornerRadius: 10.0)
         view.isHidden = true
 
         return view
@@ -329,9 +329,9 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
 
         switch self.leftIconStyle {
         case .roundedRect(cornerRadius: let cornerRadius):
-            self.categoryImage.layer.cornerRadius = cornerRadius
+            self.categoryImage.set(cornerRadius: cornerRadius)
         case .circle:
-            self.categoryImage.layer.cornerRadius = 20.0
+            self.categoryImage.set(cornerRadius: 20.0)
         }
 
         NSLayoutConstraint.activate([
