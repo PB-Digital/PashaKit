@@ -180,9 +180,9 @@ public class PBUITextView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textContainerInset = UIEdgeInsets(top: 24, left: 12, bottom: 16, right: 16)
         view.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        view.layer.cornerRadius = 12.0
-        view.layer.borderWidth = 1.0
-        view.layer.borderColor = self.defaultBorderColor.cgColor
+        view.set(cornerRadius: 12.0)
+        view.set(borderWidth: 1.0)
+        view.set(borderColor: self.defaultBorderColor)
         view.backgroundColor = .clear
         view.isScrollEnabled = false
         view.delegate = self
@@ -327,23 +327,23 @@ public class PBUITextView: UIView {
                 self.performAnimation { [weak self] in
                     guard let self = self else { return }
                     self.customPlaceholder.textColor = self.editingBorderColor
-                    self.textView.layer.borderColor = self.editingBorderColor.cgColor
-                    self.textView.layer.borderWidth = 2.0
+                    self.textView.set(borderColor: self.editingBorderColor)
+                    self.textView.set(borderWidth: 2.0)
                 }
             case .notEditing:
                 self.performAnimation { [weak self] in
                     guard let self = self else { return }
                     self.customPlaceholder.textColor = self.placeholderTextColor
-                    self.textView.layer.borderColor = self.defaultBorderColor.cgColor
-                    self.textView.layer.borderWidth = 1.0
+                    self.textView.set(borderColor: self.defaultBorderColor)
+                    self.textView.set(borderWidth: 1.0)
                 }
             }
         case .invalid:
             self.performAnimation { [weak self] in
                 guard let self = self else { return }
                 self.customPlaceholder.textColor = self.errorStateColor
-                self.textView.layer.borderColor = self.errorStateColor.cgColor
-                self.textView.layer.borderWidth = 1.0
+                self.textView.set(borderColor: self.errorStateColor)
+                self.textView.set(borderWidth: 1.0)
             }
         }
     }

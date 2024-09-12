@@ -200,7 +200,7 @@ open class PBInfoBar: UIView {
 
     private func setupDefaults() {
         self.backgroundColor = UIColor.Colors.PBGrayTransparent
-        self.layer.cornerRadius = 12.0
+        self.set(cornerRadius: 12.0)
     }
 
     func setup(attentionLevel: AttentionLevel) {

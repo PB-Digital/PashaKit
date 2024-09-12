@@ -415,9 +415,9 @@ public class PBUITextField: UIView {
 
         customBorder.translatesAutoresizingMaskIntoConstraints = false
 
-        customBorder.layer.cornerRadius = 12.0
-        customBorder.layer.borderWidth = 1.0
-        customBorder.layer.borderColor = self.defaultBorderColor.cgColor
+        customBorder.set(cornerRadius: 12.0)
+        customBorder.set(borderWidth: 1.0)
+        customBorder.set(borderColor: self.defaultBorderColor)
 
         return customBorder
     }()
@@ -549,8 +549,8 @@ public class PBUITextField: UIView {
             self.textFieldStack.removeExistingBottomBorder()
         case .underlined:
             self.textFieldStack.addBottomBorder(thickness: 1.0, color: self.textFieldBottomBorderColor)
-            self.customBorder.layer.borderWidth = 0.0
-            self.customBorder.layer.borderColor = UIColor.clear.cgColor
+            self.customBorder.set(borderWidth: .zero)
+            self.customBorder.set(borderColor: UIColor.clear)
         }
     }
 
@@ -665,23 +665,23 @@ public class PBUITextField: UIView {
                 self.performAnimation { [weak self] in
                     guard let self = self else { return }
                     self.customPlaceholder.textColor = self.editingBorderColor
-                    self.customBorder.layer.borderColor = self.editingBorderColor.cgColor
-                    self.customBorder.layer.borderWidth = 2.0
+                    self.customBorder.set(borderColor: self.editingBorderColor)
+                    self.customBorder.set(borderWidth: 2.0)
                 }
             case .notEditing:
                 self.performAnimation { [weak self] in
                     guard let self = self else { return }
                     self.customPlaceholder.textColor = self.placeholderTextColor
-                    self.customBorder.layer.borderColor = self.defaultBorderColor.cgColor
-                    self.customBorder.layer.borderWidth = 1.0
+                    self.customBorder.set(borderColor: self.defaultBorderColor)
+                    self.customBorder.set(borderWidth: 1.0)
                 }
             }
         case .invalid:
             self.performAnimation { [weak self] in
                 guard let self = self else { return }
                 self.customPlaceholder.textColor = self.errorStateColor
-                self.customBorder.layer.borderColor = self.errorStateColor.cgColor
-                self.customBorder.layer.borderWidth = 1.0
+                self.customBorder.set(borderColor: self.errorStateColor)
+                self.customBorder.set(borderWidth: 1.0)
             }
         }
     }
@@ -709,7 +709,7 @@ public class PBUITextField: UIView {
             self.performAnimation { [weak self] in
                 guard let self = self else { return }
                 self.customPlaceholder.textColor = self.errorStateColor
-                self.customBorder.layer.borderColor = self.errorStateColor.cgColor
+                self.customBorder.set(borderColor: self.errorStateColor)
                 self.textFieldStack.updateExistingBottomBorderThickness(to: 1.0)
                 self.textFieldStack.updateExistingBottomBorderColor(to: self.errorStateColor)
             }

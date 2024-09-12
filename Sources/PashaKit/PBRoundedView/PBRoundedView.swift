@@ -122,9 +122,9 @@ public class PBRoundedView: UIView {
     public override func layoutSubviews() {
         switch self.style {
         case .roundedRect(let cornerRadius):
-            self.layer.cornerRadius = cornerRadius
+            self.set(cornerRadius: cornerRadius)
         case .circle:
-            self.layer.cornerRadius = self.frame.width / 2.0
+            self.set(cornerRadius: self.frame.width / 2.0)
         }
     }
 
