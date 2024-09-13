@@ -83,7 +83,7 @@ open class PBCardRowView: UIView, PBSkeletonable {
 
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        view.layer.cornerRadius = 6.0
+        view.set(cornerRadius: 6.0)
         view.layer.masksToBounds = true
 
         view.heightAnchor.constraint(equalToConstant: 36.0).isActive = true

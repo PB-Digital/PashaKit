@@ -246,9 +246,9 @@ open class PBCardInputView: UIView {
     }
 
     private func setupViews() {
-        self.layer.cornerRadius = self.cornerRadius
+        self.set(cornerRadius: self.cornerRadius)
         self.layer.masksToBounds = true
-        
+
         self.setTheme()
         self.setupConstraints()
     }

@@ -222,3 +222,18 @@ public extension UIView {
         view.layer.mask = maskLayer
     }
 }
+
+public extension UIView {
+    func set(cornerRadius: CGFloat, cornerCurve: CALayerCornerCurve = .continuous) {
+        self.layer.cornerCurve = cornerCurve
+        self.layer.cornerRadius = cornerRadius
+    }
+
+    func set(borderColor: UIColor) {
+        self.layer.borderColor = borderColor.cgColor
+    }
+
+    func set(borderWidth: CGFloat) {
+        self.layer.borderWidth = borderWidth
+    }
+}

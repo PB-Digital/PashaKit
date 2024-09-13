@@ -728,9 +728,9 @@ open class PBRowView: UIView, PBSkeletonable {
     private func setupLeftIconCornerRadius(style: Style) {
         switch style {
         case .roundedRect(cornerRadius: let cornerRadius):
-            self.leftIconWrapperView.layer.cornerRadius = cornerRadius
+            self.leftIconWrapperView.set(cornerRadius: cornerRadius)
         case .circle:
-            self.leftIconWrapperView.layer.cornerRadius = self.leftViewSize.width / 2
+            self.leftIconWrapperView.set(cornerRadius: self.leftViewSize.width / 2)
         }
     }
 }
