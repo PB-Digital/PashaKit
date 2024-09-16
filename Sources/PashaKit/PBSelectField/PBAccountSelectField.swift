@@ -233,7 +233,7 @@ open class PBAccountSelectField: UIView {
         NSLayoutConstraint.activate([
             self.placeholderLabel.leftAnchor.constraint(equalTo: self.customBorder.leftAnchor, constant: 16.0),
             self.placeholderLabel.centerYAnchor.constraint(equalTo: self.leftIconView.centerYAnchor),
-            self.placeholderLabel.rightAnchor.constraint(equalTo: self.dropdownIcon.leftAnchor, constant: -12.0)
+            self.placeholderLabel.rightAnchor.constraint(lessThanOrEqualTo: self.dropdownIcon.leftAnchor, constant: -12.0)
         ])
 
         NSLayoutConstraint.activate([
@@ -244,7 +244,9 @@ open class PBAccountSelectField: UIView {
 
         NSLayoutConstraint.activate([
             self.dropdownIcon.rightAnchor.constraint(equalTo: self.customBorder.rightAnchor, constant: -16.0),
-            self.dropdownIcon.centerYAnchor.constraint(equalTo: self.leftIconView.centerYAnchor)
+            self.dropdownIcon.centerYAnchor.constraint(equalTo: self.leftIconView.centerYAnchor),
+            self.dropdownIcon.widthAnchor.constraint(equalToConstant: 24.0),
+            self.dropdownIcon.heightAnchor.constraint(equalToConstant: 24.0),
         ])
 
         NSLayoutConstraint.activate([
