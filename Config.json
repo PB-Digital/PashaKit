@@ -1,4 +1,4 @@
 {
-    "version": "1.5.3",
-    "release_notes": "- Made minor improvements on the codebase"
+    "version": "1.5.4",
+    "release_notes": "- Fixed chevron icon layout bug in `PBAccountSelectField`\n- Added constructor extensions for `UIEdgeInsets` and `NSDirectionalEdgeInsets`"
 }
