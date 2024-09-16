@@ -30,7 +30,21 @@
 import UIKit
 
 public extension UIEdgeInsets {
-    init(all: CGFloat) {
-        self.init(top: all, left: all, bottom: all, right: all)
+    init(all inset: CGFloat) {
+        self.init(top: inset, left: inset, bottom: inset, right: inset)
+    }
+
+    init(vertical: CGFloat = .zero, horizontal: CGFloat = .zero) {
+        self.init(top: vertical, left: horizontal, bottom: vertical, right: horizontal)
+    }
+}
+
+public extension NSDirectionalEdgeInsets {
+    init(all inset: CGFloat) {
+        self.init(top: inset, leading: inset, bottom: inset, trailing: inset)
+    }
+
+    init(vertical: CGFloat = .zero, horizontal: CGFloat = .zero) {
+        self.init(top: vertical, leading: horizontal, bottom: vertical, trailing: horizontal)
     }
 }
