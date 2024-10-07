@@ -414,7 +414,7 @@ public class PBTransactionRowView: UIView, PBSkeletonable {
     ///    - transaction: Protocol for representing `transactionRowView`.
     ///    - categoryName: Name of transaction category.
     ///
-    public func setData(transaction: TransactionRepresentable, categoryName: String?) {
+    public func setData(transaction: any TransactionRepresentable, categoryName: String?) {
         self.merchantLabel.text = transaction.merchantName
         self.descriptionLabel.text = categoryName ?? transaction.descriptionText
         self.amountLabel.text = transaction.amountText

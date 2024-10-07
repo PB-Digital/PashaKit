@@ -56,7 +56,7 @@ public class PBPaymentHistoryRowView: PBTransactionRowView {
     ///    - transaction: Protocol for representing `transactionRowView`.
     ///    - categoryName: Name of transaction category.
     ///
-    public override func setData(transaction: TransactionRepresentable, categoryName: String?) {
+    public override func setData(transaction: any TransactionRepresentable, categoryName: String?) {
         super.setData(transaction: transaction, categoryName: categoryName)
         self.merchantLabel.text = transaction.descriptionText
         self.descriptionLabel.text = categoryName ?? transaction.merchantName

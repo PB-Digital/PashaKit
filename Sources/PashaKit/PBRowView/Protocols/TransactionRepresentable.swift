@@ -40,7 +40,7 @@ import UIKit
 /// If your project doesn't include such kind of entity, create one and
 /// conform it to `TransactionRepresentable`.
 ///
-public protocol TransactionRepresentable {
+public protocol TransactionRepresentable: Equatable {
     var merchantName: String { get }
     var descriptionText: String { get }
     var amountText: String? { get }
