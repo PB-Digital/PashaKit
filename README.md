@@ -4,6 +4,8 @@ PashaKit contains native UIKit components aligned with Pasha Bank's design syste
 
 ## Getting Started
 
+![Alt](https://repobeats.axiom.co/api/embed/713e6001f55702526d94befa65be0abfd8d42243.svg "Repobeats analytics image")
+
 ### Installation Guide
 
 #### Requirements
